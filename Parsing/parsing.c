@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/01/31 18:06:08 by lribette         ###   ########.fr       */
+/*   Updated: 2024/01/31 18:10:25 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,5 @@ void	parsing(char *input)
 // comptabiliser les guillemets
 // regarder le nombre de symboles identiques d'affilee
 // regarder pour plusieurs symboles differents cote a cote
+// soustraire le nombre d'espaces
 // malloc les tableaux
