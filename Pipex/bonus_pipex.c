@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bonus_pipex.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/01/26 11:20:11 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/01/31 15:50:12 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	ft_pipex_init(t_pipex *pipex, int argc, char **argv, char **envp)
 	pipex->paths = ft_extract_envp(envp);
 }
 
-int	main(int argc, char **argv, char **envp)
+/*int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	pipex;
 
@@ -109,3 +109,4 @@ int	main(int argc, char **argv, char **envp)
 	ft_freetable(pipex.paths);
 	return (pipex.exit_code);
 }
+*/

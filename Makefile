@@ -5,15 +5,20 @@
 #                                                     +:+ +:+         +:+      #
 #    By: lribette <lribette@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/01/31 10:03:29 by lribette          #+#    #+#              #
-#    Updated: 2024/01/31 10:07:27 by lribette         ###   ########.fr        #
+#    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
+#    Updated: 2024/01/31 17:02:38 by lribette         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS =								\
-				main				
+SRCS =										\
+				Pipex/bonus_pipex			\
+				Pipex/bonus_cmds			\
+				Pipex/utils					\
+				Pipex/errors				\
+				Parsing/parsing				\
+				main						
 
-INC_FILES = -I Pipex
+INC_FILES = -I Pipex/libft
 
 SRC = $(addsuffix .c,$(SRCS))
 OBJ = $(addsuffix .o,$(SRCS))
@@ -26,19 +31,19 @@ NAME = minishell
 all: $(NAME)
 
 $(NAME) : $(OBJ)
-	$(MAKE) -C libft/ bonus
-	$(CC) -o $@ $(OBJ) libft/libft.a
+	$(MAKE) -C ./Pipex/libft/ bonus
+	$(CC) -o $@ $(OBJ) ./Pipex/libft/libft.a -lreadline
 
 %.o: %.c
 	$(CC) -c -o $@ $< $(CCFLAGS) $(INC_FILES)
 
 clean :
-	$(MAKE) -C libft/ clean
-	rm -rf $(OBJ) $(BOBJ)
+	$(MAKE) -C ./Pipex/libft/ clean
+	rm -rf $(OBJ)
 
 fclean : clean
-	$(MAKE) -C libft/ fclean
-	rm -rf $(NAME) $(BNAME)
+	$(MAKE) -C ./Pipex/libft/ fclean
+	rm -rf $(NAME)
 
 re : fclean all
 
