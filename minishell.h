@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/01 17:05:06 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:45:33 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef enum e_type
 	WORD = 1,
 	SEPARATOR,
 	COMMAND,
+	OPTION,
 	ARGUMENT,
 	VARIABLE
 }   t_type;

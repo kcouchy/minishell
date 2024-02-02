@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 13:26:27 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/02 14:52:58 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:18:01 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "./../Pipex/pipex.h"
 
 // kcouchma@c1r4p5:~$ echo "hello" $?
 // hello 0
