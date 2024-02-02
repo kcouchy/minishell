@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/01 13:06:16 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:22:02 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,76 @@ int	count_types(char *input)
 	return (counter);
 }
 
-void	parsing(char *input)
+char	*ft_word_dup(char *input, int start, int end)
 {
-	//t_parsing	*main;
+	int		i;
+	char	*dup;
+	
+	i = 0;
+	dup = malloc((end - start + 1) * sizeof(char));
+	if (!dup)
+		return (NULL);
+	while (end > start)
+		dup[i++] = input[start++];
+	dup[i] = '\0';
+	return (dup);
+}
+
+int	what_type(t_parsing *main, char *input, int i, int separator)
+{
+	int	start;
+	int	j;
+
+	start = i;
+	j = 0;
+	while (input[i] && is_separator(input[i]) == separator)
+		i++;
+	while (main->types[j] != 0)
+		j++;
+	main->argv[j] = ft_word_dup(input, start, i);
+	if (separator)
+		main->types[j] = SEPARATOR;
+	else
+		main->types[j] = WORD;
+	return (i);
+}
+
+void	alloc_tables(t_parsing *main, char *input)
+{
+	int			i;
+	int			j;
+
+	main->len = count_types(input);
+	main->argv = ft_calloc((main->len + 1), sizeof(char *));
+	main->types = ft_calloc((main->len + 1), sizeof(int));
+	if (!main->argv || !main->types) //////////////////// ATTENTION !!!
+	{
+		printf("Malloc failed !\n");
+		exit(EXIT_FAILURE);
+	}
+	i = 0;
+	j = 0;
+	while (j < main->len)
+	{
+		if (input[i] && input[i] == ' ')
+			i++;
+		if (input[i] && is_separator(input[i]))
+			i = what_type(main, input, i, 1);
+		else if (input[i] && !is_separator(input[i]))
+			i = what_type(main, input, i, 0);
+		j++;
+	}
+	//return (main);
+	//main.argv = ft_calloc();
+}
+
+void	parsing(t_parsing *main, char *input)
+{
 
 	/*if (!input)
 		return (NULL);*/
-	count_types(input);
-	printf("count_types = %d\n", count_types(input));
+	alloc_tables(main, input);
+	printf("count_types = %d\n", main->len);
 }
 // comptabiliser les guillemets
 // regarder le nombre de symboles identiques d'affilee

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/01 13:02:35 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:05:06 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include "./Pipex/pipex.h"
 
 typedef enum e_type
 {
-	WORD,
+	WORD = 1,
 	SEPARATOR,
 	COMMAND,
 	ARGUMENT,
@@ -32,8 +33,9 @@ typedef struct s_parsing
 {
 	char	**argv;
 	int		*types;
+	int		len;
 }   t_parsing;
 
-void	parsing(char *input);
+void	parsing(t_parsing *main, char *input);
 
 #endif
