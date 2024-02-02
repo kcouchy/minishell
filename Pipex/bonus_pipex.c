@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bonus_pipex.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/01/31 15:50:12 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:05:48 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	ft_bonus_pipex(t_pipex *pipex)
 			{
 				perror("pipe failed");
 				ft_freetable(pipex->paths);
+				free(pipex->pwd_origin);
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -51,6 +52,7 @@ void	ft_heredoc(t_pipex *pipex)
 		ft_input_fail(pipex);
 	while (1)
 	{
+		//may replace with readline - but it removes the \n?
 		write(STDERR_FILENO, "> ", 2);
 		buffer = get_next_line(STDIN_FILENO);
 		if (!buffer)
@@ -82,13 +84,15 @@ void	ft_pipex_init(t_pipex *pipex, int argc, char **argv, char **envp)
 	pipex->heredoc = 0;
 	pipex->exit_code = 0;
 	pipex->paths = ft_extract_envp(envp);
+	pipex->pwd_origin = getcwd(NULL, 0);
 }
 
-/*int	main(int argc, char **argv, char **envp)
+int	executing(int argc, char **argv, char **envp)
 {
 	t_pipex	pipex;
 
 	ft_pipex_init(&pipex, argc, argv, envp);
+	//this will need to be modified to launch heredoc if "<<"
 	if (argc >= 5 && ft_strncmp(argv[1], "here_doc", 8) == 0)
 		ft_heredoc(&pipex);
 	if (argc >= 5 || (argc >= 6 && pipex.heredoc == 1))
@@ -107,6 +111,6 @@ void	ft_pipex_init(t_pipex *pipex, int argc, char **argv, char **envp)
 	if (pipex.heredoc == 1 && pipex.infile_fd != -1)
 		(close(pipex.infile_fd), unlink("temp"));
 	ft_freetable(pipex.paths);
+	free(pipex.pwd_origin);
 	return (pipex.exit_code);
 }
-*/

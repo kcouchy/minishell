@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/01/26 10:31:41 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:06:06 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_pipex_list
 	char			*outfile;		//output file (argv[n])
 	char			**envp;			//envp input
 	char			**paths;		//paths separated from envp PATH variable
+	char			*pwd_origin;	//pwd at the launch of finishell
 }					t_pipex;
 
 /******************************************************************************/
@@ -294,6 +295,6 @@ void	ft_pipex_init(t_pipex *pipex, int argc, char **argv, char **envp);
  * @param envp Table of tables containing the environmental variables (env)
  * @return int 0 if all is well.
  */
-int		main(int argc, char **argv, char **envp);
+int		executing(int argc, char **argv, char **envp);
 
 #endif

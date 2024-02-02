@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:28:50 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/01/26 12:26:45 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/02 16:07:59 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	ft_bonus_last_cmd(t_pipex *pipex)
 		perror("cannot open output file");
 		ft_freetable(pipex->child_args);
 		ft_freetable(pipex->paths);
+		free(pipex->pwd_origin);
 		exit(EXIT_FAILURE);
 	}
 	dup2(pipex->outfile_fd, STDOUT_FILENO);
@@ -47,6 +48,7 @@ void	ft_bonus_first_cmd(t_pipex *pipex)
 		perror("cannot open input file");
 		ft_freetable(pipex->child_args);
 		ft_freetable(pipex->paths);
+		free(pipex->pwd_origin);
 		exit(EXIT_FAILURE);
 	}
 	dup2(pipex->infile_fd, STDIN_FILENO);
@@ -65,7 +67,7 @@ void	ft_bonus_forkchild(t_pipex *pipex, int i)
 {
 	pipex->pid = fork();
 	if (pipex->pid == -1)
-		(perror("fork failed"), ft_freetable(pipex->paths), exit(EXIT_FAILURE));
+		(perror("fork failed"), ft_freetable(pipex->paths), free(pipex->pwd_origin), exit(EXIT_FAILURE));
 	if (pipex->pid == 0)
 	{
 		pipex->child_args = ft_split

@@ -6,27 +6,13 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 13:26:27 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/02 14:52:58 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:00:54 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-// kcouchma@c1r4p5:~$ echo "hello" $?
-// hello 0
-// kcouchma@c1r4p5:~$ echo "hello" | cat -e
-// hello$
-// kcouchma@c1r4p5:~$ echo "hello\n hello" | cat -e
-// hello\n hello$
-// kcouchma@c1r4p5:~$ echo 'hello\n hello' | cat -e
-// hello\n hello$
-// kcouchma@c1r4p5:~$ echo hello\n hello | cat -e
-// hellon hello$
-
-// To IMPLEMENT IN PARSING :
-//skip \ if not within brackets
-
-int	ft_echo(int argc, char **argv)
+int	echo(int argc, char **argv)
 {
 	int	i;
 	int	n;

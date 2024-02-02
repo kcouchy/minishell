@@ -6,37 +6,26 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:22 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/02 12:07:34 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/02 17:44:01 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-// cd .. take off everything after the last \)
-// relative path - if arg does not start with \ then add to the end of getenv
-// otherwise replace getenv with the path given
+// chdir apparently handles relative and absolute paths and ".."
 
-int ft_cd(char *command)
+int cd(int argc, char **argv, t_pipex *pipex)
 {
-	char	*pwd;
-	char	*temp;
-	pwd = getcwd(NULL, 0);
-	if (ft_strncmp(command, "..", 2) == 0)
+	if (argc > 2)
 	{
-		temp = ft_strrchr(pwd, '/');
-		*temp = '\0';
-	}
-	else if (command[0] == '/')
-		pwd = ft_strjoin3("", "", command);
-	else if (command[0] != '/')
-		pwd = ft_strjoin3(pwd, "/", command);
-	if (chdir(pwd) == -1)
-	{
-		perror("finishell: cd");
-		free(pwd);
+		printf("finishell: cd: too many arguments");
 		exit(EXIT_FAILURE);
 	}
-	//UPDATE $OLDPWD and $PWD
-	free(pwd);
+	if (chdir(argv[1]) == -1)
+	{
+		perror("finishell: cd");
+		exit(EXIT_FAILURE);
+	}
+	//UPDATE $OLDPWD and $PWD in pipex->envp with export
 	return (0);
 }
