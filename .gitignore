@@ -1,0 +1,7 @@
+*.pdf
+*.txt
+*.o
+*.a
+pipex
+bonus_pipex
+.vscode

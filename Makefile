@@ -6,7 +6,7 @@
 #    By: lribette <lribette@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
-#    Updated: 2024/01/31 17:02:38 by lribette         ###   ########.fr        #
+#    Updated: 2024/02/02 15:42:06 by lribette         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,8 @@ SRCS =										\
 				Pipex/utils					\
 				Pipex/errors				\
 				Parsing/parsing				\
+				/builtins/echo				\
+				/builtins/pwd_cd			\
 				main						
 
 INC_FILES = -I Pipex/libft
