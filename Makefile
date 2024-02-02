@@ -6,7 +6,7 @@
 #    By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
-#    Updated: 2024/01/22 15:48:03 by kcouchma         ###   ########.fr        #
+#    Updated: 2024/02/01 16:41:04 by kcouchma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,9 @@ SRCS =								\
 				bonus_pipex			\
 				bonus_cmds			\
 				utils				\
-				errors
+				errors				\
+				/builtins/echo		\
+				/builtins/pwd_cd
 
 BONUS_SRCS =						\
 
