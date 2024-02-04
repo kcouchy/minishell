@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/02 18:11:39 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/04 18:52:44 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,3 +41,7 @@ typedef struct s_parsing
 void	parsing(t_parsing *main, char *input);
 
 #endif
+
+echo salut
+test
+cat 

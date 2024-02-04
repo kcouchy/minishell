@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/03 23:07:13 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/04 13:42:55 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,10 +121,22 @@ int	check_commands(t_parsing *main)
 	start = i;
 	while (i < main->len)
 	{
-		if (main->argv[i] && main->argv[i][0] == '-')
+		if (i < main->len && main->types[i] != SEPARATOR
+			&& main->argv[i][0] != '-')
 		{
-			printf("%s: \x1b[38;2;230;0;0;1mcommand not found\e[0m\n", main->argv[i]);
-			return (EXIT_FAILURE);
+			main->types[i] = COMMAND;
+			i++;
+		}
+		while (i < main->len && main->types[i] != SEPARATOR
+			&& main->argv[i][0] == '-')
+		{
+			main->types[i] = OPTION;
+			i++;
+		}
+		while (i < main->len && main->types[i] != SEPARATOR)
+		{
+			main->types[i] = ARGUMENT;
+			i++;
 		}
 		i++;
 	}

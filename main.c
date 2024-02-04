@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/02 18:30:34 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/04 13:38:58 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,18 @@ int main(int argc, char **argv, char **envp)
 		{
 			printf("-----\n");
 			printf("argv = %s\n", main.argv[i]);
-			printf("types = %d\n", main.types[i]);
+			if (main.types[i] == 1)
+				printf("types = WORD\n");
+			if (main.types[i] == 2)
+				printf("types = SEPARATOR\n");
+			if (main.types[i] == 3)
+				printf("types = COMMAND\n");
+			if (main.types[i] == 4)
+				printf("types = OPTION\n");
+			if (main.types[i] == 5)
+				printf("types = ARGUMENT\n");
+			if (main.types[i] == 6)
+				printf("types = VARIABLE\n");
 			i++;
 		}
 		ft_free_parsing(&main, input);
