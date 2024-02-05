@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/04 13:42:55 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/05 11:46:09 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,26 @@
 
 int	is_separator(char c)
 {
-	if (/*c == '\''||c == '"'||*/c == '<' || c == '>' || c == '|' || c == '=' || c == ' ')
+	if (c == '<' || c == '>' || c == '|' || c == '=' || c == ' ')
 		return (1);
 	return (0);
+}
+
+int	is_space(char c)
+{
+	if ((c > 9 && c < 13) || c == ' ')
+		return (1);
+	return (0);
+}
+
+int	ft_strcmp(char *s1, char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+		i++;
+	return (s1[i] - s2[i]);
 }
 
 int	count_types(char *input)
@@ -70,7 +87,8 @@ int	what_type(t_parsing *main, char *input, int i, int separator)
 
 	start = i;
 	j = 0;
-	while (input[i] && is_separator(input[i]) == separator)
+	while (input[i] && is_separator(input[i]) == separator
+		&& !is_space(input[i]))
 		i++;
 	while (main->types[j] != 0)
 		j++;
@@ -99,7 +117,7 @@ void	alloc_tables(t_parsing *main, char *input)
 	j = 0;
 	while (j < main->len)
 	{
-		while (input[i] && ((input[i] > 9 && input[i] < 13) || input[i] == 32))
+		while (input[i] && is_space(input[i]))
 			i++;
 		if (input[i] && is_separator(input[i]))
 			i = what_type(main, input, i, 1);
@@ -138,6 +156,14 @@ int	check_commands(t_parsing *main)
 			main->types[i] = ARGUMENT;
 			i++;
 		}
+		if (i < main->len && main->types[i] == SEPARATOR
+			&& !ft_strcmp(main->argv[i], "|"))
+			main->types[i] = PIPE;
+		else if (i < main->len && main->types[i] == SEPARATOR
+			&& !ft_strcmp(main->argv[i], "="))
+			main->types[i] = EQUAL;
+		else if (i < main->len && main->types[i] == SEPARATOR)
+			main->types[i] = REDIRECTION;
 		i++;
 	}
 	return (0);

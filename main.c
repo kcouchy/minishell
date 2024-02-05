@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/04 13:38:58 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/05 11:45:07 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_free_parsing(t_parsing *main, char *input)
 {
 	int	i;
-	
+
 	i = 0;
 	while (i < main->len)
 	{
@@ -30,26 +30,26 @@ void	ft_free_parsing(t_parsing *main, char *input)
 void	sigint_handler(int signal)
 {
 	if (signal == SIGINT)
-		write(1, "", 0);
+		printf("\n");
 }
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
-	char	*input;
+	char		*input;
 	t_parsing	main;
+
 	(void)argv;
 	(void)envp;
-
 	if (argc != 1)
 	{
 		printf("Just write \x1b[38;2;200;100;0;1m./minishell\e[0m\n");
 		exit(EXIT_FAILURE);
 	}
-	signal(SIGINT, &sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		input = readline("\x1b[38;2;0;150;0;1mfinishell \e[5m🤯\e[0m> ");
+		signal(SIGINT, &sigint_handler);
+		signal(SIGQUIT, SIG_IGN);
 		if (!input)
 			break ;
 		parsing(&main, input);
@@ -70,6 +70,12 @@ int main(int argc, char **argv, char **envp)
 				printf("types = ARGUMENT\n");
 			if (main.types[i] == 6)
 				printf("types = VARIABLE\n");
+			if (main.types[i] == 7)
+				printf("types = PIPE\n");
+			if (main.types[i] == 8)
+				printf("types = REDIRECTION\n");
+			if (main.types[i] == 9)
+				printf("types = EQUAL\n");
 			i++;
 		}
 		ft_free_parsing(&main, input);

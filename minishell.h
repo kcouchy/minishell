@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/04 18:52:44 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/05 11:44:45 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,19 @@ typedef enum e_type
 	COMMAND,
 	OPTION,
 	ARGUMENT,
-	VARIABLE
-}   t_type;
+	VARIABLE,
+	PIPE,
+	REDIRECTION,
+	EQUAL
+}	t_type;
 
 typedef struct s_parsing
 {
 	char	**argv;
 	int		*types;
 	int		len;
-}   t_parsing;
+}	t_parsing;
 
 void	parsing(t_parsing *main, char *input);
 
 #endif
-
-echo salut
-test
-cat 
