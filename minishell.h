@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/05 11:44:45 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/05 12:12:49 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,18 @@ typedef struct s_parsing
 	int		len;
 }	t_parsing;
 
+/******************************************************************************/
+/* Parsing	                                                                  */
+/******************************************************************************/
+
+/* *************** utils.c *************** */
+int		is_separator(char c);
+int		is_space(char c);
+int		ft_strcmp(char *s1, char *s2);
+
+void	alloc_tables(t_parsing *main, char *input);
+int		check_commands(t_parsing *main);
+int		count_types(char *input);
 void	parsing(t_parsing *main, char *input);
 
 #endif

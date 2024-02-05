@@ -6,7 +6,7 @@
 #    By: lribette <lribette@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
-#    Updated: 2024/02/02 18:00:26 by lribette         ###   ########.fr        #
+#    Updated: 2024/02/05 12:14:14 by lribette         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,11 @@ SRCS =										\
 				Pipex/bonus_cmds			\
 				Pipex/utils					\
 				Pipex/errors				\
+				Parsing/alloc_tables		\
+				Parsing/check_commands		\
+				Parsing/count_types			\
 				Parsing/parsing				\
+				Parsing/utils				\
 				builtins/echo				\
 				main						
 				#builtins/pwd_cd			\

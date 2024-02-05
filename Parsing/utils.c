@@ -1,28 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/05 12:11:54 by lribette         ###   ########.fr       */
+/*   Created: 2024/02/05 11:57:46 by lribette          #+#    #+#             */
+/*   Updated: 2024/02/05 12:06:32 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 
-//int	number_of_quotes()
-
-void	parsing(t_parsing *main, char *input)
+int	is_separator(char c)
 {
-	alloc_tables(main, input);
-	check_commands(main);
-	// prendre le cas ou check_commands renvoit exit failure
-	printf("count_types = %d\n", main->len);
+	if (c == '<' || c == '>' || c == '|' || c == '=' || c == ' ')
+		return (1);
+	return (0);
 }
-// comptabiliser les guillemets
-// regarder le nombre de symboles identiques d'affilee
-// regarder pour plusieurs symboles differents cote a cote
-// soustraire le nombre d'espaces
-// malloc les tableaux
+
+int	is_space(char c)
+{
+	if ((c > 9 && c < 13) || c == ' ')
+		return (1);
+	return (0);
+}
+
+int	ft_strcmp(char *s1, char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+		i++;
+	return (s1[i] - s2[i]);
+}

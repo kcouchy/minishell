@@ -1,28 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   count_types.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/05 12:11:54 by lribette         ###   ########.fr       */
+/*   Created: 2024/02/05 12:04:49 by lribette          #+#    #+#             */
+/*   Updated: 2024/02/05 12:06:29 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 
-//int	number_of_quotes()
-
-void	parsing(t_parsing *main, char *input)
+int	count_types(char *input)
 {
-	alloc_tables(main, input);
-	check_commands(main);
-	// prendre le cas ou check_commands renvoit exit failure
-	printf("count_types = %d\n", main->len);
+	int	counter;
+	int	i;
+
+	counter = 0;
+	i = 0;
+	while (input[i])
+	{
+		while (input[i] && is_separator(input[i]) && input[i] == ' ')
+			i++;
+		if (input[i] && is_separator(input[i]))
+		{
+			while (input[i] && is_separator(input[i]))
+				i++;
+			counter++;
+		}
+		if (input[i] && !is_separator(input[i]))
+		{
+			while (input[i] && !is_separator(input[i]))
+				i++;
+			counter++;
+		}
+	}
+	return (counter);
 }
-// comptabiliser les guillemets
-// regarder le nombre de symboles identiques d'affilee
-// regarder pour plusieurs symboles differents cote a cote
-// soustraire le nombre d'espaces
-// malloc les tableaux

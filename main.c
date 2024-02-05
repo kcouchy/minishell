@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/05 11:45:07 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/05 12:22:50 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,37 @@ void	sigint_handler(int signal)
 		printf("\n");
 }
 
+static void	test_parsing(t_parsing *main)
+{
+	int	i;
+
+	i = 0;
+	while (i < main->len)
+	{
+		printf("-----\n");
+		printf("argv = %s\n", main->argv[i]);
+		if (main->types[i] == 1)
+			printf("types = WORD\n");
+		if (main->types[i] == 2)
+			printf("types = SEPARATOR\n");
+		if (main->types[i] == 3)
+			printf("types = COMMAND\n");
+		if (main->types[i] == 4)
+			printf("types = OPTION\n");
+		if (main->types[i] == 5)
+			printf("types = ARGUMENT\n");
+		if (main->types[i] == 6)
+			printf("types = VARIABLE\n");
+		if (main->types[i] == 7)
+			printf("types = PIPE\n");
+		if (main->types[i] == 8)
+			printf("types = REDIRECTION\n");
+		if (main->types[i] == 9)
+			printf("types = EQUAL\n");
+		i++;
+	}
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char		*input;
@@ -53,31 +84,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!input)
 			break ;
 		parsing(&main, input);
-		int i = 0;
-		while (i < main.len)
-		{
-			printf("-----\n");
-			printf("argv = %s\n", main.argv[i]);
-			if (main.types[i] == 1)
-				printf("types = WORD\n");
-			if (main.types[i] == 2)
-				printf("types = SEPARATOR\n");
-			if (main.types[i] == 3)
-				printf("types = COMMAND\n");
-			if (main.types[i] == 4)
-				printf("types = OPTION\n");
-			if (main.types[i] == 5)
-				printf("types = ARGUMENT\n");
-			if (main.types[i] == 6)
-				printf("types = VARIABLE\n");
-			if (main.types[i] == 7)
-				printf("types = PIPE\n");
-			if (main.types[i] == 8)
-				printf("types = REDIRECTION\n");
-			if (main.types[i] == 9)
-				printf("types = EQUAL\n");
-			i++;
-		}
+		test_parsing(&main);
 		ft_free_parsing(&main, input);
 	}
 	return (0);
