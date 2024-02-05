@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:08:23 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/05 12:23:17 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/05 14:19:58 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	_ft_malloc_failed(t_parsing *main, char *input)
 		printf("Malloc failed !\n");
 		if (!main->argv)
 		{
-			while (i < main->len)
+			while (i < main->argc)
 			{
 				free(main->argv[i]);
 				i++;
@@ -76,13 +76,13 @@ void	alloc_tables(t_parsing *main, char *input)
 	int			i;
 	int			j;
 
-	main->len = count_types(input);
-	main->argv = ft_calloc((main->len + 1), sizeof(char *));
-	main->types = ft_calloc((main->len + 1), sizeof(int));
+	main->argc = count_types(input);
+	main->argv = ft_calloc((main->argc + 1), sizeof(char *));
+	main->types = ft_calloc((main->argc + 1), sizeof(int));
 	_ft_malloc_failed(main, input);
 	i = 0;
 	j = 0;
-	while (j < main->len)
+	while (j < main->argc)
 	{
 		while (input[i] && is_space(input[i]))
 			i++;

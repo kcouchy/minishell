@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/05 12:22:50 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/05 14:19:39 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_free_parsing(t_parsing *main, char *input)
 	int	i;
 
 	i = 0;
-	while (i < main->len)
+	while (i < main->argc)
 	{
 		free(main->argv[i]);
 		i++;
@@ -38,7 +38,7 @@ static void	test_parsing(t_parsing *main)
 	int	i;
 
 	i = 0;
-	while (i < main->len)
+	while (i < main->argc)
 	{
 		printf("-----\n");
 		printf("argv = %s\n", main->argv[i]);

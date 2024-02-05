@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/05 12:11:54 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/05 14:20:47 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	parsing(t_parsing *main, char *input)
 	alloc_tables(main, input);
 	check_commands(main);
 	// prendre le cas ou check_commands renvoit exit failure
-	printf("count_types = %d\n", main->len);
+	printf("argc = %d\n", main->argc);
 }
 // comptabiliser les guillemets
 // regarder le nombre de symboles identiques d'affilee

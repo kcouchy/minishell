@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/05 12:12:49 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/05 14:19:13 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ typedef enum e_type
 
 typedef struct s_parsing
 {
+	int		argc;
 	char	**argv;
 	int		*types;
-	int		len;
 }	t_parsing;
 
 /******************************************************************************/

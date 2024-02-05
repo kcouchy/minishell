@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:12:01 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/05 12:18:25 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/05 14:20:06 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 static int	_not_separator(t_parsing *main, int i)
 {
-	if (i < main->len && main->types[i] != SEPARATOR
+	if (i < main->argc && main->types[i] != SEPARATOR
 		&& main->argv[i][0] != '-')
 	{
 		main->types[i] = COMMAND;
 		i++;
 	}
-	while (i < main->len && main->types[i] != SEPARATOR
+	while (i < main->argc && main->types[i] != SEPARATOR
 		&& main->argv[i][0] == '-')
 	{
 		main->types[i] = OPTION;
 		i++;
 	}
-	while (i < main->len && main->types[i] != SEPARATOR)
+	while (i < main->argc && main->types[i] != SEPARATOR)
 	{
 		main->types[i] = ARGUMENT;
 		i++;
@@ -36,13 +36,13 @@ static int	_not_separator(t_parsing *main, int i)
 
 static int	_separator(t_parsing *main, int i)
 {
-	if (i < main->len && main->types[i] == SEPARATOR
+	if (i < main->argc && main->types[i] == SEPARATOR
 		&& !ft_strcmp(main->argv[i], "|"))
 		main->types[i] = PIPE;
-	else if (i < main->len && main->types[i] == SEPARATOR
+	else if (i < main->argc && main->types[i] == SEPARATOR
 		&& !ft_strcmp(main->argv[i], "="))
 		main->types[i] = EQUAL;
-	else if (i < main->len && main->types[i] == SEPARATOR)
+	else if (i < main->argc && main->types[i] == SEPARATOR)
 		main->types[i] = REDIRECTION;
 	return (i + 1);
 }
@@ -54,7 +54,7 @@ int	check_commands(t_parsing *main)
 	i = 0;
 	if (main->argv[i] && main->types[i] == SEPARATOR)
 		i++;
-	while (i < main->len)
+	while (i < main->argc)
 	{
 		i = _not_separator(main, i);
 		i = _separator(main, i);
