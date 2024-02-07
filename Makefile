@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lribette <lribette@student.42.fr>          +#+  +:+       +#+         #
+#    By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
-#    Updated: 2024/02/02 15:42:06 by lribette         ###   ########.fr        #
+#    Updated: 2024/02/07 14:38:20 by kcouchma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,9 +15,14 @@ SRCS =										\
 				Pipex/bonus_cmds			\
 				Pipex/utils					\
 				Pipex/errors				\
+				Pipex/single_cmd			\
 				Parsing/parsing				\
-				/builtins/echo				\
-				/builtins/pwd_cd			\
+				Builtins/cd					\
+				Builtins/echo				\
+				Builtins/env				\
+				Builtins/exit				\
+				Builtins/export				\
+				Builtins/pwd				\
 				main						
 
 INC_FILES = -I Pipex/libft

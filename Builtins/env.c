@@ -1,26 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/01 14:33:22 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/02 17:00:52 by kcouchma         ###   ########.fr       */
+/*   Created: 2024/02/02 17:46:56 by kcouchma          #+#    #+#             */
+/*   Updated: 2024/02/05 13:58:06 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "./../minishell.h"
 
-int pwd(t_pipex *pipex)
+//loop through pipex->envp and write to STDOUT_FD
+//newline?
+
+int ft_env(int argc, char **argv, t_pipex *pipex)
 {
-	char	*pwd;
+	int	i;
 
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-		printf("%s\n", pipex->pwd_origin);
-	else
-		printf("%s\n", pwd);
-	free(pwd);
-	return (0);
+	i = 0;
+	(void)argv;
+	if (argc > 1)
+	{
+		printf("finishell: env: too many arguments");
+		return (EXIT_FAILURE);
+	}
+	while (pipex->envp[i])
+	{
+		write(STDOUT_FILENO, pipex->envp[i], ft_strlen(pipex->envp[i]));
+		i++;
+	}
+	return (EXIT_SUCCESS);
 }

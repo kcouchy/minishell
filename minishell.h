@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/01 17:05:06 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/06 16:00:24 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ typedef enum e_type
 	COMMAND,
 	ARGUMENT,
 	VARIABLE
-}   t_type;
+}	t_type;
 
 typedef struct s_parsing
 {
 	char	**argv;
 	int		*types;
 	int		len;
-}   t_parsing;
+}	t_parsing;
 
 void	parsing(t_parsing *main, char *input);
 

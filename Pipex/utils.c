@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:30:14 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/02 16:07:54 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/01/24 10:05:29 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ void	ft_execve(t_pipex *pipex)
 		{
 			perror("failed to build command path");
 			ft_freetable(pipex->paths);
-			free(pipex->pwd_origin);
 			exit(EXIT_FAILURE);
 		}
 		execve(cmd_path, pipex->child_args, pipex->envp);

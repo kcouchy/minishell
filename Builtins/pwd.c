@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/01 13:26:27 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/02 17:00:54 by kcouchma         ###   ########.fr       */
+/*   Created: 2024/02/01 14:33:22 by kcouchma          #+#    #+#             */
+/*   Updated: 2024/02/06 16:08:22 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "./../minishell.h"
 
-int	echo(int argc, char **argv)
+int ft_pwd(int argc, t_pipex *pipex)
 {
-	int	i;
-	int	n;
+	char	*pwd;
 
-	i = 0;
-	if (ft_strncmp(argv[1], "-n", 2) == 0)
-		i = 1;
-	n = i;
-	while (i < argc)
+	(void) pipex;
+	if (argc > 1)
 	{
-		ft_putstr_fd(argv[i], STDOUT_FILENO);
-		i++;
-		if(i != argc)
-			write(STDOUT_FILENO, " ", 1);
+		printf("finishell: pwd: too many arguments");
+		return (EXIT_FAILURE);
 	}
-	if (n == 0)
-		write(STDOUT_FILENO, "\n", 1);
-	return (0);
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		printf("%s\n", pipex->pwd_origin);
+	else
+		printf("%s\n", pwd);
+	free(pwd);
+	return (EXIT_SUCCESS);
 }
