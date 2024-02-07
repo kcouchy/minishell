@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:08:23 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/05 14:19:58 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/07 09:47:05 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	*_ft_word_dup(char *input, int start, int end)
 	return (dup);
 }
 
-static int	_what_type(t_parsing *main, char *input, int i, int separator)
+static int	_what_type(t_parsing *parse, char *input, int i, int separator)
 {
 	int	start;
 	int	j;
@@ -37,59 +37,59 @@ static int	_what_type(t_parsing *main, char *input, int i, int separator)
 	while (input[i] && is_separator(input[i]) == separator
 		&& !is_space(input[i]))
 		i++;
-	while (main->types[j] != 0)
+	while (parse->types[j] != 0)
 		j++;
-	main->argv[j] = _ft_word_dup(input, start, i);
+	parse->argv[j] = _ft_word_dup(input, start, i);
 	if (separator)
-		main->types[j] = SEPARATOR;
+		parse->types[j] = SEPARATOR;
 	else
-		main->types[j] = WORD;
+		parse->types[j] = WORD;
 	return (i);
 }
 
-static void	_ft_malloc_failed(t_parsing *main, char *input)
+static void	_ft_malloc_failed(t_parsing *parse)
 {
 	int	i;
 
 	i = 0;
-	if (!main->argv || !main->types)
+	if (!parse->argv || !parse->types)
 	{
 		printf("Malloc failed !\n");
-		if (!main->argv)
+		if (!parse->argv)
 		{
-			while (i < main->argc)
+			while (i < parse->argc)
 			{
-				free(main->argv[i]);
+				free(parse->argv[i]);
 				i++;
 			}
-			free(main->argv);
+			free(parse->argv);
 		}
-		if (!main->types)
-			free(main->types);
-		free(input);
+		if (!parse->types)
+			free(parse->types);
+		//free(input);
 		exit(EXIT_FAILURE);
 	}
 }
 
-void	alloc_tables(t_parsing *main, char *input)
+void	alloc_tables(t_parsing *parse, char *input)
 {
 	int			i;
 	int			j;
 
-	main->argc = count_types(input);
-	main->argv = ft_calloc((main->argc + 1), sizeof(char *));
-	main->types = ft_calloc((main->argc + 1), sizeof(int));
-	_ft_malloc_failed(main, input);
+	parse->argc = count_types(input);
+	parse->argv = ft_calloc((parse->argc + 1), sizeof(char *));
+	parse->types = ft_calloc((parse->argc + 1), sizeof(int));
+	_ft_malloc_failed(parse);
 	i = 0;
 	j = 0;
-	while (j < main->argc)
+	while (j < parse->argc)
 	{
 		while (input[i] && is_space(input[i]))
 			i++;
 		if (input[i] && is_separator(input[i]))
-			i = _what_type(main, input, i, 1);
+			i = _what_type(parse, input, i, 1);
 		else if (input[i] && !is_separator(input[i]))
-			i = _what_type(main, input, i, 0);
+			i = _what_type(parse, input, i, 0);
 		j++;
 	}
 }
