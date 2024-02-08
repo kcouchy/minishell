@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/07 17:38:08 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/08 17:39:10 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ void	ft_heredoc(t_pipex *pipex)
 
 	buffer = NULL;
 	pipex->heredoc = 1;
-	// pipex->commands -= 1;
 	pipex->infile_fd = open("/tmp/temp", O_RDWR | O_TRUNC | O_CREAT, 0644);
 	if (pipex->infile_fd == -1)
 		ft_input_fail(pipex);
@@ -105,13 +104,8 @@ int	executing(int argc, char **argv, char **envp, int num_args)
 	ft_pipex_init(&pipex, argc, argv, envp, num_args);
 	if (ft_strncmp(argv[1], "hd", 2) == 0)
 		ft_heredoc(&pipex);
-	// if (argc >= 5 && ft_strncmp(argv[1], "here_doc", 8) == 0)
-	// 	ft_heredoc(&pipex);
 	if (num_args >= 1)
 		ft_bonus_pipex(&pipex);
-	// else if 
-	// if (argc >= 5 || (argc >= 6 && pipex.heredoc == 1))
-	// 	ft_bonus_pipex(&pipex);
 	else if (pipex.heredoc == 0)
 	{
 		ft_printf("minishell input error:\n");
@@ -121,7 +115,6 @@ int	executing(int argc, char **argv, char **envp, int num_args)
 	else if (pipex.heredoc == 1)
 	{
 		ft_printf("minishell input error:\n");
-		// ft_printf("./bonus_pipex here_doc LIMITER cmd1 ... cmdn outfile\n");
 	}
 	if (pipex.heredoc == 1 && pipex.infile_fd != -1)
 	{
@@ -130,5 +123,6 @@ int	executing(int argc, char **argv, char **envp, int num_args)
 	}
 	ft_freetable(pipex.paths);
 	free(pipex.pwd_origin);
+	printf("---------%d--------\n", pipex.exit_code);
 	return (pipex.exit_code);
 }
