@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/08 18:45:17 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/08 20:09:19 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,53 @@
 
 //int	number_of_quotes()
 
-void	parsing(t_struct *main, char *input)
+static void	test_parsing(t_parsing *parse)
+{
+	int	i;
+
+	i = 0;
+	while (i < parse->argc)
+	{
+		printf("-----\n");
+		printf("argv = %s\n", parse->argv[i]);
+		if (parse->types[i] == 1)
+			printf("types = WORD\n");
+		if (parse->types[i] == 2)
+			printf("types = SEPARATOR\n");
+		if (parse->types[i] == 3)
+			printf("types = COMMAND\n");
+		if (parse->types[i] == 4)
+			printf("types = OPTION\n");
+		if (parse->types[i] == 5)
+			printf("types = ARGUMENT\n");
+		if (parse->types[i] == 6)
+			printf("types = VARIABLE\n");
+		if (parse->types[i] == 7)
+			printf("types = PIPE\n");
+		if (parse->types[i] == 8)
+			printf("types = REDIRECTION\n");
+		if (parse->types[i] == 9)
+			printf("types = R_FILE\n");
+		if (parse->types[i] == 10)
+			printf("types = EQUAL\n");
+		i++;
+	}
+}
+
+int	parsing(t_struct *main, char *input)
 {
 	if (input[0] == '\0')
-		main->parse.number_of_commands = 0;
-	else
-	{
-		main->parse.number_of_commands = 1;
-		main->parse.nb_of_redir = 0;
-		main->parse.nb_of_flags = 0;
-		alloc_tables(&main->parse, input);
-		check_commands(&main->parse);
-		// prendre le cas ou check_commands renvoit exit failure
-		printf("argc = %d\n", main->parse.argc);
-		parsing_to_executing(main);
-	}
+		return (0);
+	main->parse.number_of_commands = 1;
+	main->parse.nb_of_redir = 0;
+	main->parse.nb_of_flags = 0;
+	alloc_tables(&main->parse, input);
+	check_commands(&main->parse);
+	// prendre le cas ou check_commands renvoit exit failure
+	printf("argc = %d\n", main->parse.argc);
+	parsing_to_executing(main);
+	test_parsing(&main->parse);
+	return (1);
 }
 
 int	is_builtin(char *command)
@@ -133,20 +165,38 @@ int	count_type(int type, t_struct *main, int start, int end)
 	return (counter);
 }
 
+char	**fill_type(int type, t_struct *main, int start, int end)
+{
+	char	**tab;
+	int		nb_of_this_type;
+	int		i;
+
+	nb_of_this_type = count_type(type, main, start, end);
+	tab = ft_calloc((nb_of_this_type) + 1, sizeof(char *));
+	if (!tab)
+		return (NULL);
+	i = 0;
+	while (start != end)
+	{
+		if (main->parse.types[start] == type)
+		{
+			tab[i] = ft_strdup(main->parse.argv[start]);
+			i++;
+		}
+		start++;
+	}
+	tab[i] = NULL;
+	return (tab);
+}
+
 void	init_arg(t_args *cmd, t_struct *main, int start, int end)
 {
-	int	nb_of_flags;
-	int	nb_of_redir;
-
-	nb_of_flags = count_type(OPTION, main, start, end);
-	printf("nb_of_flags = %d\n", nb_of_flags);
-	nb_of_redir = count_type(R_FILE, main, start, end);
 	cmd->command_name = "";
 	if (main->parse.argv[start])
 		cmd->command_name = ft_strdup(main->parse.argv[start]);
-	cmd->flags = ft_calloc((nb_of_flags) + 1, sizeof(char *));
-	cmd->redir = ft_calloc((nb_of_redir) + 1, sizeof(char *));
-	cmd->file = ft_calloc((nb_of_redir) + 1, sizeof(char *));
+	cmd->flags = fill_type(OPTION, main, start, end);
+	cmd->redir = fill_type(REDIRECTION, main, start, end);
+	cmd->file = fill_type(R_FILE, main, start, end);
 	fill_strings(cmd, main, start, end);
 	if (!cmd->flags || !cmd->redir || !cmd->file)
 		return ;
@@ -166,11 +216,31 @@ t_args	*ft_structnew(t_struct *main, int start, int end)
 		add2list->next = NULL;
 	}
 	printf("-----\n");
-	printf("whole_cmd = %s\n", add2list->whole_cmd);
-	printf("command_name = %s\n", add2list->command_name);
-	printf("arguments = %s\n", add2list->args);
-	printf("number of flags = %d\n", main->parse.nb_of_flags);
-	printf("is_builtin = %d\n", add2list->is_builtin);
+	printf("\x1b[38;2;255;0;0mwhole_cmd = %s\n", add2list->whole_cmd);
+	printf("\x1b[38;2;255;132;0mcommand_name = %s\n", add2list->command_name);
+	int	i = 0;
+	printf("\x1b[38;2;255;216;0mflags = \n");
+	while (add2list->flags[i])
+	{
+		printf(" -   %s\n", add2list->flags[i]);
+		i++;
+	}
+	i = 0;
+	printf("\x1b[38;2;0;255;60mredirections = \n");
+	while (add2list->redir[i])
+	{
+		printf(" -   %s\n", add2list->redir[i]);
+		i++;
+	}
+	i = 0;
+	printf("\x1b[38;2;0;144;255mfile = \n");
+	while (add2list->file[i])
+	{
+		printf(" -   %s\n", add2list->file[i]);
+		i++;
+	}
+	printf("\x1b[38;2;130;25;255marguments = %s\n", add2list->args);
+	printf("\x1b[38;2;255;0;0mis_builtin = %d\n", add2list->is_builtin);
 	return (add2list);
 }
 
@@ -223,3 +293,4 @@ t_args	*parsing_to_executing(t_struct *main)
 // stdout : append or truncate or stdout
 
 // echo -n -nnn bonjour les amis -n > test.txt | cat -e < test.txt >bonjour.txt                 >salut.txt
+// echo -n bonjour -n -nn | cat -e Makefile main.c parsing.c > test.txt

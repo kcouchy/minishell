@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:12:01 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/08 19:06:08 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/08 20:10:54 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 
 static void	_file(t_parsing *parse, int i)
 {
-	if (parse->types[i - 1] == REDIRECTION)
-		printf("Type = %d\n", parse->types[i]);
-	if (i && parse->types[i - 1] == REDIRECTION
-		&& parse->types[i] != SEPARATOR)
+	if (i && parse->types[i - 1] == REDIRECTION)
 		{
 			parse->types[i] = R_FILE;
 			parse->nb_of_redir++;
@@ -29,13 +26,12 @@ static int	_not_separator(t_parsing *parse, int i)
 	if (parse->argv[i][0] != '-' || i == 0)
 	{
 		parse->types[i] = COMMAND;
+		_file(parse, i);
 		i++;
 	}
 	while (i < parse->argc && parse->types[i] != SEPARATOR)
 	{
-		if (i && parse->types[i - 1] == PIPE)
-			parse->types[i] = COMMAND;
-		else if (parse->argv[i][0] == '-')
+		if (parse->argv[i][0] == '-')
 		{
 			parse->nb_of_flags++;
 			parse->types[i] = OPTION;

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:08:23 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/07 09:47:05 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/08 19:32:38 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static char	*_ft_word_dup(char *input, int start, int end)
 	char	*dup;
 
 	i = 0;
-	dup = malloc((end - start + 1) * sizeof(char));
+	dup = ft_calloc((end - start + 1), sizeof(char));
 	if (!dup)
 		return (NULL);
 	while (end > start)

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/08 16:23:41 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/08 19:34:39 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	ft_free_parsing(t_parsing *parse);
 void	alloc_tables(t_parsing *parse, char *input);
 int		check_commands(t_parsing *parse);
 int		count_types(char *input);
-void    parsing(t_struct *main, char *input);
+int    parsing(t_struct *main, char *input);
 
 /* ************* Parsing to Executing ************** */
 t_args	*parsing_to_executing(t_struct *main);
