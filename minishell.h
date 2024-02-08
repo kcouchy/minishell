@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/07 16:43:07 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:23:41 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ typedef struct s_parsing
 	char	**argv;
 	int		*types;
 	int		number_of_commands;
+	int		nb_of_redir;
+	int		nb_of_flags;
 }	t_parsing;
 
 typedef struct s_common
@@ -55,13 +57,15 @@ typedef struct s_common
 
 typedef struct s_args
 {
-	char	*whole_command; //
+	char	*whole_cmd; //
 	char	*command_name; //
 	char	**flags; //
-	char	*arguments; //
-	char	**redirection; //
+	char	*args; //
+	char	**redir; //
 	char	**file; //
 	int		is_builtin; //
+	int		nb_of_inputs; //
+	int		nb_of_outputs; //
 	struct s_args	*next; //
 }	t_args;
 

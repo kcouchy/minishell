@@ -6,40 +6,45 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:12:01 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/07 15:33:44 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/08 19:06:08 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 
+static void	_file(t_parsing *parse, int i)
+{
+	if (parse->types[i - 1] == REDIRECTION)
+		printf("Type = %d\n", parse->types[i]);
+	if (i && parse->types[i - 1] == REDIRECTION
+		&& parse->types[i] != SEPARATOR)
+		{
+			parse->types[i] = R_FILE;
+			parse->nb_of_redir++;
+		}
+}
+
 static int	_not_separator(t_parsing *parse, int i)
 {
-	if (parse->argv[i][0] != '-')
+	if (parse->argv[i][0] != '-' || i == 0)
 	{
 		parse->types[i] = COMMAND;
-		//parse->number_of_commands++;
 		i++;
 	}
 	while (i < parse->argc && parse->types[i] != SEPARATOR)
 	{
-		if (parse->argv[i][0] == '-')
+		if (i && parse->types[i - 1] == PIPE)
+			parse->types[i] = COMMAND;
+		else if (parse->argv[i][0] == '-')
+		{
+			parse->nb_of_flags++;
 			parse->types[i] = OPTION;
+			_file(parse, i);
+		}
 		else
 			parse->types[i] = ARGUMENT;
 		i++;
 	}
-	/*while (i < parse->argc && parse->types[i] != SEPARATOR
-		&& parse->argv[i][0] == '-')
-	{
-		parse->types[i] = OPTION;
-		i++;
-	}
-	
-	while (i < parse->argc && parse->types[i] != SEPARATOR)
-	{
-		parse->types[i] = ARGUMENT;
-		i++;
-	}*/
 	return (i);
 }
 
@@ -57,7 +62,6 @@ static int	_separator(t_parsing *parse, int i)
 	return (i + 1);
 }
 
-
 int	check_commands(t_parsing *parse)
 {
 	int	i;
@@ -69,16 +73,6 @@ int	check_commands(t_parsing *parse)
 			i = _not_separator(parse, i);
 		if (parse->types[i] == SEPARATOR)
 			i = _separator(parse, i);
-	}
-	i = 1;
-	while (i < parse->argc)
-	{
-		if (parse->types[i - 1] == REDIRECTION && parse->types[i] == COMMAND)
-		{
-			parse->types[i] = R_FILE;
-			//parse->number_of_commands--;
-		}
-		i++;
 	}
 
 	// a prendre avec des pincettes !!!
