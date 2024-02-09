@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/09 14:22:10 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/09 17:15:29 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,10 @@ void	ft_byedoc(t_pipex *pipex)
 	exit(EXIT_FAILURE);
 }
 
-void	ft_input_fail(t_pipex *pipex)
+void	ft_open_fail(t_pipex *pipex)
 {
-	write(STDERR_FILENO, "pipex : open failed: heredoc\n", 29);
+	if (pipex->child_args)
+		ft_freetable(pipex->child_args);
 	ft_freetable(pipex->paths);
 	free(pipex->pwd_origin);
 	exit(EXIT_FAILURE);
@@ -89,6 +90,22 @@ void	ft_input_fail(t_pipex *pipex)
 void	ft_dup2_fail(t_pipex *pipex)
 {
 	ft_freetable(pipex->child_args);
+	ft_freetable(pipex->paths);
+	free(pipex->pwd_origin);
+	exit(EXIT_FAILURE);
+}
+
+void	ft_pipe_fail(t_pipex *pipex)
+{
+	write(STDERR_FILENO, "pipex: pipe failed\n", 19);
+	ft_freetable(pipex->paths);
+	free(pipex->pwd_origin);
+	exit(EXIT_FAILURE);
+}
+
+void	ft_fork_fail(t_pipex *pipex)
+{
+	write(STDERR_FILENO, "pipex: fork failed\n", 19);
 	ft_freetable(pipex->paths);
 	free(pipex->pwd_origin);
 	exit(EXIT_FAILURE);

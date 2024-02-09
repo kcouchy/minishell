@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bonus_pipex.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/09 15:22:03 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/09 17:16:06 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,7 @@ void	ft_bonus_pipex(t_pipex *pipex)
 			if (i < (pipex->commands - 1))
 			{
 				if (pipe(pipex->pipe_fd) == -1)
-				{
-					write(STDERR_FILENO, "pipex: pipe failed\n", 19);
-					ft_freetable(pipex->paths);
-					free(pipex->pwd_origin);
-					exit(EXIT_FAILURE);
-				}
+					ft_pipe_fail(pipex);
 			}
 			ft_bonus_forkchild(pipex, i);
 			if (i == 0)
@@ -63,7 +58,10 @@ void	ft_heredoc(t_pipex *pipex)
 	pipex->heredoc = 1;
 	pipex->infile_fd = open("/tmp/temp", O_RDWR | O_TRUNC | O_CREAT, 0644);
 	if (pipex->infile_fd == -1)
-		ft_input_fail(pipex);
+	{
+		write(STDERR_FILENO, "pipex: open failed: heredoc\n", 28);
+		ft_open_fail(pipex);
+	}
 	while (1)
 	{
 		write(STDERR_FILENO, "> ", 2);

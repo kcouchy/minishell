@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/09 12:48:13 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/09 17:15:34 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,9 +149,13 @@ void	ft_byedoc(t_pipex *pipex);
  * where the open command for the temp file fails.
  * @param pipex structure containing the pipex->paths table to be freed.
  */
-void	ft_input_fail(t_pipex *pipex);
+void	ft_open_fail(t_pipex *pipex);
 
 void	ft_dup2_fail(t_pipex *pipex);
+
+void	ft_pipe_fail(t_pipex *pipex);
+
+void	ft_fork_fail(t_pipex *pipex);
 
 /******************************************************************************/
 /* bonus_cmds.c                                                               */
@@ -191,11 +195,7 @@ void	ft_bonus_last_cmd(t_pipex *pipex);
  * The input file is opened with the following flags (fd stocked in in_fd):
  * O_RDONLY : read-only
  * In the heredoc case, the temp file is used, otherwise the name of the input
- * file given in the command is used. The file must be present or the program 
- * will throw an error.
- * The fd of the input file is then duped to replace the standard input.
- * @param pipex structure containing the tables to be freed in case of error
- * (pipex->paths + pipex->child_args)
+ * file given in the command is used. Thft_pipe_fail(t_pipex *pipex)
  */
 void	ft_bonus_first_cmd(t_pipex *pipex);
 

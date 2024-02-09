@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bonus_cmds.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:28:50 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/09 15:02:02 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/09 17:18:34 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,12 @@ void	ft_inputs(t_pipex *pipex)
 		pipex->infile_fd = open(pipex->infile, O_RDONLY);
 	if (pipex->infile_fd == -1)
 	{
-		write(STDERR_FILENO, "pipex : open failed: input\n", 27);
-		ft_freetable(pipex->child_args);
-		ft_freetable(pipex->paths);
-		free(pipex->pwd_origin);
-		exit(EXIT_FAILURE);
+		write(STDERR_FILENO, "pipex: open failed: input\n", 26);
+		ft_open_fail(pipex);
 	}
 	if (dup2(pipex->infile_fd, STDIN_FILENO) == -1)
 	{
-		write(STDERR_FILENO, "pipex : dup2 failed: inputs\n", 28);
+		write(STDERR_FILENO, "pipex: dup2 failed: inputs\n", 27);
 		ft_dup2_fail(pipex);
 	}
 }
@@ -43,15 +40,12 @@ void	ft_outputs(t_pipex *pipex)
 		out_fd = open(pipex->outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (out_fd == -1)
 	{
-		write(STDERR_FILENO, "pipex : open failed: output\n", 28);
-		ft_freetable(pipex->child_args);
-		ft_freetable(pipex->paths);
-		free(pipex->pwd_origin);
-		exit(EXIT_FAILURE);
+		write(STDERR_FILENO, "pipex: open failed: output\n", 27);
+		ft_open_fail(pipex);
 	}
 	if (dup2(out_fd, STDOUT_FILENO) == -1)
 	{
-		write(STDERR_FILENO, "pipex : dup2 failed: outputs\n", 29);
+		write(STDERR_FILENO, "pipex: dup2 failed: outputs\n", 28);
 		ft_dup2_fail(pipex);
 	}
 }
@@ -61,7 +55,7 @@ void	ft_bonus_last_cmd(t_pipex *pipex)
 	close(pipex->pipe_fd[1]);
 	if (dup2(pipex->pipe_fd[0], STDIN_FILENO) == -1)
 	{
-		write(STDERR_FILENO, "pipex : dup2 failed: last_cmd\n", 30);
+		write(STDERR_FILENO, "pipex: dup2 failed: last_cmd\n", 29);
 		ft_dup2_fail(pipex);
 	}
 	close(pipex->pipe_fd[0]);
@@ -73,7 +67,7 @@ void	ft_bonus_first_cmd(t_pipex *pipex)
 	close(pipex->pipe_fd[0]);
 	if (dup2(pipex->temp_fd_out, STDOUT_FILENO) == -1)
 	{
-		write(STDERR_FILENO, "pipex : dup2 failed: first_cmd\n", 30);
+		write(STDERR_FILENO, "pipex: dup2 failed: first_cmd\n", 30);
 		ft_dup2_fail(pipex);
 	}
 	close(pipex->temp_fd_out);
@@ -85,13 +79,13 @@ void	ft_bonus_mid_cmd(t_pipex *pipex)
 	close(pipex->pipe_fd[1]);
 	if (dup2(pipex->temp_fd_out, STDOUT_FILENO) == -1)
 	{
-		write(STDERR_FILENO, "pipex : dup2 failed: mid_cmd\n", 30);
+		write(STDERR_FILENO, "pipex: dup2 failed: mid_cmd\n", 28);
 		ft_dup2_fail(pipex);
 	}
 	close(pipex->temp_fd_out);
 	if (dup2(pipex->pipe_fd[0], STDIN_FILENO) == -1)
 	{
-		write(STDERR_FILENO, "pipex : dup2 failed: mid_cmd\n", 30);
+		write(STDERR_FILENO, "pipex: dup2 failed: mid_cmd\n", 28);
 		ft_dup2_fail(pipex);
 	}
 	close(pipex->pipe_fd[0]);
@@ -101,12 +95,7 @@ void	ft_bonus_forkchild(t_pipex *pipex, int i)
 {
 	pipex->pid = fork();
 	if (pipex->pid == -1)
-	{
-		write(STDERR_FILENO, "pipex : fork failed\n", 20);
-		ft_freetable(pipex->paths);
-		free(pipex->pwd_origin);
-		exit(EXIT_FAILURE);
-	}
+		ft_fork_fail(pipex);
 	if (pipex->pid == 0)
 	{
 		pipex->child_args = ft_split
@@ -137,7 +126,7 @@ void	ft_wait_parent(t_pipex *pipex)
 
 	i = 1;
 	waitpid(pipex->pid_last, &pipex->exit_code, 0);
-	//will need to converts to 1/0 from EXIT_SUCCESS/FAILURE:
+	//will need to convert to 1/0 from EXIT_SUCCESS/FAILURE:
 	pipex->exit_code = WEXITSTATUS(pipex->exit_code);
 	while (i < pipex->commands)
 	{
