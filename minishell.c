@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/09 15:56:13 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/09 20:36:22 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,27 @@ void	sigint_handler(int signal)
 		write(1, "", 0);
 }
 
+void	ft_free_parsing(t_parsing *parse)
+{
+	int	i;
+
+	i = 0;
+	while (i < parse->argc)
+	{
+		free(parse->argv[i]);
+		i++;
+	}
+	free(parse->argv);
+	free(parse->types);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char		*input;
 	t_struct	main;
 
+	(void)argv;
+	(void)envp;
 	if (argc != 1)
 	{
 		printf("Just write \x1b[38;2;200;100;0;1m./minishell\e[0m\n");
@@ -38,7 +54,7 @@ int	main(int argc, char **argv, char **envp)
 		if (parsing(&main, input))
 		{
 			ft_free_parsing(&main.parse);
-			executing(argc, argv, envp, 2);
+			//executing(argc, argv, envp, 2);
 		}
 	}
 	return (0);

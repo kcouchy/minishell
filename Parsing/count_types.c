@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:04:49 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/05 12:06:29 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/09 18:56:40 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@ int	count_types(char *input)
 			i++;
 		if (input[i] && is_separator(input[i]))
 		{
-			while (input[i] && is_separator(input[i]))
+			while (input[i] && input[i + 1] && input[i] == input[i + 1])
 				i++;
+			i++;
 			counter++;
 		}
 		if (input[i] && !is_separator(input[i]))

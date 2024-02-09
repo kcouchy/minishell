@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/09 14:50:07 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/09 20:39:11 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ typedef struct s_common
 {
 	void	*first_command; //
 	char	**envp; //
-	int		nb_of_cmds; //
 }	t_common;
 
 typedef struct s_args
@@ -88,14 +87,16 @@ typedef struct s_struct
 /* ******************** utils.c ******************** */
 int		is_separator(char c);
 int		is_space(char c);
+int		check_nothing(char *input);
 int		ft_strcmp(char *s1, char *s2);
-void	ft_free_parsing(t_parsing *parse);
+int		is_builtin(char *command);
 
 /* ******************** Parsing ******************** */
 void	alloc_tables(t_parsing *parse, char *input);
 int		check_commands(t_parsing *parse);
 int		count_types(char *input);
-int    parsing(t_struct *main, char *input);
+int		parsing(t_struct *main, char *input);
+void	ft_free_parsing(t_parsing *parse);
 
 /* ************* Parsing to Executing ************** */
 t_args	*parsing_to_executing(t_struct *main);

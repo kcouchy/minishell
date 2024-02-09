@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/09 12:48:56 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/09 20:40:40 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	test_parsing(t_parsing *parse)
 
 int	parsing(t_struct *main, char *input)
 {
-	if (input[0] == '\0')
+	if (check_nothing(input))
 		return (0);
 	main->parse.number_of_commands = 1;
 	main->parse.nb_of_inputs = 0;
@@ -66,29 +66,10 @@ int	parsing(t_struct *main, char *input)
 	check_commands(&main->parse);
 	// prendre le cas ou check_commands renvoit exit failure
 	printf("argc = %d\n", main->parse.argc);
-	if (!main->parse.error)
-		parsing_to_executing(main);
+	/*if (!main->parse.error)
+		parsing_to_executing(main);*/
 	test_parsing(&main->parse);
 	return (1);
-}
-
-int	is_builtin(char *command)
-{
-	if (!ft_strcmp(command, "echo"))
-		return (1);
-	if (!ft_strcmp(command, "cd"))
-		return (1);
-	if (!ft_strcmp(command, "pwd"))
-		return (1);
-	if (!ft_strcmp(command, "export"))
-		return (1);
-	if (!ft_strcmp(command, "unset"))
-		return (1);
-	if (!ft_strcmp(command, "env"))
-		return (1);
-	if (!ft_strcmp(command, "exit"))
-		return (1);
-	return (0);
 }
 
 char	*ft_argjoin(char *s1, char *s2)

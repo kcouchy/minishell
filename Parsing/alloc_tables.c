@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:08:23 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/09 12:56:13 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/09 20:28:22 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,14 @@ static int	_what_type(t_parsing *parse, char *input, int i, int separator)
 
 	start = i;
 	j = 0;
-	while (input[i] && is_separator(input[i]) == separator
-		&& !is_space(input[i]))
+	while (input[i] && !is_space(input[i]))
+	{
 		i++;
+		if (input[i] && separator && input[i - 1] != input[i])
+			break ;
+		if (is_separator(input[i]) != separator)
+			break ;
+	}
 	while (parse->types[j] != 0)
 		j++;
 	parse->argv[j] = _ft_word_dup(input, start, i);
