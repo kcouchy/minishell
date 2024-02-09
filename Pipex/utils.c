@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:30:14 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/01/24 10:05:29 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/09 12:15:37 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	**ft_extract_envp(char **envp)
 		{
 			paths = ft_split(envp[i] + 5, ':');
 			if (!paths)
-				(perror("pipex failed to initialise path from envp\n"),
+				(write(STDERR_FILENO, "pipex: malloc failed: paths\n", 28),
 					exit(EXIT_FAILURE));
 		}
 		i++;
@@ -34,7 +34,7 @@ char	**ft_extract_envp(char **envp)
 	{
 		paths = ft_split(". ", ' ');
 		if (!paths)
-			(perror("pipex failed to initialise path from envp\n"),
+			(write(STDERR_FILENO, "pipex: malloc failed: paths\n", 28),
 				exit(EXIT_FAILURE));
 	}
 	return (paths);
@@ -82,7 +82,7 @@ void	ft_execve(t_pipex *pipex)
 		cmd_path = ft_strjoin3(pipex->paths[i], "/", pipex->child_args[0]);
 		if (!cmd_path)
 		{
-			perror("failed to build command path");
+			write(STDERR_FILENO, "pipex: malloc failed: cmd_path\n", 31);
 			ft_freetable(pipex->paths);
 			exit(EXIT_FAILURE);
 		}

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/09 11:37:57 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/09 14:53:36 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ int	main(int argc, char **argv, char **envp)
 		if (!input)
 			break ;
 		if (parsing(&main, input))
+		{
 			ft_free_parsing(&main.parse);
+			executing(argc, argv, envp, 2);
+		}
 	}
 	return (0);
 }

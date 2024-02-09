@@ -6,12 +6,19 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/01/26 10:31:41 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/09 12:48:13 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
+
+/******************************************************************************/
+/* Defines                                                                    */
+/******************************************************************************/
+
+//# define FILENOTFOUND 127
+# define FILENOTFOUND 127 //command doesn’t exist, or isn’t in $PATH.
 
 /******************************************************************************/
 /* Includes                                                                   */
@@ -42,10 +49,10 @@ typedef struct s_pipex_list
 	int				exit_code;		//of last command to return in parent
 	char			*infile;		//input file (argv[1])
 	int				infile_fd;		//input file fd for heredoc version
-	int				outfile_fd;		//output file fd for exit on error
 	char			*outfile;		//output file (argv[n])
 	char			**envp;			//envp input
 	char			**paths;		//paths separated from envp PATH variable
+	char			*pwd_origin;	//pwd at launch for backup in builtins
 }					t_pipex;
 
 /******************************************************************************/
@@ -144,9 +151,15 @@ void	ft_byedoc(t_pipex *pipex);
  */
 void	ft_input_fail(t_pipex *pipex);
 
+void	ft_dup2_fail(t_pipex *pipex);
+
 /******************************************************************************/
 /* bonus_cmds.c                                                               */
 /******************************************************************************/
+
+void	ft_inputs(t_pipex *pipex);
+
+void	ft_outputs(t_pipex *pipex);
 
 /**
  * @brief Identical to base program except for the heredoc case.
@@ -275,7 +288,7 @@ void	ft_heredoc(t_pipex *pipex);
  * @param argv program input
  * @param envp program input
  */
-void	ft_pipex_init(t_pipex *pipex, int argc, char **argv, char **envp);
+void	ft_pipex_init(t_pipex *pipex, int argc, char **argv, char **envp, int num_args);
 
 /**
  * @brief Runs ft_pipex_init to initialises a number of variables in the pipex 
@@ -294,6 +307,12 @@ void	ft_pipex_init(t_pipex *pipex, int argc, char **argv, char **envp);
  * @param envp Table of tables containing the environmental variables (env)
  * @return int 0 if all is well.
  */
-int		main(int argc, char **argv, char **envp);
+int		executing(int argc, char **argv, char **envp, int num_args);
+
+/******************************************************************************/
+/* single_cmd.c                                                               */
+/******************************************************************************/
+
+void	ft_single_cmd(t_pipex *pipex);
 
 #endif
