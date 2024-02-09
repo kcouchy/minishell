@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/08 18:00:28 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/09 12:48:13 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,89 +151,7 @@ void	ft_byedoc(t_pipex *pipex);
  */
 void	ft_input_fail(t_pipex *pipex);
 
-/******************************************************************************/
-/* pipex.c                                                                    */
-/******************************************************************************/
-
-/**
- * @brief Creates the relevant redirections in the child that will run the last
- * command in the series (this is the first to be created).
- * The unused write end of the pipe is closed.
- * The read end of the pipe is duplicated to replace the standard input, and 
- * the original closed.
- * The output file is opened with the following flags (fd stocked in out_fd):
- * O_WRONLY, 0644 : write-only (permissions 644)
- * O_TRUNC : truncated (will overwrite all contents if the file exists)
- * O_CREAT : file will be created if it does not already exist.
- * The fd of the output file is then duped to replace the standard output.
- * @param pipex structure containing the tables to be freed in case of error
- * (pipex->paths + pipex->child_args)
- */
-void	ft_last_cmd(t_pipex *pipex);
-
-/**
- * @brief Creates the relevant redirections in the child that will run the first
- * command in the series (this is the last to be created).
- * The unused read end of the pipe is closed.
- * The write end of the pipe is duplicated to replace the standard output, and 
- * the original closed.
- * The input file is opened with the following flags (fd stocked in in_fd):
- * O_RDONLY : read-only
- * The file must be present or the program will throw an error.
- * The fd of the input file is then duped to replace the standard input.
- * @param pipex structure containing the tables to be freed in case of error
- * (pipex->paths + pipex->child_args)
- */
-void	ft_first_cmd(t_pipex *pipex);
-
-/**
- * @brief Function launched in a while loop (where i is the number of input
- * arguments). The parent process is forked in the child process 
- * (pipex->pid == 0), the table of tables containing the arguments for each 
- * child function is created using ft_split. The arguments are fed into the 
- * child processes in reverse order (last command first).
- * Depending on the number of the commands, the relevant ft_n_cmd is called to 
- * handle the file descriptor redirections.
- * The ft_execve function is then called to iterate through the paths, find the
- * function and replace the child process with the called function.
- * If this fails, the ft_command_fail function is called, and the child process
- * is exited with the error 'pipex: command not found: cmd' and EXIT_FAILURE.
- * @param pipex structure containing the number of input commands 
- * (pipex->commands), pipex->pid to stock the current fork pid, and the tables 
- * to be freed in case of error (pipex->paths + pipex->child_args).
- * @param i input argument counter
- */
-void	ft_forkchild(t_pipex *pipex, int i);
-
-/**
- * @brief Creates the pipe in the parent that will be cloned into the child 
- * processes so that they can pass information. While loop runs through the 
- * input commands to fork child processes (calls ft_forkchild). In the parent
- * process, the read end of the pipe is closed (the write end is used by the 
- * last process to be created (the first command in the chain), so it must
- * stay open to be copied to the next child in the next fork).
- * Once the two commands are linked, the write end of the pipe in the the parent
- *  process is closed. The parent then waits for both processes to finish:
- * The pid for the first command (last to be made) and one other (the first 
- * whose pid has been overwritten by the second fork).
- * @param pipex structure containing the number of input commands 
- * (pipex->commands), and the tables to be freed in case of error (pipex->paths 
- * + pipex->child_args).
- */
-void	ft_pipex(t_pipex *pipex);
-
-/**
- * @brief Initialises a number of variables in the pipex structure. 
- * The command paths are extracted from envp (ft_extract_envp)
- * If there are not exactly 5 input arguments (2 files, 2 command structures, 
- * and the exe name), throws an error showing the correct input syntax and 
- * frees the pipex.paths table of tables for all cases where the parent returns.
- * @param argc Number of input args
- * @param argv Table of tables containing the input strings
- * @param envp Table of tables containing the environmental variables (env)
- * @return int 0 if all is well.
- */
-int		main(int argc, char **argv, char **envp);
+void	ft_dup2_fail(t_pipex *pipex);
 
 /******************************************************************************/
 /* bonus_cmds.c                                                               */

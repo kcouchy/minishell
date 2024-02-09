@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/08 17:39:10 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/09 10:55:12 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	ft_bonus_pipex(t_pipex *pipex)
 			{
 				if (pipe(pipex->pipe_fd) == -1)
 				{
-					perror("pipe failed");
+					write(STDERR_FILENO, "pipex: pipe failed\n", 19);
 					ft_freetable(pipex->paths);
 					free(pipex->pwd_origin);
 					exit(EXIT_FAILURE);
