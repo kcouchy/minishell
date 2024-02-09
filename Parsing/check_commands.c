@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:12:01 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/09 12:38:37 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/09 13:02:18 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,5 @@ int	check_commands(t_parsing *parse)
 		if (parse->types[i] == SEPARATOR)
 			i = _separator(parse, i);
 	}
-
-	// a prendre avec des pincettes !!!
 	return (0);
 }

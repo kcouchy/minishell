@@ -4,4 +4,5 @@
 *.a
 pipex
 bonus_pipex
+minishell
 .vscode
