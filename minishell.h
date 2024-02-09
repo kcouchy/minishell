@@ -6,14 +6,14 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/08 19:34:39 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/09 12:57:10 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define RED "\x1b[38;2;255;0;0;1m"
+# define RED "\x1b[38;2;255;0;0;1mfinishell 🤬:"
 # define RESET "\e[0m"
 
 # include <stdio.h>
@@ -34,7 +34,10 @@ typedef enum e_type
 	VARIABLE,
 	PIPE,
 	REDIRECTION,
-	R_FILE,
+	INPUT_REDIR,
+	OUTPUT_REDIR,
+	INPUT_FILE,
+	OUTPUT_FILE,
 	EQUAL
 }	t_type;
 
@@ -44,8 +47,10 @@ typedef struct s_parsing
 	char	**argv;
 	int		*types;
 	int		number_of_commands;
-	int		nb_of_redir;
+	int		nb_of_inputs;
+	int		nb_of_outputs;
 	int		nb_of_flags;
+	int		error;
 }	t_parsing;
 
 typedef struct s_common
@@ -61,11 +66,11 @@ typedef struct s_args
 	char	*command_name; //
 	char	**flags; //
 	char	*args; //
-	char	**redir; //
-	char	**file; //
+	char	**input_redirs; //
+	char	**input_files; //
+	char	**output_redirs; //
+	char	**output_files; //
 	int		is_builtin; //
-	int		nb_of_inputs; //
-	int		nb_of_outputs; //
 	struct s_args	*next; //
 }	t_args;
 

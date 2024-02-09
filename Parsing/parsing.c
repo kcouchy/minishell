@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/08 20:09:19 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/09 12:48:56 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,25 +23,31 @@ static void	test_parsing(t_parsing *parse)
 	{
 		printf("-----\n");
 		printf("argv = %s\n", parse->argv[i]);
-		if (parse->types[i] == 1)
+		if (parse->types[i] == WORD)
 			printf("types = WORD\n");
-		if (parse->types[i] == 2)
+		if (parse->types[i] == SEPARATOR)
 			printf("types = SEPARATOR\n");
-		if (parse->types[i] == 3)
+		if (parse->types[i] == COMMAND)
 			printf("types = COMMAND\n");
-		if (parse->types[i] == 4)
+		if (parse->types[i] == OPTION)
 			printf("types = OPTION\n");
-		if (parse->types[i] == 5)
+		if (parse->types[i] == ARGUMENT)
 			printf("types = ARGUMENT\n");
-		if (parse->types[i] == 6)
+		if (parse->types[i] == VARIABLE)
 			printf("types = VARIABLE\n");
-		if (parse->types[i] == 7)
+		if (parse->types[i] == PIPE)
 			printf("types = PIPE\n");
-		if (parse->types[i] == 8)
+		if (parse->types[i] == REDIRECTION)
 			printf("types = REDIRECTION\n");
-		if (parse->types[i] == 9)
-			printf("types = R_FILE\n");
-		if (parse->types[i] == 10)
+		if (parse->types[i] == INPUT_REDIR)
+			printf("types = INPUT_REDIR\n");
+		if (parse->types[i] == OUTPUT_REDIR)
+			printf("types = OUTPUT_REDIR\n");
+		if (parse->types[i] == INPUT_FILE)
+			printf("types = INPUT_FILE\n");
+		if (parse->types[i] == OUTPUT_FILE)
+			printf("types = OUTPUT_FILE\n");
+		if (parse->types[i] == EQUAL)
 			printf("types = EQUAL\n");
 		i++;
 	}
@@ -52,13 +58,16 @@ int	parsing(t_struct *main, char *input)
 	if (input[0] == '\0')
 		return (0);
 	main->parse.number_of_commands = 1;
-	main->parse.nb_of_redir = 0;
+	main->parse.nb_of_inputs = 0;
+	main->parse.nb_of_outputs = 0;
 	main->parse.nb_of_flags = 0;
+	main->parse.error = 0;
 	alloc_tables(&main->parse, input);
 	check_commands(&main->parse);
 	// prendre le cas ou check_commands renvoit exit failure
 	printf("argc = %d\n", main->parse.argc);
-	parsing_to_executing(main);
+	if (!main->parse.error)
+		parsing_to_executing(main);
 	test_parsing(&main->parse);
 	return (1);
 }
@@ -195,10 +204,13 @@ void	init_arg(t_args *cmd, t_struct *main, int start, int end)
 	if (main->parse.argv[start])
 		cmd->command_name = ft_strdup(main->parse.argv[start]);
 	cmd->flags = fill_type(OPTION, main, start, end);
-	cmd->redir = fill_type(REDIRECTION, main, start, end);
-	cmd->file = fill_type(R_FILE, main, start, end);
+	cmd->input_redirs = fill_type(INPUT_REDIR, main, start, end);
+	cmd->input_files = fill_type(INPUT_FILE, main, start, end);
+	cmd->output_redirs = fill_type(OUTPUT_REDIR, main, start, end);
+	cmd->output_files = fill_type(OUTPUT_FILE, main, start, end);
 	fill_strings(cmd, main, start, end);
-	if (!cmd->flags || !cmd->redir || !cmd->file)
+	if (!cmd->flags || !cmd->input_redirs || !cmd->input_files
+		|| !cmd->output_redirs || !cmd->output_files)
 		return ;
 	cmd->is_builtin = is_builtin(cmd->command_name);
 	//int		nb_of_inputs;
@@ -215,7 +227,7 @@ t_args	*ft_structnew(t_struct *main, int start, int end)
 		init_arg(add2list, main, start, end);
 		add2list->next = NULL;
 	}
-	printf("-----\n");
+	printf("\x1b[38;2;255;255;255m-----\n");
 	printf("\x1b[38;2;255;0;0mwhole_cmd = %s\n", add2list->whole_cmd);
 	printf("\x1b[38;2;255;132;0mcommand_name = %s\n", add2list->command_name);
 	int	i = 0;
@@ -226,17 +238,31 @@ t_args	*ft_structnew(t_struct *main, int start, int end)
 		i++;
 	}
 	i = 0;
-	printf("\x1b[38;2;0;255;60mredirections = \n");
-	while (add2list->redir[i])
+	printf("\x1b[38;2;0;255;60minput redirections = \n");
+	while (add2list->input_redirs[i])
 	{
-		printf(" -   %s\n", add2list->redir[i]);
+		printf(" -   %s\n", add2list->input_redirs[i]);
 		i++;
 	}
 	i = 0;
-	printf("\x1b[38;2;0;144;255mfile = \n");
-	while (add2list->file[i])
+	printf("\x1b[38;2;0;144;255minput files = \n");
+	while (add2list->input_files[i])
 	{
-		printf(" -   %s\n", add2list->file[i]);
+		printf(" -   %s\n", add2list->input_files[i]);
+		i++;
+	}
+	i = 0;
+	printf("\x1b[38;2;0;255;60moutput redirections = \n");
+	while (add2list->output_redirs[i])
+	{
+		printf(" -   %s\n", add2list->output_redirs[i]);
+		i++;
+	}
+	i = 0;
+	printf("\x1b[38;2;0;144;255moutput files = \n");
+	while (add2list->output_files[i])
+	{
+		printf(" -   %s\n", add2list->output_files[i]);
 		i++;
 	}
 	printf("\x1b[38;2;130;25;255marguments = %s\n", add2list->args);
@@ -287,6 +313,7 @@ t_args	*parsing_to_executing(t_struct *main)
 // gestion d'erreurs pour le parsing par exemple | au debut
 // si la ligne est tres longue -> bug d'affichage avec readline qui va recommencer au debut de la ligne
 // redirection sans commande
+// regarde les erreurs de bash entre redirections et pipes
 
 // ou est input et ou est output
 // stdin : file or heredoc or stdin

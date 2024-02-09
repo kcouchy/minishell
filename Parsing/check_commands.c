@@ -6,19 +6,44 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:12:01 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/08 20:10:54 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/09 12:38:37 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 
+static int	_which_redirection(t_parsing *parse, int i)
+{
+	if (!ft_strcmp(parse->argv[i - 1], "<")
+		|| !ft_strcmp(parse->argv[i - 1], "<<"))
+		return (INPUT_REDIR);
+	else if (!ft_strcmp(parse->argv[i - 1], ">")
+		|| !ft_strcmp(parse->argv[i - 1], ">>"))
+		return (OUTPUT_REDIR);
+	else
+	{
+		printf("%s syntax error%s\n", RED, RESET);
+		parse->error = 1;
+		return (0);
+	}
+}
+
 static void	_file(t_parsing *parse, int i)
 {
 	if (i && parse->types[i - 1] == REDIRECTION)
+	{
+		parse->types[i - 1] = _which_redirection(parse, i);
+		if (parse->types[i - 1] == INPUT_REDIR)
 		{
-			parse->types[i] = R_FILE;
-			parse->nb_of_redir++;
+			parse->types[i] = INPUT_FILE;
+			parse->nb_of_inputs++;
 		}
+		if (parse->types[i - 1] == OUTPUT_REDIR)
+		{
+			parse->types[i] = OUTPUT_FILE;
+			parse->nb_of_outputs++;
+		}
+	}
 }
 
 static int	_not_separator(t_parsing *parse, int i)
@@ -63,6 +88,13 @@ int	check_commands(t_parsing *parse)
 	int	i;
 
 	i = 0;
+	if (parse->types[parse->argc - 1] == SEPARATOR)
+	{
+		printf("%s syntax error%s\n", 
+			RED, RESET);
+		parse->error = 1;
+		return (EXIT_FAILURE);
+	}
 	while (i < parse->argc)
 	{
 		if (parse->types[i] != SEPARATOR)
@@ -72,13 +104,5 @@ int	check_commands(t_parsing *parse)
 	}
 
 	// a prendre avec des pincettes !!!
-	if (parse->types[parse->argc - 1] == REDIRECTION)
-	{
-		printf("%sbash: syntax error near unexpected token `newline'%s\n", 
-			RED, RESET);
-		//ft_free_parse(parse);
-		return (0);
-		//exit(EXIT_FAILURE);
-	}
 	return (0);
 }
