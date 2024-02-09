@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bonus_cmds.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:28:50 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/09 12:57:09 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/09 15:02:02 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ft_outputs(t_pipex *pipex)
 		free(pipex->pwd_origin);
 		exit(EXIT_FAILURE);
 	}
-	if (dup2(out_fd, STDOUT_FILENO) == -1);
+	if (dup2(out_fd, STDOUT_FILENO) == -1)
 	{
 		write(STDERR_FILENO, "pipex : dup2 failed: outputs\n", 29);
 		ft_dup2_fail(pipex);

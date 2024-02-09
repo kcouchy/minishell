@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/09 14:59:36 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/09 15:22:03 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,6 @@ int	executing(int argc, char **argv, char **envp, int num_args)
 	}
 	ft_freetable(pipex.paths);
 	free(pipex.pwd_origin);
-	printf("---------%d--------\n", pipex.exit_code);
+	// printf("---------%d--------\n", pipex.exit_code);
 	return (pipex.exit_code);
 }

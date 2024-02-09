@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/09 14:53:36 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/09 15:56:13 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ int	main(int argc, char **argv, char **envp)
 	char		*input;
 	t_struct	main;
 
-	(void)argv;
-	(void)envp;
 	if (argc != 1)
 	{
 		printf("Just write \x1b[38;2;200;100;0;1m./minishell\e[0m\n");
