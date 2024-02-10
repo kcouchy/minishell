@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/09 20:36:22 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/10 10:49:26 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		input = readline("\x1b[38;2;0;150;0;1mfinishell \e[5m🤯\e[0m> ");
+		input = readline(GREEN"finishell \e[5m🤯"RESET GREEN"> "RESET);
 		if (!input)
 			break ;
 		if (parsing(&main, input))

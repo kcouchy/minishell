@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/09 20:39:11 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/10 10:44:46 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # define RED "\x1b[38;2;255;0;0;1mfinishell 🤬:"
+# define GREEN "\x1b[38;2;0;150;0;1m"
 # define RESET "\e[0m"
 
 # include <stdio.h>

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/09 20:40:40 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/10 10:25:30 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ int	parsing(t_struct *main, char *input)
 	check_commands(&main->parse);
 	// prendre le cas ou check_commands renvoit exit failure
 	printf("argc = %d\n", main->parse.argc);
-	/*if (!main->parse.error)
-		parsing_to_executing(main);*/
+	if (!main->parse.error)
+		parsing_to_executing(main);
 	test_parsing(&main->parse);
 	return (1);
 }
@@ -299,6 +299,7 @@ t_args	*parsing_to_executing(t_struct *main)
 // ou est input et ou est output
 // stdin : file or heredoc or stdin
 // stdout : append or truncate or stdout
+// check ||
 
 // echo -n -nnn bonjour les amis -n > test.txt | cat -e < test.txt >bonjour.txt                 >salut.txt
 // echo -n bonjour -n -nn | cat -e Makefile main.c parsing.c > test.txt
