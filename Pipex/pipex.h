@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/09 17:15:34 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/13 12:41:12 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # include <stdio.h>			/*perror*/
 # include <sys/wait.h>		/*wait/waitpid*/
 # include "libft/libft.h"	/*includes my libft.h - ft_printf etc.*/
+# include "./../minishell.h"	/*minishell (parsing, t_struct, t_args)*/
 
 /******************************************************************************/
 /* Structures                                                                 */
@@ -307,7 +308,8 @@ void	ft_pipex_init(t_pipex *pipex, int argc, char **argv, char **envp, int num_a
  * @param envp Table of tables containing the environmental variables (env)
  * @return int 0 if all is well.
  */
-int		executing(int argc, char **argv, char **envp, int num_args);
+// int		executing(int argc, char **argv, char **envp, int num_args);
+int		executing(t_struct *args, char **envp, int num_args);
 
 /******************************************************************************/
 /* single_cmd.c                                                               */

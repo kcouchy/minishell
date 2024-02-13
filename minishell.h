@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/09 14:50:07 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/13 12:20:18 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,16 @@ typedef struct s_common
 
 typedef struct s_args
 {
-	char	*whole_cmd; //
-	char	*command_name; //
-	char	**flags; //
-	char	*args; //
-	char	**input_redirs; //
-	char	**input_files; //
-	char	**output_redirs; //
-	char	**output_files; //
-	int		is_builtin; //
+	//echo -n bonjour | cat -e Makefile > test <salut
+	char	*whole_cmd; //cat -e Makefile minishell.h > test
+	char	*command_name; //cat
+	char	**flags; //-e
+	char	*args; //Makefile minishell.h
+	char	**input_redirs; //<
+	char	**input_files; //salut
+	char	**output_redirs; //>
+	char	**output_files; //test
+	int		is_builtin; //0
 	struct s_args	*next; //
 }	t_args;
 

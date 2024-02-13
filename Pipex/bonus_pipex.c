@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/09 17:16:06 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:31:58 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	ft_heredoc(t_pipex *pipex)
 	close(pipex->infile_fd);
 }
 
-void	ft_pipex_init(t_pipex *pipex, int argc, char **argv, char **envp, int num_args)
+void	ft_pipex_init(t_pipex *pipex, t_struct *args, char **envp, int num_args)
 {
 	pipex->commands = num_args;
 	pipex->envp = envp;
@@ -93,13 +93,27 @@ void	ft_pipex_init(t_pipex *pipex, int argc, char **argv, char **envp, int num_a
 	pipex->exit_code = 0;
 	pipex->paths = ft_extract_envp(envp);
 	pipex->pwd_origin = getcwd(NULL, 0);
+	// pipex->commands = num_args;
+	// pipex->envp = envp;
+	// pipex->args = argv;
+	// pipex->infile = argv[1];
+	// pipex->infile_fd = -1;
+	// pipex->outfile = argv[argc - 1];
+	// pipex->child_args = NULL;
+	// pipex->temp_fd_out = -1;
+	// pipex->heredoc = 0;
+	// pipex->exit_code = 0;
+	// pipex->paths = ft_extract_envp(envp);
+	// pipex->pwd_origin = getcwd(NULL, 0);
 }
 
-int	executing(int argc, char **argv, char **envp, int num_args)
+// int	executing(int argc, char **argv, char **envp, int num_args)
+int		executing(t_struct *args, char **envp, int num_args)
 {
 	t_pipex	pipex;
 
-	ft_pipex_init(&pipex, argc, argv, envp, num_args);
+	// ft_pipex_init(&pipex, argc, argv, envp, num_args);
+	ft_pipex_init(&pipex, args, envp, num_args);
 	if (ft_strncmp(argv[1], "hd", 2) == 0)
 		ft_heredoc(&pipex);
 	if (num_args >= 1)
