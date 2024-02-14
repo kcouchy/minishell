@@ -6,27 +6,29 @@
 #    By: lribette <lribette@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
-#    Updated: 2024/02/09 16:08:26 by lribette         ###   ########.fr        #
+#    Updated: 2024/02/13 11:05:24 by lribette         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS =										\
-				Builtins/cd					\
-				Builtins/echo				\
-				Builtins/env				\
-				Builtins/exit				\
-				Builtins/export				\
-				Builtins/pwd				\
-				Parsing/alloc_tables		\
-				Parsing/check_commands		\
-				Parsing/count_types			\
-				Parsing/parsing				\
-				Parsing/utils				\
-				Pipex/bonus_pipex			\
-				Pipex/bonus_cmds			\
-				Pipex/utils					\
-				Pipex/errors				\
-				Pipex/single_cmd			\
+SRCS =											\
+				Builtins/cd						\
+				Builtins/echo					\
+				Builtins/env					\
+				Builtins/exit					\
+				Builtins/export					\
+				Builtins/pwd					\
+				Parsing/Lexing/alloc_tables		\
+				Parsing/Lexing/check_commands	\
+				Parsing/Lexing/utils			\
+				Parsing/fill_strings			\
+				Parsing/fill_type				\
+				Parsing/parsing_to_executing	\
+				Parsing/parsing					\
+				Pipex/bonus_pipex				\
+				Pipex/bonus_cmds				\
+				Pipex/utils						\
+				Pipex/errors					\
+				Pipex/single_cmd				\
 				minishell						
 
 INC_FILES = -I Pipex/libft

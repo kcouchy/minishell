@@ -6,11 +6,11 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 11:57:46 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/09 20:38:40 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/13 10:59:11 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../minishell.h"
+#include "./../../minishell.h"
 
 int	is_separator(char c)
 {

@@ -6,11 +6,11 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:12:01 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/09 20:34:37 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:09:32 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../minishell.h"
+#include "./../../minishell.h"
 
 static int	_which_redirection(t_parsing *parse, int i)
 {
@@ -82,10 +82,10 @@ static int	_separator(t_parsing *parse, int i)
 		parse->types[i] = REDIRECTION;
 	if (parse->argv[i + 1] && parse->types[i + 1] == SEPARATOR
 		&& !(parse->types[i] == PIPE && _which_redirection(parse, i + 1)))
-		{
-			printf("%s syntax error%s\n", RED, RESET);
-			parse->error = 1;
-		}
+	{
+		printf("%s syntax error%s\n", RED, RESET);
+		parse->error = 1;
+	}
 	return (i + 1);
 }
 

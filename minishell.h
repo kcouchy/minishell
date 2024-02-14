@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/10 10:44:46 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/13 11:06:44 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,15 @@ typedef struct s_common
 
 typedef struct s_args
 {
-	char	*whole_cmd; //
-	char	*command_name; //
-	char	**flags; //
-	char	*args; //
-	char	**input_redirs; //
-	char	**input_files; //
-	char	**output_redirs; //
-	char	**output_files; //
-	int		is_builtin; //
+	char			*whole_cmd; //
+	char			*command_name; //
+	char			**flags; //
+	char			*args; //
+	char			**input_redirs; //
+	char			**input_files; //
+	char			**output_redirs; //
+	char			**output_files; //
+	int				is_builtin; //
 	struct s_args	*next; //
 }	t_args;
 
@@ -92,10 +92,13 @@ int		check_nothing(char *input);
 int		ft_strcmp(char *s1, char *s2);
 int		is_builtin(char *command);
 
-/* ******************** Parsing ******************** */
+/* ******************** Lexing ******************** */
 void	alloc_tables(t_parsing *parse, char *input);
 int		check_commands(t_parsing *parse);
-int		count_types(char *input);
+
+/* ******************** Parsing ******************** */
+void	fill_strings(t_args *cmd, t_struct *main, int start, int end);
+char	**fill_type(int type, t_struct *main, int start, int end);
 int		parsing(t_struct *main, char *input);
 void	ft_free_parsing(t_parsing *parse);
 
