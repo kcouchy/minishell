@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/13 12:43:38 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/14 09:13:53 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,27 @@ void	sigint_handler(int signal)
 		write(1, "", 0);
 }
 
+void	ft_free_parsing(t_parsing *parse)
+{
+	int	i;
+
+	i = 0;
+	while (i < parse->argc)
+	{
+		free(parse->argv[i]);
+		i++;
+	}
+	free(parse->argv);
+	free(parse->types);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char		*input;
 	t_struct	main;
 
+	(void)argv;
+	(void)envp;
 	if (argc != 1)
 	{
 		printf("Just write \x1b[38;2;200;100;0;1m./minishell\e[0m\n");
@@ -32,7 +48,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		input = readline("\x1b[38;2;0;150;0;1mfinishell \e[5m🤯\e[0m> ");
+		input = readline(GREEN"finishell \e[5m🤯"RESET GREEN"> "RESET);
 		if (!input)
 			break ;
 		if (parsing(&main, input))

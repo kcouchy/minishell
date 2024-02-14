@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/13 12:20:18 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/14 09:14:24 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # define RED "\x1b[38;2;255;0;0;1mfinishell 🤬:"
+# define GREEN "\x1b[38;2;0;150;0;1m"
 # define RESET "\e[0m"
 
 # include <stdio.h>
@@ -57,7 +58,6 @@ typedef struct s_common
 {
 	void	*first_command; //
 	char	**envp; //
-	int		nb_of_cmds; //
 }	t_common;
 
 typedef struct s_args
@@ -89,14 +89,19 @@ typedef struct s_struct
 /* ******************** utils.c ******************** */
 int		is_separator(char c);
 int		is_space(char c);
+int		check_nothing(char *input);
 int		ft_strcmp(char *s1, char *s2);
-void	ft_free_parsing(t_parsing *parse);
+int		is_builtin(char *command);
 
-/* ******************** Parsing ******************** */
+/* ******************** Lexing ******************** */
 void	alloc_tables(t_parsing *parse, char *input);
 int		check_commands(t_parsing *parse);
-int		count_types(char *input);
-int    parsing(t_struct *main, char *input);
+
+/* ******************** Parsing ******************** */
+void	fill_strings(t_args *cmd, t_struct *main, int start, int end);
+char	**fill_type(int type, t_struct *main, int start, int end);
+int		parsing(t_struct *main, char *input);
+void	ft_free_parsing(t_parsing *parse);
 
 /* ************* Parsing to Executing ************** */
 t_args	*parsing_to_executing(t_struct *main);

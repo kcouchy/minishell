@@ -6,11 +6,11 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:08:23 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/09 12:56:13 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/13 10:56:26 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../minishell.h"
+#include "./../../minishell.h"
 
 static char	*_ft_word_dup(char *input, int start, int end)
 {
@@ -34,9 +34,14 @@ static int	_what_type(t_parsing *parse, char *input, int i, int separator)
 
 	start = i;
 	j = 0;
-	while (input[i] && is_separator(input[i]) == separator
-		&& !is_space(input[i]))
+	while (input[i] && !is_space(input[i]))
+	{
 		i++;
+		if (input[i] && separator && input[i - 1] != input[i])
+			break ;
+		if (is_separator(input[i]) != separator)
+			break ;
+	}
 	while (parse->types[j] != 0)
 		j++;
 	parse->argv[j] = _ft_word_dup(input, start, i);
@@ -68,6 +73,34 @@ static void	_ft_malloc_failed(t_parsing *parse)
 			free(parse->types);
 		exit(EXIT_FAILURE);
 	}
+}
+
+int	count_types(char *input)
+{
+	int	counter;
+	int	i;
+
+	counter = 0;
+	i = 0;
+	while (input[i])
+	{
+		while (input[i] && is_separator(input[i]) && input[i] == ' ')
+			i++;
+		if (input[i] && is_separator(input[i]))
+		{
+			while (input[i] && input[i + 1] && input[i] == input[i + 1])
+				i++;
+			i++;
+			counter++;
+		}
+		if (input[i] && !is_separator(input[i]))
+		{
+			while (input[i] && !is_separator(input[i]))
+				i++;
+			counter++;
+		}
+	}
+	return (counter);
 }
 
 void	alloc_tables(t_parsing *parse, char *input)
