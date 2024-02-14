@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_to_executing.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:56:04 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/14 12:22:55 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:12:16 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,15 +89,9 @@ t_args	*ft_structnew(t_struct *main, int start, int end)
 	return (add2list);
 }
 
-void	ft_structadd_front(t_args **commands, t_args *temp)
+t_args	*parsing_to_executing(t_struct *main)
 {
-	temp->next = *commands;
-	*commands = temp;
-}
-
-t_args	**parsing_to_executing(t_struct *main)
-{
-	t_args	**cmd;
+	t_args	*cmd;
 	t_args	*temp;
 	int		i;
 	int		start;
@@ -118,11 +112,11 @@ t_args	**parsing_to_executing(t_struct *main)
 		if (!temp)
 			return (NULL);
 		if (i != 0)
-			ft_structadd_front(cmd, temp);
-		else
-			cmd = &temp;
+			temp->next = cmd;
+		cmd = temp;
 		i++;
 	}
 	// n'oublie pas de free la liste chainee!
 	return (cmd);
 }
+

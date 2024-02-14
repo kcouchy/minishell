@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/14 12:17:31 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:49:18 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,13 @@
 void	sigint_handler(int signal)
 {
 	if (signal == SIGINT)
-		write(1, "", 0);
+	{
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 1);
+		rl_redisplay();
+	}
+	//set exitcode to 130 (will need a global variable to stock this)
 }
 
 void	ft_free_parsing(t_parsing *parse)
@@ -57,7 +63,7 @@ void	test_liste_chainee(t_struct *main)
 {
 	t_args *temp;
 	
-	temp = *main->args_list;
+	temp = main->args_list;
 	while (temp)
 	{
 		printf("\x1b[38;2;255;255;255m-----\n");
@@ -122,6 +128,7 @@ int	main(int argc, char **argv, char **envp)
 		printf("Just write \x1b[38;2;200;100;0;1m./minishell\e[0m\n");
 		exit(EXIT_FAILURE);
 	}
+	//use sigaction
 	signal(SIGINT, &sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 	main.common->envp = finishell_env(envp);

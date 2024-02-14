@@ -6,14 +6,14 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:10:57 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/05 14:01:33 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/14 14:11:24 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 
 // if export only, print all of envp to the terminal except the variable "_"
-// copy and sort envp, then in loop add declare -x add "" around the string(after = and at the end)
+// copy and sort envp, (and free at the end) then in loop add declare -x add "" around the string(after = and at the end)
 
 // if export (variable), then add "variable"+"="+"variable value" to env
 // if export (variable=value), then add "variable=value" to env

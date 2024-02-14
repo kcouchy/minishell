@@ -6,11 +6,13 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:22 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/06 16:08:22 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/14 14:11:32 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
+
+//print from f_envp except for args that are ""
 
 int ft_pwd(int argc, t_pipex *pipex)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/14 12:22:30 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:07:41 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ typedef struct s_struct
 {
 	t_parsing	parse;
 	t_common	*common;
-	t_args		**args_list;
+	t_args		*args_list;
 }	t_struct;
 
 /******************************************************************************/
@@ -107,6 +107,7 @@ int		parsing(t_struct *main, char *input);
 void	ft_free_parsing(t_parsing *parse);
 
 /* ************* Parsing to Executing ************** */
-t_args	**parsing_to_executing(t_struct *main);
+
+t_args	*parsing_to_executing(t_struct *main);
 
 #endif
