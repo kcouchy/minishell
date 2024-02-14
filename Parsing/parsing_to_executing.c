@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:56:04 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/13 11:08:33 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/14 12:22:55 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	init_arg(t_args *cmd, t_struct *main, int start, int end)
 	cmd->output_redirs = fill_type(OUTPUT_REDIR, main, start, end);
 	cmd->output_files = fill_type(OUTPUT_FILE, main, start, end);
 	fill_strings(cmd, main, start, end);
+	cmd->command_table = fill_table(main, start, end);
 	cmd->is_builtin = is_builtin(cmd->command_name);
 	//int		nb_of_inputs;
 	//int		nb_of_outputs;
@@ -38,46 +39,53 @@ t_args	*ft_structnew(t_struct *main, int start, int end)
 		init_arg(add2list, main, start, end);
 		add2list->next = NULL;
 	}
-	printf("\x1b[38;2;255;255;255m-----\n");
-	printf("\x1b[38;2;255;0;0mwhole_cmd = %s\n", add2list->whole_cmd);
-	printf("\x1b[38;2;255;132;0mcommand_name = %s\n", add2list->command_name);
-	int	i = 0;
-	printf("\x1b[38;2;255;216;0mflags = \n");
-	while (add2list->flags[i])
-	{
-		printf(" -   %s\n", add2list->flags[i]);
-		i++;
-	}
-	i = 0;
-	printf("\x1b[38;2;0;255;60minput redirections = \n");
-	while (add2list->input_redirs[i])
-	{
-		printf(" -   %s\n", add2list->input_redirs[i]);
-		i++;
-	}
-	i = 0;
-	printf("\x1b[38;2;0;144;255minput files = \n");
-	while (add2list->input_files[i])
-	{
-		printf(" -   %s\n", add2list->input_files[i]);
-		i++;
-	}
-	i = 0;
-	printf("\x1b[38;2;0;255;60moutput redirections = \n");
-	while (add2list->output_redirs[i])
-	{
-		printf(" -   %s\n", add2list->output_redirs[i]);
-		i++;
-	}
-	i = 0;
-	printf("\x1b[38;2;0;144;255moutput files = \n");
-	while (add2list->output_files[i])
-	{
-		printf(" -   %s\n", add2list->output_files[i]);
-		i++;
-	}
-	printf("\x1b[38;2;130;25;255marguments = %s\n", add2list->args);
-	printf("\x1b[38;2;255;0;0mis_builtin = %d\n", add2list->is_builtin);
+	// printf("\x1b[38;2;255;255;255m-----\n");
+	// printf("\x1b[38;2;255;0;0mwhole_cmd = %s\n", add2list->whole_cmd);
+	// int	i = 0;
+	// printf("\x1b[38;2;255;216;0mcommand_table = \n");
+	// while (add2list->command_table[i])
+	// {
+	// 	printf(" -   %s\n", add2list->command_table[i]);
+	// 	i++;
+	// }
+	// printf("\x1b[38;2;255;132;0mcommand_name = %s\n", add2list->command_name);
+	// i = 0;
+	// printf("\x1b[38;2;255;216;0mflags = \n");
+	// while (add2list->flags[i])
+	// {
+	// 	printf(" -   %s\n", add2list->flags[i]);
+	// 	i++;
+	// }
+	// i = 0;
+	// printf("\x1b[38;2;0;255;60minput redirections = \n");
+	// while (add2list->input_redirs[i])
+	// {
+	// 	printf(" -   %s\n", add2list->input_redirs[i]);
+	// 	i++;
+	// }
+	// i = 0;
+	// printf("\x1b[38;2;0;144;255minput files = \n");
+	// while (add2list->input_files[i])
+	// {
+	// 	printf(" -   %s\n", add2list->input_files[i]);
+	// 	i++;
+	// }
+	// i = 0;
+	// printf("\x1b[38;2;0;255;60moutput redirections = \n");
+	// while (add2list->output_redirs[i])
+	// {
+	// 	printf(" -   %s\n", add2list->output_redirs[i]);
+	// 	i++;
+	// }
+	// i = 0;
+	// printf("\x1b[38;2;0;144;255moutput files = \n");
+	// while (add2list->output_files[i])
+	// {
+	// 	printf(" -   %s\n", add2list->output_files[i]);
+	// 	i++;
+	// }
+	// printf("\x1b[38;2;130;25;255marguments = %s\n", add2list->args);
+	// printf("\x1b[38;2;255;0;0mis_builtin = %d\n", add2list->is_builtin);
 	return (add2list);
 }
 
@@ -87,9 +95,9 @@ void	ft_structadd_front(t_args **commands, t_args *temp)
 	*commands = temp;
 }
 
-t_args	*parsing_to_executing(t_struct *main)
+t_args	**parsing_to_executing(t_struct *main)
 {
-	t_args	*cmd;
+	t_args	**cmd;
 	t_args	*temp;
 	int		i;
 	int		start;
@@ -108,8 +116,11 @@ t_args	*parsing_to_executing(t_struct *main)
 			end++;
 		temp = ft_structnew(main, start, end);
 		if (!temp)
-			return (temp);
-		ft_structadd_front(&cmd, temp);
+			return (NULL);
+		if (i != 0)
+			ft_structadd_front(cmd, temp);
+		else
+			cmd = &temp;
 		i++;
 	}
 	// n'oublie pas de free la liste chainee!

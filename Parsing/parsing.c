@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/13 12:13:10 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/14 12:06:49 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,14 @@ int	parsing(t_struct *main, char *input)
 	check_commands(&main->parse);
 	// prendre le cas ou check_commands renvoit exit failure
 	printf("argc = %d\n", main->parse.argc);
+	main->common->nb_commands = main->parse.number_of_commands;
 	if (!main->parse.error)
-		parsing_to_executing(main);
+		main->args_list = parsing_to_executing(main);
 	test_parsing(&main->parse);
 	return (1);
 }
 
-/*void	ft_pipex_init(t_pipex *pipex, int argc, char **argv, char **envp, int num_args)
+void	ft_pipex_init(t_pipex *pipex, int argc, char **argv, char **envp, int num_args)
 {
 	pipex->commands = num_args;
 	pipex->envp = envp;
@@ -86,7 +87,7 @@ int	parsing(t_struct *main, char *input)
 	pipex->exit_code = 0;
 	pipex->paths = ft_extract_envp(envp);
 	pipex->pwd_origin = getcwd(NULL, 0);
-}*/
+}
 
 // comptabiliser les guillemets
 // si la ligne est tres longue -> bug d'affichage avec readline qui va recommencer au debut de la ligne

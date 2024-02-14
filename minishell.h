@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/14 09:14:24 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/14 12:22:30 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_parsing
 typedef struct s_common
 {
 	void	*first_command; //
+	int		nb_commands;
 	char	**envp; //
 }	t_common;
 
@@ -64,6 +65,7 @@ typedef struct s_args
 {
 	//echo -n bonjour | cat -e Makefile > test <salut
 	char	*whole_cmd; //cat -e Makefile minishell.h > test
+	char	**command_table; // cat ; -e ; Makefile ; minishell.h 
 	char	*command_name; //cat
 	char	**flags; //-e
 	char	*args; //Makefile minishell.h
@@ -78,8 +80,8 @@ typedef struct s_args
 typedef struct s_struct
 {
 	t_parsing	parse;
-	t_common	common;
-	t_args		args;
+	t_common	*common;
+	t_args		**args_list;
 }	t_struct;
 
 /******************************************************************************/
@@ -100,10 +102,11 @@ int		check_commands(t_parsing *parse);
 /* ******************** Parsing ******************** */
 void	fill_strings(t_args *cmd, t_struct *main, int start, int end);
 char	**fill_type(int type, t_struct *main, int start, int end);
+char	**fill_table(t_struct *main, int start, int end);
 int		parsing(t_struct *main, char *input);
 void	ft_free_parsing(t_parsing *parse);
 
 /* ************* Parsing to Executing ************** */
-t_args	*parsing_to_executing(t_struct *main);
+t_args	**parsing_to_executing(t_struct *main);
 
 #endif
