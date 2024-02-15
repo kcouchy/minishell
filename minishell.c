@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 21:18:30 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/15 22:08:58 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,6 @@ void	sigint_handler(int signal)
 		rl_redisplay(); //effectively forces the prompt to redisplay before you type
 	}
 	//set exitcode to 130 (will need a global variable to stock this)
-}
-
-void	ft_free_parsing(t_parsing *parse)
-{
-	int	i;
-
-	i = 0;
-	while (i < parse->argc)
-	{
-		free(parse->argv[i]);
-		i++;
-	}
-	free(parse->argv);
-	free(parse->types);
 }
 
 char	**finishell_env(char **envp)
@@ -60,22 +46,6 @@ char	**finishell_env(char **envp)
 		i++;
 	}
 	return (f_envp);
-}
-
-void	free_envp(char **envp)
-{
-	int	i;
-
-	i = 0;
-	if (envp)
-	{
-		while (envp[i])
-		{
-			free(envp[i]);
-			i++;
-		}
-		free(envp);
-	}
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -105,6 +75,7 @@ int	main(int argc, char **argv, char **envp)
 				test_liste_chainee(&main);
 				ft_free_parsing(&main.parse);
 			}
+			ft_structclear(&main.args_list);
 			// executing(&main);
 		}
 	}

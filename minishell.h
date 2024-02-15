@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 21:20:13 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/15 22:09:40 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ typedef struct s_parsing
 typedef struct s_common
 {
 	int		nb_commands;
-	char	**envp; //
+	char	**envp;
+	//int		already_freed;
 }	t_common;
 
 typedef struct s_args
@@ -103,7 +104,11 @@ void	fill_strings(t_args *cmd, t_struct *main, int start, int end);
 char	**fill_type(int type, t_struct *main, int start, int end);
 char	**fill_table(t_struct *main, int start, int end);
 int		parsing(t_struct *main, char *input);
+
+/*ft_free.c*/
 void	ft_free_parsing(t_parsing *parse);
+void	ft_structclear(t_args **cmd);
+void	free_envp(char **envp);
 
 /* ************* Parsing to Executing ************** */
 t_args	*parsing_to_executing(t_struct *main);
