@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/15 13:57:38 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/15 16:44:59 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ typedef struct s_pipex_list
  * @param envp system environmental variables from main envp
  * @return char** table of tables of each of the paths present in PATH
  */
-char	**ft_extract_envp(char **envp);
+char	**ft_extract_paths(char **envp);
 
 /**
  * @brief Adaptation of the ft_strjoin function, to accept three string inputs:
@@ -98,7 +98,7 @@ char	*ft_strjoin3(char const *s1, char const *s2, char const *s3);
  * @param pipex structure containing pipex->child_args, pipex->paths and 
  * pipex->envp for the execve command.
  */
-void	ft_execve(t_pipex *pipex);
+void	ft_execve(t_pipex *pipex, t_args *args_list, t_common *common);
 
 /******************************************************************************/
 /* errors.c                                                                   */
@@ -239,7 +239,7 @@ void	ft_bonus_mid_cmd(t_pipex *pipex);
  * to be freed in case of error (pipex->paths + pipex->child_args).
  * @param i input argument counter
  */
-void	ft_bonus_forkchild(t_pipex *pipex, int i);
+void	ft_bonus_forkchild(t_pipex *pipex, int i, t_struct *main);
 
 /**
  * @brief Creates a wait(NULL) for each of the child processes 
@@ -286,7 +286,7 @@ void	ft_heredoc(t_pipex *pipex, t_args *args_list);
  * The command paths are extracted from envp (ft_extract_envp).
  * @param pipex Structure to initialise.
  */
-void	ft_pipex_init(t_pipex *pipex);
+void	ft_pipex_init(t_pipex *pipex, t_struct *main);
 
 /**
  * @brief Runs ft_pipex_init to initialises a number of variables in the pipex 

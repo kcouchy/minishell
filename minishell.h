@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 12:22:24 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/15 16:40:53 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_common
 {
 	// void	*first_command; //
 	int		nb_commands;
-	char	**envp; //
+	char	**envp;
 }	t_common;
 
 typedef struct s_args
@@ -66,7 +66,7 @@ typedef struct s_args
 	//echo -n bonjour | cat -e Makefile > test <salut
 	char	*whole_cmd; //cat -e Makefile minishell.h > test
 	char	**command_table; // cat ; -e ; Makefile ; minishell.h 
-	char	*command_name; //cat
+	char	*command_name; //"\0" ; NULL ; cat
 	char	**flags; //-e
 	char	*args; //Makefile minishell.h
 	char	**input_redirs; //< ; <<

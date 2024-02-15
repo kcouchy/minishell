@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/15 13:57:45 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/15 17:02:09 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,18 @@ void	ft_bonus_pipex(t_pipex *pipex, t_struct *main)
 	i = 0;
 	if (pipex->commands == 1)
 	{
-		pipex->child_args = ft_split
-			(pipex->args[pipex->commands + 1 + pipex->heredoc - i], ' ');
-		if (!pipex->child_args)
-			ft_parse_fail(pipex);
-		else if (!pipex->child_args[0])
+		// pipex->child_args = ft_split
+		// 	(pipex->args[pipex->commands + 1 + pipex->heredoc - i], ' ');
+		// if (!pipex->child_args)
+		// 	ft_parse_fail(pipex);
+
+		if (!main->args_list->command_name) //equivalent of command is missing - change this to just exiting without error
+		{
+			printf("here\n");
 			ft_command_fail(pipex);
+		}
 		ft_single_cmd(pipex);
-		ft_execve(pipex);
+		ft_execve(pipex, main->args_list, main->common);
 		ft_command_fail(pipex);
 	}
 	else
@@ -39,7 +43,7 @@ void	ft_bonus_pipex(t_pipex *pipex, t_struct *main)
 				if (pipe(pipex->pipe_fd) == -1)
 					ft_pipe_fail(pipex);
 			}
-			ft_bonus_forkchild(pipex, i);
+			ft_bonus_forkchild(pipex, i, main);
 			if (i == 0)
 				pipex->pid_last = pipex->pid;
 			if (i < (pipex->commands - 1))
@@ -80,7 +84,7 @@ void	ft_heredoc(t_pipex *pipex, t_args *args_list)
 	close(pipex->infile_fd);
 }
 
-void	ft_pipex_init(t_pipex *pipex)
+void	ft_pipex_init(t_pipex *pipex, t_struct *main)
 {
 	// pipex->commands = num_args;
 	// pipex->envp = envp;
@@ -92,7 +96,7 @@ void	ft_pipex_init(t_pipex *pipex)
 	// pipex->temp_fd_out = -1;
 	pipex->heredoc = 0;
 	// pipex->exit_code = 0;
-	// pipex->paths = ft_extract_envp(envp);
+	pipex->paths = ft_extract_paths(main->common->envp);
 	// pipex->pwd_origin = getcwd(NULL, 0);
 }
 
@@ -101,9 +105,10 @@ int		executing(t_struct *main)
 	t_pipex	pipex;
 
 	// ft_pipex_init(&pipex, argc, argv, envp, num_args);
-	ft_pipex_init(&pipex);
-	if (ft_strncmp(main->args_list->input_redirs[0], "<<", 2) == 0)
-		ft_heredoc(&pipex, main->args_list);
+	ft_pipex_init(&pipex, main);
+	if (main->args_list->input_redirs)
+		if (ft_strncmp(main->args_list->input_redirs[0], "<<", 2) == 0)
+			ft_heredoc(&pipex, main->args_list);
 	if (main->common->nb_commands < 1)
 	{
 		if (pipex.heredoc == 1)
