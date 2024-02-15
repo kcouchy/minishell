@@ -6,11 +6,11 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:50:23 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/06 16:08:10 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/15 12:14:55 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../minishell.h"
+# include "./../Pipex/pipex.h"
 
 //leaks like hell, need to make sure to free everything that has been malloced
 //up until this point in the program - even if you're in the middle of a pipeline

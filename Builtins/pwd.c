@@ -6,11 +6,11 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:22 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/14 14:11:32 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/15 12:14:49 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../minishell.h"
+# include "./../Pipex/pipex.h"
 
 //print from f_envp except for args that are ""
 

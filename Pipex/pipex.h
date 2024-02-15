@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/14 10:56:35 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/15 12:30:38 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,17 +279,14 @@ void	ft_bonus_pipex(t_pipex *pipex);
  * ft_bonus_first_cmd).
  * @param pipex 
  */
-void	ft_heredoc(t_pipex *pipex);
+void	ft_heredoc(t_pipex *pipex, t_args *args_list);
 
 /**
  * @brief Initialises a number of variables in the pipex structure. 
  * The command paths are extracted from envp (ft_extract_envp).
  * @param pipex Structure to initialise.
- * @param argc program input
- * @param argv program input
- * @param envp program input
  */
-//void	ft_pipex_init(t_pipex *pipex, t_args *args, char **envp, int num_args);
+void	ft_pipex_init(t_pipex *pipex);
 
 /**
  * @brief Runs ft_pipex_init to initialises a number of variables in the pipex 
@@ -310,6 +307,7 @@ void	ft_heredoc(t_pipex *pipex);
  */
 // int		executing(int argc, char **argv, char **envp, int num_args);
 //int		executing(t_args *args, char **envp, int num_args);
+int		executing(t_struct *main);
 
 /******************************************************************************/
 /* single_cmd.c                                                               */

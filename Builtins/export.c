@@ -6,11 +6,11 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:10:57 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/14 14:11:24 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/15 12:14:52 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../minishell.h"
+# include "./../Pipex/pipex.h"
 
 // if export only, print all of envp to the terminal except the variable "_"
 // copy and sort envp, (and free at the end) then in loop add declare -x add "" around the string(after = and at the end)

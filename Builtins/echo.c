@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 13:26:27 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/09 14:56:19 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/15 12:15:04 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../minishell.h"
+# include "./../Pipex/pipex.h"
 
 int	ft_echo(int argc, char **argv)
 {

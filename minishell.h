@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/14 15:07:41 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/15 12:22:24 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "./Pipex/pipex.h"
+# include "./Pipex/libft/libft.h"
 
 typedef enum e_type
 {
@@ -56,7 +56,7 @@ typedef struct s_parsing
 
 typedef struct s_common
 {
-	void	*first_command; //
+	// void	*first_command; //
 	int		nb_commands;
 	char	**envp; //
 }	t_common;
@@ -69,9 +69,9 @@ typedef struct s_args
 	char	*command_name; //cat
 	char	**flags; //-e
 	char	*args; //Makefile minishell.h
-	char	**input_redirs; //<
+	char	**input_redirs; //< ; <<
 	char	**input_files; //salut
-	char	**output_redirs; //>
+	char	**output_redirs; //> ; >>
 	char	**output_files; //test
 	int		is_builtin; //0
 	struct s_args	*next; //

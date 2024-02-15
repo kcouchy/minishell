@@ -6,11 +6,11 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:46:56 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/05 13:58:06 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/15 12:15:00 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../minishell.h"
+# include "./../Pipex/pipex.h"
 
 //loop through pipex->envp and write to STDOUT_FD
 //newline?

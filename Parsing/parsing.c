@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/14 12:06:49 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/15 12:17:48 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,21 +73,21 @@ int	parsing(t_struct *main, char *input)
 	return (1);
 }
 
-void	ft_pipex_init(t_pipex *pipex, int argc, char **argv, char **envp, int num_args)
-{
-	pipex->commands = num_args;
-	pipex->envp = envp;
-	pipex->args = argv;
-	pipex->infile = argv[1];
-	pipex->infile_fd = -1;
-	pipex->outfile = argv[argc - 1];
-	pipex->child_args = NULL;
-	pipex->temp_fd_out = -1;
-	pipex->heredoc = 0;
-	pipex->exit_code = 0;
-	pipex->paths = ft_extract_envp(envp);
-	pipex->pwd_origin = getcwd(NULL, 0);
-}
+// void	ft_pipex_init(t_pipex *pipex, int argc, char **argv, char **envp, int num_args)
+// {
+// 	pipex->commands = num_args;
+// 	pipex->envp = envp;
+// 	pipex->args = argv;
+// 	pipex->infile = argv[1];
+// 	pipex->infile_fd = -1;
+// 	pipex->outfile = argv[argc - 1];
+// 	pipex->child_args = NULL;
+// 	pipex->temp_fd_out = -1;
+// 	pipex->heredoc = 0;
+// 	pipex->exit_code = 0;
+// 	pipex->paths = ft_extract_envp(envp);
+// 	pipex->pwd_origin = getcwd(NULL, 0);
+// }
 
 // comptabiliser les guillemets
 // si la ligne est tres longue -> bug d'affichage avec readline qui va recommencer au debut de la ligne

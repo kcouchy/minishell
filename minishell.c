@@ -6,20 +6,21 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/14 15:49:18 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/15 12:21:38 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+# include "./Pipex/pipex.h"
 
 void	sigint_handler(int signal)
 {
 	if (signal == SIGINT)
 	{
 		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 1);
-		rl_redisplay();
+		rl_on_new_line(); //needed to reshow prompt
+		rl_replace_line("", 1); //empties readline buffer in case there's something before the ^C
+		rl_redisplay(); //effectively forces the prompt to redisplay before you type
 	}
 	//set exitcode to 130 (will need a global variable to stock this)
 }
@@ -143,6 +144,7 @@ int	main(int argc, char **argv, char **envp)
 			ft_free_parsing(&main.parse);
 			// executing(argc, argv, envp, 2);
 			//executing(&main.args, envp, 2);
+			executing(&main);
 		}
 	}
 	return (0);
