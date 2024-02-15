@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:53:33 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/14 12:13:11 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/15 17:12:13 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ char	**fill_type(int type, t_struct *main, int start, int end)
 	int		i;
 
 	nb_of_this_type = _count_type(type, main, start, end);
+	if (!nb_of_this_type)
+		return (NULL);
 	tab = ft_calloc((nb_of_this_type) + 1, sizeof(char *));
 	if (!tab)
 		return (NULL);
@@ -74,6 +76,8 @@ char	**fill_table(t_struct *main, int start, int end)
 	int		i;
 
 	nb_of_this_type = _not_redirections(main, start, end);
+	if (!nb_of_this_type)
+		return (NULL);
 	tab = ft_calloc((nb_of_this_type) + 1, sizeof(char *));
 	if (!tab)
 		return (NULL);

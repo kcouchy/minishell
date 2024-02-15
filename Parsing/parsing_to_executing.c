@@ -6,37 +6,25 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:56:04 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 16:12:30 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/15 17:38:38 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
-
-// static char	*copy_command(t_struct *main, int start, int end)
-// {
-// 	while (start < end)
-// 	{
-// 		if (main->parse.types[start] == COMMAND)
-// 			return (main->parse.argv[start]);
-// 		start++;
-// 	}
-// 	return (NULL);
-// }
 
 void	init_arg(t_args *cmd, t_struct *main, int start, int end)
 {
 	int	s;
 
 	s = start;
-	// if (!copy_command(main, start, end))
-	// 	cmd->command_name = NULL;
-	// else
-	// 	cmd->command_name = ft_strdup(copy_command(main, start, end));
 	cmd->command_name = NULL;
 	while (s < end)
 	{
 		if (main->parse.types[s] == COMMAND)
-			cmd->command_name = main->parse.argv[s];
+		{
+			cmd->command_name = ft_strdup(main->parse.argv[s]);
+			break ;
+		}
 		s++;
 	}
 	cmd->flags = fill_type(OPTION, main, start, end);

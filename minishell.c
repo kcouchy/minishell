@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 16:10:44 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/15 17:48:42 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,50 +70,80 @@ void	test_liste_chainee(t_struct *main)
 		printf("\x1b[38;2;255;255;255m-----\n");
 		printf("\x1b[38;2;255;0;0mwhole_cmd = %s\n", temp->whole_cmd);
 		int	i = 0;
-		printf("\x1b[38;2;255;216;0mcommand_table = \n");
-		while (temp->command_table[i])
+		printf("\x1b[38;2;255;132;0mcommand_table = \n");
+		if (!temp->command_table)
+			printf(" -   (null)\n");
+		else
 		{
-			printf(" -   %s\n", temp->command_table[i]);
-			i++;
-		}
-		printf("\x1b[38;2;255;132;0mcommand_name = %s\n", temp->command_name);
-		i = 0;
-		printf("\x1b[38;2;255;216;0mflags = \n");
-		while (temp->flags[i])
-		{
-			printf(" -   %s\n", temp->flags[i]);
-			i++;
+			while (temp->command_table[i])
+			{
+				printf(" -   %s\n", temp->command_table[i]);
+				i++;
+			}
+			printf("\x1b[38;2;255;216;0mcommand_name = %s\n", temp->command_name);
 		}
 		i = 0;
-		printf("\x1b[38;2;0;255;60minput redirections = \n");
-		while (temp->input_redirs[i])
+		printf("\x1b[38;2;0;255;60mflags = \n");
+		if (!temp->flags)
+			printf(" -   (null)\n");
+		else
 		{
-			printf(" -   %s\n", temp->input_redirs[i]);
-			i++;
+			while (temp->flags[i])
+			{
+				printf(" -   %s\n", temp->flags[i]);
+				i++;
+			}
 		}
 		i = 0;
-		printf("\x1b[38;2;0;144;255minput files = \n");
-		while (temp->input_files[i])
+		printf("\x1b[38;2;0;144;255minput redirections = \n");
+		if (!temp->input_redirs)
+			printf(" -   (null)\n");
+		else
 		{
-			printf(" -   %s\n", temp->input_files[i]);
-			i++;
+			while (temp->input_redirs[i])
+			{
+				printf(" -   %s\n", temp->input_redirs[i]);
+				i++;
+			}
 		}
 		i = 0;
-		printf("\x1b[38;2;0;255;60moutput redirections = \n");
-		while (temp->output_redirs[i])
+		printf("\x1b[38;2;157;31;238minput files = \n");
+		if (!temp->input_files)
+			printf(" -   (null)\n");
+		else
 		{
-			printf(" -   %s\n", temp->output_redirs[i]);
-			i++;
+			while (temp->input_files[i])
+			{
+				printf(" -   %s\n", temp->input_files[i]);
+				i++;
+			}
 		}
 		i = 0;
-		printf("\x1b[38;2;0;144;255moutput files = \n");
-		while (temp->output_files[i])
+		printf("\x1b[38;2;255;0;0moutput redirections = \n");
+		if (!temp->output_redirs)
+			printf(" -   (null)\n");
+		else
 		{
-			printf(" -   %s\n", temp->output_files[i]);
-			i++;
+			while (temp->output_redirs[i])
+			{
+				printf(" -   %s\n", temp->output_redirs[i]);
+				i++;
+			}
 		}
-		printf("\x1b[38;2;130;25;255marguments = %s\n", temp->args);
-		printf("\x1b[38;2;255;0;0mis_builtin = %d\n", temp->is_builtin);
+		i = 0;
+		printf("\x1b[38;2;255;132;0moutput files = \n");
+		if (!temp->output_files)
+			printf(" -   (null)\n");
+		else
+		{
+			while (temp->output_files[i])
+			{
+				printf(" -   %s\n", temp->output_files[i]);
+				i++;
+			}
+		}
+		printf("\x1b[38;2;255;216;0marguments = %s\n", temp->args);
+		printf("\x1b[38;2;0;255;60mis_builtin = %d%s\n", temp->is_builtin, RESET);
 		temp = temp->next;
 	}
 }
@@ -142,9 +172,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			test_liste_chainee(&main);
 			ft_free_parsing(&main.parse);
-			// executing(argc, argv, envp, 2);
-			//executing(&main.args, envp, 2);
-			executing(&main);
+			// executing(&main);
 		}
 	}
 	return (0);
