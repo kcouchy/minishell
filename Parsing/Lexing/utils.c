@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 11:57:46 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 14:59:54 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/15 16:12:54 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int	ft_strcmp(char *s1, char *s2)
 
 int	is_builtin(char *command)
 {
+	if (!command)
+		return (0);
 	if (!ft_strcmp(command, "echo"))
 		return (1);
 	if (!ft_strcmp(command, "cd"))
