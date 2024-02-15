@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 11:57:46 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/13 10:59:11 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/15 14:59:54 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ int	check_nothing(char *input)
 	int	i;
 
 	i = 0;
-	/*if (input[i] == '\0')
-		return (1);*/
 	while (input[i])
 	{
 		if (!is_space(input[i]))

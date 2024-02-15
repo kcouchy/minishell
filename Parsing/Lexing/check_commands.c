@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:12:01 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/13 11:09:32 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/15 15:11:46 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,24 +46,41 @@ static void	_file(t_parsing *parse, int i)
 	}
 }
 
+static void	_is_argument_a_command(t_parsing *parse, int i)
+{
+	int	j;
+
+	j = i;
+	while (j > -1)
+	{
+		if (parse->types[j] == PIPE)
+			break ;
+		if (parse->types[j] == COMMAND)
+			return ;
+		j--;
+	}
+	parse->types[i] = COMMAND;
+}
+
 static int	_not_separator(t_parsing *parse, int i)
 {
-	if (parse->argv[i][0] != '-' || i == 0)
+	if (i == 0
+		|| (i && parse->types[i - 1] == PIPE && parse->types[i] != SEPARATOR))
 	{
 		parse->types[i] = COMMAND;
-		_file(parse, i);
 		i++;
 	}
 	while (i < parse->argc && parse->types[i] != SEPARATOR)
 	{
-		if (parse->argv[i][0] == '-')
+		_is_argument_a_command(parse, i);
+		if (parse->argv[i][0] == '-' && parse->types[i] != COMMAND)
 		{
 			parse->nb_of_flags++;
 			parse->types[i] = OPTION;
-			_file(parse, i);
 		}
-		else
+		else if (parse->argv[i][0] != '-' && parse->types[i] != COMMAND)
 			parse->types[i] = ARGUMENT;
+		_file(parse, i);
 		i++;
 	}
 	return (i);

@@ -3,20 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_to_executing.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:56:04 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/14 15:12:16 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/15 15:38:21 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 
+static char	*copy_command(t_struct *main, int start, int end)
+{
+	while (start < end)
+	{
+		if (main->parse.types[start] == COMMAND)
+			return (main->parse.argv[start]);
+		start++;
+	}
+	return ("");
+}
+
 void	init_arg(t_args *cmd, t_struct *main, int start, int end)
 {
-	cmd->command_name = "";
-	if (main->parse.argv[start])
-		cmd->command_name = ft_strdup(main->parse.argv[start]);
+	//cmd->command_name = "";
+		cmd->command_name = ft_strdup(copy_command(main, start, end));
 	cmd->flags = fill_type(OPTION, main, start, end);
 	cmd->input_redirs = fill_type(INPUT_REDIR, main, start, end);
 	cmd->input_files = fill_type(INPUT_FILE, main, start, end);
@@ -39,53 +49,6 @@ t_args	*ft_structnew(t_struct *main, int start, int end)
 		init_arg(add2list, main, start, end);
 		add2list->next = NULL;
 	}
-	// printf("\x1b[38;2;255;255;255m-----\n");
-	// printf("\x1b[38;2;255;0;0mwhole_cmd = %s\n", add2list->whole_cmd);
-	// int	i = 0;
-	// printf("\x1b[38;2;255;216;0mcommand_table = \n");
-	// while (add2list->command_table[i])
-	// {
-	// 	printf(" -   %s\n", add2list->command_table[i]);
-	// 	i++;
-	// }
-	// printf("\x1b[38;2;255;132;0mcommand_name = %s\n", add2list->command_name);
-	// i = 0;
-	// printf("\x1b[38;2;255;216;0mflags = \n");
-	// while (add2list->flags[i])
-	// {
-	// 	printf(" -   %s\n", add2list->flags[i]);
-	// 	i++;
-	// }
-	// i = 0;
-	// printf("\x1b[38;2;0;255;60minput redirections = \n");
-	// while (add2list->input_redirs[i])
-	// {
-	// 	printf(" -   %s\n", add2list->input_redirs[i]);
-	// 	i++;
-	// }
-	// i = 0;
-	// printf("\x1b[38;2;0;144;255minput files = \n");
-	// while (add2list->input_files[i])
-	// {
-	// 	printf(" -   %s\n", add2list->input_files[i]);
-	// 	i++;
-	// }
-	// i = 0;
-	// printf("\x1b[38;2;0;255;60moutput redirections = \n");
-	// while (add2list->output_redirs[i])
-	// {
-	// 	printf(" -   %s\n", add2list->output_redirs[i]);
-	// 	i++;
-	// }
-	// i = 0;
-	// printf("\x1b[38;2;0;144;255moutput files = \n");
-	// while (add2list->output_files[i])
-	// {
-	// 	printf(" -   %s\n", add2list->output_files[i]);
-	// 	i++;
-	// }
-	// printf("\x1b[38;2;130;25;255marguments = %s\n", add2list->args);
-	// printf("\x1b[38;2;255;0;0mis_builtin = %d\n", add2list->is_builtin);
 	return (add2list);
 }
 
