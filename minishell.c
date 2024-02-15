@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 18:56:59 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/15 21:18:30 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	main(int argc, char **argv, char **envp)
 	//use sigaction
 	signal(SIGINT, &sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
-	main.common->envp = finishell_env(envp);
+	main.common.envp = finishell_env(envp);
 	while (1)
 	{
 		input = readline(GREEN"finishell \e[5m🤯"RESET GREEN"> "RESET);
@@ -108,6 +108,6 @@ int	main(int argc, char **argv, char **envp)
 			// executing(&main);
 		}
 	}
-	//free_envp(main.common->envp);
+	free_envp(main.common.envp);
 	return (0);
 }

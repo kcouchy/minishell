@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bonus_pipex.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/15 12:29:35 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/15 21:17:46 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int		executing(t_struct *main)
 	{
 		ft_heredoc(&pipex, main->args_list);
 	}
-	if (main->common->nb_commands < 1)
+	if (main->common.nb_commands < 1)
 	{
 		if (pipex.heredoc == 1)
 			unlink("temp");

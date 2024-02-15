@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:08:23 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/13 10:56:26 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/15 21:11:35 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static void	_ft_malloc_failed(t_parsing *parse)
 	}
 }
 
-int	count_types(char *input)
+static int	count_tokens(char *input)
 {
 	int	counter;
 	int	i;
@@ -108,7 +108,7 @@ void	alloc_tables(t_parsing *parse, char *input)
 	int			i;
 	int			j;
 
-	parse->argc = count_types(input);
+	parse->argc = count_tokens(input);
 	parse->argv = ft_calloc((parse->argc + 1), sizeof(char *));
 	parse->types = ft_calloc((parse->argc + 1), sizeof(int));
 	_ft_malloc_failed(parse);

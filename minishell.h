@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 18:51:41 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/15 21:20:13 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ typedef struct s_args
 typedef struct s_struct
 {
 	t_parsing	parse;
-	t_common	*common;
+	t_common	common;
 	t_args		*args_list;
 }	t_struct;
 

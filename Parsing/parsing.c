@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 18:58:57 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/15 21:17:23 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	parsing(t_struct *main, char *input)
 	check_commands(&main->parse);
 	// prendre le cas ou check_commands renvoit exit failure
 	printf("argc = %d\n", main->parse.argc);
-	main->common->nb_commands = main->parse.number_of_commands;
+	main->common.nb_commands = main->parse.number_of_commands;
 	if (!main->parse.error)
 		main->args_list = parsing_to_executing(main);
 	test_parsing(&main->parse);
