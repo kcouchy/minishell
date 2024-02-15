@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:30:14 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/09 12:15:37 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/15 13:57:21 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ void	ft_execve(t_pipex *pipex)
 
 	cmd_path = 0;
 	i = 0;
+	// if (cmd is NULL)
+	// 	just free and return everything;
 	while (pipex->paths[i])
 	{
 		if (pipex->child_args[0][0] == '.' || pipex->child_args[0][0] == '/')

@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/15 12:30:38 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/15 13:57:38 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,7 +265,7 @@ void	ft_wait_parent(t_pipex *pipex);
  * (pipex->commands), and the tables to be freed in case of error (pipex->paths 
  * + pipex->child_args).
  */
-void	ft_bonus_pipex(t_pipex *pipex);
+void	ft_bonus_pipex(t_pipex *pipex, t_struct *main);
 
 /**
  * @brief Handles the reinitialisation of variables for the heredoc case.

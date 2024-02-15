@@ -6,14 +6,14 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/15 12:29:35 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/15 13:57:45 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 #include "pipex.h"
 
-void	ft_bonus_pipex(t_pipex *pipex)
+void	ft_bonus_pipex(t_pipex *pipex, t_struct *main)
 {
 	int	i;
 
@@ -103,16 +103,14 @@ int		executing(t_struct *main)
 	// ft_pipex_init(&pipex, argc, argv, envp, num_args);
 	ft_pipex_init(&pipex);
 	if (ft_strncmp(main->args_list->input_redirs[0], "<<", 2) == 0)
-	{
 		ft_heredoc(&pipex, main->args_list);
-	}
 	if (main->common->nb_commands < 1)
 	{
 		if (pipex.heredoc == 1)
 			unlink("temp");
 		return (0);
 	}
-	ft_bonus_pipex(&pipex);
+	ft_bonus_pipex(&pipex, main);
 	if (pipex.heredoc == 1 && pipex.infile_fd != -1)
 	{
 		close(pipex.infile_fd);
