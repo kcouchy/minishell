@@ -6,27 +6,39 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:56:04 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 15:38:21 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/15 16:12:30 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 
-static char	*copy_command(t_struct *main, int start, int end)
-{
-	while (start < end)
-	{
-		if (main->parse.types[start] == COMMAND)
-			return (main->parse.argv[start]);
-		start++;
-	}
-	return ("");
-}
+// static char	*copy_command(t_struct *main, int start, int end)
+// {
+// 	while (start < end)
+// 	{
+// 		if (main->parse.types[start] == COMMAND)
+// 			return (main->parse.argv[start]);
+// 		start++;
+// 	}
+// 	return (NULL);
+// }
 
 void	init_arg(t_args *cmd, t_struct *main, int start, int end)
 {
-	//cmd->command_name = "";
-		cmd->command_name = ft_strdup(copy_command(main, start, end));
+	int	s;
+
+	s = start;
+	// if (!copy_command(main, start, end))
+	// 	cmd->command_name = NULL;
+	// else
+	// 	cmd->command_name = ft_strdup(copy_command(main, start, end));
+	cmd->command_name = NULL;
+	while (s < end)
+	{
+		if (main->parse.types[s] == COMMAND)
+			cmd->command_name = main->parse.argv[s];
+		s++;
+	}
 	cmd->flags = fill_type(OPTION, main, start, end);
 	cmd->input_redirs = fill_type(INPUT_REDIR, main, start, end);
 	cmd->input_files = fill_type(INPUT_FILE, main, start, end);
