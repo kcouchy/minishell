@@ -6,7 +6,7 @@
 #    By: lribette <lribette@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
-#    Updated: 2024/02/13 11:05:24 by lribette         ###   ########.fr        #
+#    Updated: 2024/02/15 18:51:59 by lribette         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,9 @@ SRCS =											\
 				Pipex/utils						\
 				Pipex/errors					\
 				Pipex/single_cmd				\
-				minishell						
+				minishell						\
+				prints							\
+				utils							
 
 INC_FILES = -I Pipex/libft
 

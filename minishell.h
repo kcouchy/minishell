@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 12:22:24 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/15 18:51:41 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ typedef struct s_parsing
 
 typedef struct s_common
 {
-	// void	*first_command; //
 	int		nb_commands;
 	char	**envp; //
 }	t_common;
@@ -64,16 +63,16 @@ typedef struct s_common
 typedef struct s_args
 {
 	//echo -n bonjour | cat -e Makefile > test <salut
-	char	*whole_cmd; //cat -e Makefile minishell.h > test
-	char	**command_table; // cat ; -e ; Makefile ; minishell.h 
-	char	*command_name; //cat
-	char	**flags; //-e
-	char	*args; //Makefile minishell.h
-	char	**input_redirs; //< ; <<
-	char	**input_files; //salut
-	char	**output_redirs; //> ; >>
-	char	**output_files; //test
-	int		is_builtin; //0
+	char			*whole_cmd; //cat -e Makefile minishell.h > test
+	char			**command_table; // cat ; -e ; Makefile ; minishell.h 
+	char			*command_name; //cat
+	char			**flags; //-e
+	char			*args; //Makefile minishell.h
+	char			**input_redirs; //< ; <<
+	char			**input_files; //salut
+	char			**output_redirs; //> ; >>
+	char			**output_files; //test
+	int				is_builtin; //0
 	struct s_args	*next; //
 }	t_args;
 
@@ -93,7 +92,7 @@ int		is_separator(char c);
 int		is_space(char c);
 int		check_nothing(char *input);
 int		ft_strcmp(char *s1, char *s2);
-int		is_builtin(char *command);
+void	is_argument_a_command(t_parsing *parse, int i);
 
 /* ******************** Lexing ******************** */
 void	alloc_tables(t_parsing *parse, char *input);
@@ -107,7 +106,12 @@ int		parsing(t_struct *main, char *input);
 void	ft_free_parsing(t_parsing *parse);
 
 /* ************* Parsing to Executing ************** */
-
 t_args	*parsing_to_executing(t_struct *main);
+
+/*prints.c*/
+void	test_parsing(t_parsing *parse);
+void	test_liste_chainee(t_struct *main);
+
+int		is_builtin(char *command);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:56:04 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 17:38:38 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/15 18:48:49 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,3 @@ t_args	*parsing_to_executing(t_struct *main)
 	// n'oublie pas de free la liste chainee!
 	return (cmd);
 }
-

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 11:57:46 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 16:12:54 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/15 18:51:22 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,23 +50,18 @@ int	ft_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
-int	is_builtin(char *command)
+void	is_argument_a_command(t_parsing *parse, int i)
 {
-	if (!command)
-		return (0);
-	if (!ft_strcmp(command, "echo"))
-		return (1);
-	if (!ft_strcmp(command, "cd"))
-		return (1);
-	if (!ft_strcmp(command, "pwd"))
-		return (1);
-	if (!ft_strcmp(command, "export"))
-		return (1);
-	if (!ft_strcmp(command, "unset"))
-		return (1);
-	if (!ft_strcmp(command, "env"))
-		return (1);
-	if (!ft_strcmp(command, "exit"))
-		return (1);
-	return (0);
+	int	j;
+
+	j = i;
+	while (j > -1)
+	{
+		if (parse->types[j] == PIPE)
+			break ;
+		if (parse->types[j] == COMMAND)
+			return ;
+		j--;
+	}
+	parse->types[i] = COMMAND;
 }
