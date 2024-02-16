@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:28:50 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/09 17:18:34 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/15 16:45:01 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	ft_bonus_mid_cmd(t_pipex *pipex)
 	close(pipex->pipe_fd[0]);
 }
 
-void	ft_bonus_forkchild(t_pipex *pipex, int i)
+void	ft_bonus_forkchild(t_pipex *pipex, int i, t_struct *main)
 {
 	pipex->pid = fork();
 	if (pipex->pid == -1)
@@ -110,7 +110,7 @@ void	ft_bonus_forkchild(t_pipex *pipex, int i)
 			ft_bonus_mid_cmd(pipex);
 		if (!pipex->child_args[0])
 			ft_command_fail(pipex);
-		ft_execve(pipex);
+		ft_execve(pipex, main->args_list, main->common);
 		ft_command_fail(pipex);
 	}
 	if (pipex->pid != 0)

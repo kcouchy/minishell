@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/09 17:15:29 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/15 16:39:58 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,7 @@ void	ft_byedoc(t_pipex *pipex)
 
 void	ft_open_fail(t_pipex *pipex)
 {
-	if (pipex->child_args)
-		ft_freetable(pipex->child_args);
+	ft_freetable(pipex->child_args);
 	ft_freetable(pipex->paths);
 	free(pipex->pwd_origin);
 	exit(EXIT_FAILURE);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 22:09:40 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/16 10:40:07 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,16 @@ typedef struct s_common
 typedef struct s_args
 {
 	//echo -n bonjour | cat -e Makefile > test <salut
-	char			*whole_cmd; //cat -e Makefile minishell.h > test
-	char			**command_table; // cat ; -e ; Makefile ; minishell.h 
-	char			*command_name; //cat
-	char			**flags; //-e
-	char			*args; //Makefile minishell.h
-	char			**input_redirs; //< ; <<
-	char			**input_files; //salut
-	char			**output_redirs; //> ; >>
-	char			**output_files; //test
-	int				is_builtin; //0
+	char	*whole_cmd; //cat -e Makefile minishell.h > test
+	char	**command_table; // cat ; -e ; Makefile ; minishell.h 
+	char	*command_name; //"\0" ; NULL ; cat
+	char	**flags; //-e
+	char	*args; //Makefile minishell.h
+	char	**input_redirs; //< ; <<
+	char	**input_files; //salut
+	char	**output_redirs; //> ; >>
+	char	**output_files; //test
+	int		is_builtin; //0
 	struct s_args	*next; //
 }	t_args;
 

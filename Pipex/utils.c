@@ -6,13 +6,13 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:30:14 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/09 12:15:37 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/15 16:39:00 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	**ft_extract_envp(char **envp)
+char	**ft_extract_paths(char **envp)
 {
 	char	**paths;
 	int		i;
@@ -68,25 +68,28 @@ char	*ft_strjoin3(char const *s1, char const *s2, char const *s3)
 	return (output);
 }
 
-void	ft_execve(t_pipex *pipex)
+void	ft_execve(t_pipex *pipex, t_args *args_list, t_common *common)
 {
 	char	*cmd_path;
 	int		i;
 
 	cmd_path = 0;
 	i = 0;
+	// if (cmd is NULL)
+	// 	just free and return everything;
 	while (pipex->paths[i])
 	{
-		if (pipex->child_args[0][0] == '.' || pipex->child_args[0][0] == '/')
-			execve(pipex->child_args[0], pipex->child_args, pipex->envp);
-		cmd_path = ft_strjoin3(pipex->paths[i], "/", pipex->child_args[0]);
-		if (!cmd_path)
+		// should be done in parsing now
+		// if (pipex->child_args[0][0] == '.' || pipex->child_args[0][0] == '/')
+		// 	execve(pipex->child_args[0], pipex->child_args, pipex->envp);
+		cmd_path = ft_strjoin3(pipex->paths[i], "/", args_list->command_name);
+		if (!cmd_path) //replace/move this with something from errors.c -> fatal error
 		{
 			write(STDERR_FILENO, "pipex: malloc failed: cmd_path\n", 31);
 			ft_freetable(pipex->paths);
 			exit(EXIT_FAILURE);
 		}
-		execve(cmd_path, pipex->child_args, pipex->envp);
+		execve(cmd_path, args_list->command_table, common->envp);
 		i++;
 		free(cmd_path);
 	}
