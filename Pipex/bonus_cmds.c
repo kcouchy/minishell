@@ -6,18 +6,20 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:28:50 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/15 16:45:01 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/16 12:31:47 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ft_inputs(t_pipex *pipex)
+void	ft_inputs(t_pipex *pipex, t_args *child_args)
 {
-	if (pipex->heredoc == 1) //will need to change this to if ">>"
+	if (!child_args->input_files && !child_args->input_redirs)
+		return ;
+	if (ft_strcmp(child_args->input_redirs[0], "<<") == 0) //check this once input/output parsing is done
 		pipex->infile_fd = open("/tmp/temp", O_RDONLY);
 	else
-		pipex->infile_fd = open(pipex->infile, O_RDONLY);
+		pipex->infile_fd = open(child_args->input_files[0], O_RDONLY);
 	if (pipex->infile_fd == -1)
 	{
 		write(STDERR_FILENO, "pipex: open failed: input\n", 26);
@@ -30,13 +32,16 @@ void	ft_inputs(t_pipex *pipex)
 	}
 }
 
-void	ft_outputs(t_pipex *pipex)
+void	ft_outputs(t_pipex *pipex, t_args *child_args)
 {
 	int	out_fd;
 
-	if (pipex->heredoc == 1)
+	out_fd = -1;
+	if (!child_args->output_files)
+		return ;
+	if (ft_strcmp(child_args->output_redirs[0], ">>") == 0) //check this once input/output parsing is done
 		out_fd = open(pipex->outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
-	else
+	else if (ft_strcmp(child_args->output_redirs[0], ">") == 0) //check this once input/output parsing is done
 		out_fd = open(pipex->outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (out_fd == -1)
 	{
@@ -50,7 +55,7 @@ void	ft_outputs(t_pipex *pipex)
 	}
 }
 
-void	ft_bonus_last_cmd(t_pipex *pipex)
+void	ft_bonus_last_cmd(t_pipex *pipex, t_args *child_args)
 {
 	close(pipex->pipe_fd[1]);
 	if (dup2(pipex->pipe_fd[0], STDIN_FILENO) == -1)
@@ -59,10 +64,10 @@ void	ft_bonus_last_cmd(t_pipex *pipex)
 		ft_dup2_fail(pipex);
 	}
 	close(pipex->pipe_fd[0]);
-	ft_outputs(pipex);
+	ft_outputs(pipex, child_args);
 }
 
-void	ft_bonus_first_cmd(t_pipex *pipex)
+void	ft_bonus_first_cmd(t_pipex *pipex, t_args *child_args)
 {
 	close(pipex->pipe_fd[0]);
 	if (dup2(pipex->temp_fd_out, STDOUT_FILENO) == -1)
@@ -71,7 +76,7 @@ void	ft_bonus_first_cmd(t_pipex *pipex)
 		ft_dup2_fail(pipex);
 	}
 	close(pipex->temp_fd_out);
-	ft_inputs(pipex);
+	ft_inputs(pipex, child_args);
 }
 
 void	ft_bonus_mid_cmd(t_pipex *pipex)
@@ -91,26 +96,26 @@ void	ft_bonus_mid_cmd(t_pipex *pipex)
 	close(pipex->pipe_fd[0]);
 }
 
-void	ft_bonus_forkchild(t_pipex *pipex, int i, t_struct *main)
+void	ft_bonus_forkchild(t_pipex *pipex, int i, t_args *child_args, t_struct *main)
 {
 	pipex->pid = fork();
 	if (pipex->pid == -1)
 		ft_fork_fail(pipex);
 	if (pipex->pid == 0)
 	{
-		pipex->child_args = ft_split
-			(pipex->args[pipex->commands + 1 + pipex->heredoc - i], ' ');
-		if (!pipex->child_args)
-			ft_parse_fail(pipex);
+		// pipex->child_args = ft_split
+		// 	(pipex->args[pipex->commands + 1 + pipex->heredoc - i], ' ');
+		// if (!pipex->child_args)
+		// 	ft_parse_fail(pipex);
 		if (i == 0)
-			ft_bonus_last_cmd(pipex);
-		else if (i == pipex->commands - 1)
-			ft_bonus_first_cmd(pipex);
-		else if (i > 0 && i < (pipex->commands - 1))
+			ft_bonus_last_cmd(pipex, child_args);
+		else if (i == main->common.nb_commands - 1)
+			ft_bonus_first_cmd(pipex, child_args);
+		else if (i > 0 && i < (main->common.nb_commands - 1))
 			ft_bonus_mid_cmd(pipex);
-		if (!pipex->child_args[0])
+		if (!child_args->command_table[0])
 			ft_command_fail(pipex);
-		ft_execve(pipex, main->args_list, main->common);
+		ft_execve(pipex, child_args, main->common.envp);
 		ft_command_fail(pipex);
 	}
 	if (pipex->pid != 0)

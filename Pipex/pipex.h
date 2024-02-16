@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/15 16:44:59 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/16 12:23:20 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	*ft_strjoin3(char const *s1, char const *s2, char const *s3);
 
 /**
  * @brief Calls execve to replace the current process if found in 'paths'. Takes
- * each path from the 'paths' table of tables (from ft_extract_envp), appends 
+ * each path from the 'paths' table of tables (from ft_extract_paths), appends 
  * the name of the command (from pipex.child_args) to the end (with ft_strjoin3)
  * to create the full command path 'cmd_path'.
  * If execve is successful, the process is replaced. If not, the current 
@@ -98,7 +98,7 @@ char	*ft_strjoin3(char const *s1, char const *s2, char const *s3);
  * @param pipex structure containing pipex->child_args, pipex->paths and 
  * pipex->envp for the execve command.
  */
-void	ft_execve(t_pipex *pipex, t_args *args_list, t_common *common);
+void	ft_execve(t_pipex *pipex, t_args *args_list, char **envp);
 
 /******************************************************************************/
 /* errors.c                                                                   */
@@ -162,9 +162,9 @@ void	ft_fork_fail(t_pipex *pipex);
 /* bonus_cmds.c                                                               */
 /******************************************************************************/
 
-void	ft_inputs(t_pipex *pipex);
+void	ft_inputs(t_pipex *pipex, t_args *child_args);
 
-void	ft_outputs(t_pipex *pipex);
+void	ft_outputs(t_pipex *pipex, t_args *child_args);
 
 /**
  * @brief Identical to base program except for the heredoc case.
@@ -184,7 +184,7 @@ void	ft_outputs(t_pipex *pipex);
  * @param pipex structure containing the tables to be freed in case of error
  * (pipex->paths + pipex->child_args)
  */
-void	ft_bonus_last_cmd(t_pipex *pipex);
+void	ft_bonus_last_cmd(t_pipex *pipex, t_args *child_args);
 
 /**
  * @brief Identical to base program except for the heredoc case.
@@ -198,7 +198,7 @@ void	ft_bonus_last_cmd(t_pipex *pipex);
  * In the heredoc case, the temp file is used, otherwise the name of the input
  * file given in the command is used. Thft_pipe_fail(t_pipex *pipex)
  */
-void	ft_bonus_first_cmd(t_pipex *pipex);
+void	ft_bonus_first_cmd(t_pipex *pipex, t_args *child_args);
 
 /**
  * @brief Not present in base program.
@@ -239,7 +239,7 @@ void	ft_bonus_mid_cmd(t_pipex *pipex);
  * to be freed in case of error (pipex->paths + pipex->child_args).
  * @param i input argument counter
  */
-void	ft_bonus_forkchild(t_pipex *pipex, int i, t_struct *main);
+void	ft_bonus_forkchild(t_pipex *pipex, int i, t_args *child_args, t_struct *main);
 
 /**
  * @brief Creates a wait(NULL) for each of the child processes 
@@ -283,7 +283,7 @@ void	ft_heredoc(t_pipex *pipex, t_args *args_list);
 
 /**
  * @brief Initialises a number of variables in the pipex structure. 
- * The command paths are extracted from envp (ft_extract_envp).
+ * The command paths are extracted from envp (ft_extract_paths).
  * @param pipex Structure to initialise.
  */
 void	ft_pipex_init(t_pipex *pipex, t_struct *main);
@@ -313,6 +313,6 @@ int		executing(t_struct *main);
 /* single_cmd.c                                                               */
 /******************************************************************************/
 
-void	ft_single_cmd(t_pipex *pipex);
+void	ft_single_cmd(t_pipex *pipex, t_args *child_args);
 
 #endif

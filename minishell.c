@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 22:08:58 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/16 11:33:33 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ int	main(int argc, char **argv, char **envp)
 				test_liste_chainee(&main);
 				ft_free_parsing(&main.parse);
 			}
+			executing(&main);
 			ft_structclear(&main.args_list);
-			// executing(&main);
 		}
 	}
 	free_envp(main.common.envp);
