@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:44:46 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 22:10:44 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/16 16:29:24 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,14 @@ void	ft_structclear(t_args **cmd)
 {
 	t_args	*temp;
 
-	while (*cmd)
+	if (*cmd)
 	{
-		temp = (*cmd)->next;
-		_free_command(*cmd);
-		*cmd = temp;
+		while (*cmd)
+		{
+			temp = (*cmd)->next;
+			_free_command(*cmd);
+			*cmd = temp;
+		}
 	}
 }
 
