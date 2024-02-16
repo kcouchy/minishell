@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:30:14 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/16 12:12:16 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/16 18:19:44 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,19 @@ char	**ft_extract_paths(char **envp)
 
 	paths = NULL;
 	i = 0;
-	while (envp[i])
+	if (envp)
 	{
-		if (ft_strncmp("PATH=", envp[i], 5) == 0)
+		while (envp[i])
 		{
-			paths = ft_split(envp[i] + 5, ':');
-			if (!paths)
-				(write(STDERR_FILENO, "pipex: malloc failed: paths\n", 28),
-					exit(EXIT_FAILURE));
+			if (ft_strncmp("PATH=", envp[i], 5) == 0)
+			{
+				paths = ft_split(envp[i] + 5, ':');
+				if (!paths)
+					(write(STDERR_FILENO, "pipex: malloc failed: paths\n", 28),
+						exit(EXIT_FAILURE));
+			}
+			i++;
 		}
-		i++;
 	}
 	if (!paths)
 	{

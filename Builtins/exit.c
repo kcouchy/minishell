@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:50:23 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/15 12:14:55 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/16 17:25:39 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ int	ft_exit(int argc, char **argv, t_pipex *pipex)
 	//this free will obviously need to be modified to handle all cases
 	if (pipex->paths)
 		ft_freetable(pipex->paths);
-	if (pipex->pwd_origin)
-		free(pipex->pwd_origin);
 	if (pipex->heredoc == 1 && pipex->infile_fd != -1)
 	{
 		close(pipex->infile_fd);

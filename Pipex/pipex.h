@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/16 12:23:20 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/16 18:17:10 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,18 @@ typedef struct s_pipex_list
 	int				heredoc;		//boolean to handle heredoc input
 	int				pipe_fd[2];		//holds pipe fds: [0] = read, [1] = write
 	int				temp_fd_out;	//holds write fd between forks (forkchild)
-	int				commands;		//no. of commands
-	char			**args;			//all command structures (argv)
-	char			**child_args;	//all parts of a single command
+	// int				commands;		//no. of commands
+	// char			**args;			//all command structures (argv)
+	// char			**child_args;	//all parts of a single command
 	int				pid;			//current fork id
 	int				pid_last;		//pid of last (1st made) command to return
 	int				exit_code;		//of last command to return in parent
-	char			*infile;		//input file (argv[1])
+	// char			*infile;		//input file (argv[1])
 	int				infile_fd;		//input file fd for heredoc version
-	char			*outfile;		//output file (argv[n])
-	char			**envp;			//envp input
+	// char			*outfile;		//output file (argv[n])
+	// char			**envp;			//envp input
 	char			**paths;		//paths separated from envp PATH variable
-	char			*pwd_origin;	//pwd at launch for backup in builtins
+	// char			*pwd_origin;	//pwd at launch for backup in builtins
 }					t_pipex;
 
 /******************************************************************************/
@@ -125,7 +125,7 @@ void	ft_freetable(char **table);
  * (pipex->child_args[0]), and the tables to be freed:
  * (pipex->paths + pipex->child_args)
  */
-void	ft_command_fail(t_pipex *pipex);
+void	ft_command_fail(t_pipex *pipex, t_args *child_args, t_struct *main);
 
 /**
  * @brief Here because norminette. Called during the ft_(bonus)_forkchild
@@ -134,16 +134,16 @@ void	ft_command_fail(t_pipex *pipex);
  * Relevant table of tables is freed, and the program exited with a FAILURE.
  * @param pipex structure containing the pipex->paths table to be freed.
  */
-void	ft_parse_fail(t_pipex *pipex);
+// void	ft_parse_fail(t_pipex *pipex);
 
 /**
  * @brief Here because norminette. Called during the ft_heredoc function to 
- * handles the error when there is no input given to the terminal (ctrlD, 
+ * handle the error when there is no input given to the terminal (ctrlD, 
  * buffer == NULL).
  * ft_printf used to replicate bash error message for the same case.
  * @param pipex structure containing the pipex->paths table to be freed.
  */
-void	ft_byedoc(t_pipex *pipex);
+void	ft_byedoc(t_pipex *pipex, t_args *child_args);
 
 /**
  * @brief Here because norminette. Called in ft_heredoc to handle the case 
@@ -247,7 +247,7 @@ void	ft_bonus_forkchild(t_pipex *pipex, int i, t_args *child_args, t_struct *mai
  * return before terminating.
  * @param pipex structure containing the number of commands (pipex->commands)
  */
-void	ft_wait_parent(t_pipex *pipex);
+void	ft_wait_parent(t_pipex *pipex, int nb_commands);
 
 /******************************************************************************/
 /* bonus_pipex.c                                                              */
@@ -314,5 +314,11 @@ int		executing(t_struct *main);
 /******************************************************************************/
 
 void	ft_single_cmd(t_pipex *pipex, t_args *child_args);
+
+/******************************************************************************/
+/* Builtins                                                                   */
+/******************************************************************************/
+
+int		ft_tablen(char **tab);
 
 #endif

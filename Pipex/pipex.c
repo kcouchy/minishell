@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bonus_pipex.c                                      :+:      :+:    :+:   */
+/*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/16 12:30:49 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/16 18:35:10 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,11 @@ void	ft_bonus_pipex(t_pipex *pipex, t_struct *main)
 	i = 0;
 	if (main->common.nb_commands == 1)
 	{
-		// pipex->child_args = ft_split
-		// 	(pipex->args[pipex->commands + 1 + pipex->heredoc - i], ' ');
-		// if (!pipex->child_args)
-		// 	ft_parse_fail(pipex);
-
-		if (!child_args->command_name) //equivalent of command is missing - change this to just freeing/exiting without error
-		{
-			printf("here\n");
-			ft_command_fail(pipex);
-		}
+		if (!child_args->command_name) //equivalent of command is missing - as with bash, exits without error
+			return ;
 		ft_single_cmd(pipex, child_args);
 		ft_execve(pipex, child_args, main->common.envp);
-		ft_command_fail(pipex);
+		ft_command_fail(pipex, child_args, main);
 	}
 	else
 	{
@@ -54,7 +46,7 @@ void	ft_bonus_pipex(t_pipex *pipex, t_struct *main)
 			child_args = child_args->next;
 		}
 		if (pipex->pid != 0)
-			ft_wait_parent(pipex);
+			ft_wait_parent(pipex, main->common.nb_commands);
 	}
 }
 
@@ -67,7 +59,7 @@ void	ft_heredoc(t_pipex *pipex, t_args *args_list)
 	pipex->infile_fd = open("/tmp/temp", O_RDWR | O_TRUNC | O_CREAT, 0644);
 	if (pipex->infile_fd == -1)
 	{
-		write(STDERR_FILENO, "pipex: open failed: heredoc\n", 28);
+		write(STDERR_FILENO, "finishell: open failed: heredoc\n", 32);
 		ft_open_fail(pipex);
 	}
 	while (1)
@@ -75,7 +67,7 @@ void	ft_heredoc(t_pipex *pipex, t_args *args_list)
 		write(STDERR_FILENO, "> ", 2);
 		buffer = get_next_line(STDIN_FILENO);
 		if (!buffer)
-			ft_byedoc(pipex);
+			ft_byedoc(pipex, args_list);
 		if (ft_strncmp(buffer, "\n", 1) != 0)
 			if (ft_strncmp(buffer, args_list->input_files[0],
 					(ft_strlen(buffer) - 1)) == 0)
@@ -89,31 +81,22 @@ void	ft_heredoc(t_pipex *pipex, t_args *args_list)
 
 void	ft_pipex_init(t_pipex *pipex, t_struct *main)
 {
-	// pipex->commands = num_args;
-	// pipex->envp = envp;
-	// pipex->args = argv;
-	// pipex->infile = argv[1];
 	pipex->infile_fd = -1;
-	// pipex->outfile = argv[argc - 1];
-	// pipex->child_args = NULL;
 	pipex->temp_fd_out = -1;
 	pipex->heredoc = 0;
-	// pipex->exit_code = 0;
+	pipex->exit_code = 0;
 	pipex->paths = ft_extract_paths(main->common.envp);
-	// pipex->pwd_origin = getcwd(NULL, 0);
 }
 
 int		executing(t_struct *main)
 {
 	t_pipex	pipex;
 
-	// ft_pipex_init(&pipex, argc, argv, envp, num_args);
 	ft_pipex_init(&pipex, main);
-	printf("%s", main->args_list->whole_cmd);
-	printf("%s", main->args_list->whole_cmd);
 	if (main->args_list->input_redirs) //will need to loop this to do as many heredocs as there are for each command (nodes on args_list)
-		if (ft_strncmp(main->args_list->input_redirs[0], "<<", 2) == 0)
+		if (ft_strcmp(main->args_list->input_redirs[0], "<<") == 0)
 			ft_heredoc(&pipex, main->args_list);
+			//will have to run the heredoc on loop through the structures in args_list, amd through input_args
 	if (main->common.nb_commands < 1)
 	{
 		if (pipex.heredoc == 1)
@@ -127,7 +110,6 @@ int		executing(t_struct *main)
 		unlink("temp");
 	}
 	ft_freetable(pipex.paths);
-	free(pipex.pwd_origin);
 	// printf("---------%d--------\n", pipex.exit_code);
 	return (pipex.exit_code);
 }

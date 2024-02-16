@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/16 11:33:33 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/16 18:53:08 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGINT, &sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
 	main.common.envp = finishell_env(envp);
+	//will need to implement pwd_origin = getcwd(NULL, 0);
 	while (1)
 	{
 		input = readline(GREEN"finishell \e[5m🤯"RESET GREEN"> "RESET);
@@ -74,8 +75,8 @@ int	main(int argc, char **argv, char **envp)
 			{
 				test_liste_chainee(&main);
 				ft_free_parsing(&main.parse);
+				executing(&main);
 			}
-			executing(&main);
 			ft_structclear(&main.args_list);
 		}
 	}

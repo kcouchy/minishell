@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bonus_cmds.c                                       :+:      :+:    :+:   */
+/*   pipex_cmds.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:28:50 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/16 12:31:47 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/16 18:28:51 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_inputs(t_pipex *pipex, t_args *child_args)
 {
-	if (!child_args->input_files && !child_args->input_redirs)
+	if (!child_args->input_files)
 		return ;
 	if (ft_strcmp(child_args->input_redirs[0], "<<") == 0) //check this once input/output parsing is done
 		pipex->infile_fd = open("/tmp/temp", O_RDONLY);
@@ -40,9 +40,9 @@ void	ft_outputs(t_pipex *pipex, t_args *child_args)
 	if (!child_args->output_files)
 		return ;
 	if (ft_strcmp(child_args->output_redirs[0], ">>") == 0) //check this once input/output parsing is done
-		out_fd = open(pipex->outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		out_fd = open(child_args->output_files[0], O_WRONLY | O_APPEND | O_CREAT, 0644);
 	else if (ft_strcmp(child_args->output_redirs[0], ">") == 0) //check this once input/output parsing is done
-		out_fd = open(pipex->outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		out_fd = open(child_args->output_files[0], O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (out_fd == -1)
 	{
 		write(STDERR_FILENO, "pipex: open failed: output\n", 27);
@@ -103,10 +103,11 @@ void	ft_bonus_forkchild(t_pipex *pipex, int i, t_args *child_args, t_struct *mai
 		ft_fork_fail(pipex);
 	if (pipex->pid == 0)
 	{
-		// pipex->child_args = ft_split
-		// 	(pipex->args[pipex->commands + 1 + pipex->heredoc - i], ' ');
-		// if (!pipex->child_args)
-		// 	ft_parse_fail(pipex);
+		if (!child_args->command_name) //equivalent of command is missing - as with bash, exits without error
+		{
+			ft_freetable(pipex->paths);
+			exit(EXIT_SUCCESS);
+		}
 		if (i == 0)
 			ft_bonus_last_cmd(pipex, child_args);
 		else if (i == main->common.nb_commands - 1)
@@ -114,9 +115,9 @@ void	ft_bonus_forkchild(t_pipex *pipex, int i, t_args *child_args, t_struct *mai
 		else if (i > 0 && i < (main->common.nb_commands - 1))
 			ft_bonus_mid_cmd(pipex);
 		if (!child_args->command_table[0])
-			ft_command_fail(pipex);
+			ft_command_fail(pipex, child_args, main);
 		ft_execve(pipex, child_args, main->common.envp);
-		ft_command_fail(pipex);
+		ft_command_fail(pipex, child_args, main);
 	}
 	if (pipex->pid != 0)
 		if (pipex->temp_fd_out != -1)
@@ -125,7 +126,7 @@ void	ft_bonus_forkchild(t_pipex *pipex, int i, t_args *child_args, t_struct *mai
 		pipex->temp_fd_out = pipex->pipe_fd[1];
 }
 
-void	ft_wait_parent(t_pipex *pipex)
+void	ft_wait_parent(t_pipex *pipex, int nb_commands)
 {
 	int	i;
 
@@ -133,7 +134,7 @@ void	ft_wait_parent(t_pipex *pipex)
 	waitpid(pipex->pid_last, &pipex->exit_code, 0);
 	//will need to convert to 1/0 from EXIT_SUCCESS/FAILURE:
 	pipex->exit_code = WEXITSTATUS(pipex->exit_code);
-	while (i < pipex->commands)
+	while (i < nb_commands)
 	{
 		wait(NULL);
 		i++;
