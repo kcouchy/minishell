@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:30:14 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/15 16:39:00 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/16 18:19:44 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,19 @@ char	**ft_extract_paths(char **envp)
 
 	paths = NULL;
 	i = 0;
-	while (envp[i])
+	if (envp)
 	{
-		if (ft_strncmp("PATH=", envp[i], 5) == 0)
+		while (envp[i])
 		{
-			paths = ft_split(envp[i] + 5, ':');
-			if (!paths)
-				(write(STDERR_FILENO, "pipex: malloc failed: paths\n", 28),
-					exit(EXIT_FAILURE));
+			if (ft_strncmp("PATH=", envp[i], 5) == 0)
+			{
+				paths = ft_split(envp[i] + 5, ':');
+				if (!paths)
+					(write(STDERR_FILENO, "pipex: malloc failed: paths\n", 28),
+						exit(EXIT_FAILURE));
+			}
+			i++;
 		}
-		i++;
 	}
 	if (!paths)
 	{
@@ -68,7 +71,7 @@ char	*ft_strjoin3(char const *s1, char const *s2, char const *s3)
 	return (output);
 }
 
-void	ft_execve(t_pipex *pipex, t_args *args_list, t_common *common)
+void	ft_execve(t_pipex *pipex, t_args *child_arg, char **envp)
 {
 	char	*cmd_path;
 	int		i;
@@ -82,14 +85,14 @@ void	ft_execve(t_pipex *pipex, t_args *args_list, t_common *common)
 		// should be done in parsing now
 		// if (pipex->child_args[0][0] == '.' || pipex->child_args[0][0] == '/')
 		// 	execve(pipex->child_args[0], pipex->child_args, pipex->envp);
-		cmd_path = ft_strjoin3(pipex->paths[i], "/", args_list->command_name);
+		cmd_path = ft_strjoin3(pipex->paths[i], "/", child_arg->command_name);
 		if (!cmd_path) //replace/move this with something from errors.c -> fatal error
 		{
 			write(STDERR_FILENO, "pipex: malloc failed: cmd_path\n", 31);
 			ft_freetable(pipex->paths);
 			exit(EXIT_FAILURE);
 		}
-		execve(cmd_path, args_list->command_table, common->envp);
+		execve(cmd_path, child_arg->command_table, envp);
 		i++;
 		free(cmd_path);
 	}

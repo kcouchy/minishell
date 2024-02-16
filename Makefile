@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lribette <lribette@student.42.fr>          +#+  +:+       +#+         #
+#    By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
-#    Updated: 2024/02/15 21:46:49 by lribette         ###   ########.fr        #
+#    Updated: 2024/02/16 18:20:20 by kcouchma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ SRCS =											\
 				Builtins/exit					\
 				Builtins/export					\
 				Builtins/pwd					\
+				Builtins/builtins_utils			\
 				Parsing/Lexing/alloc_tables		\
 				Parsing/Lexing/check_commands	\
 				Parsing/Lexing/utils			\
@@ -24,11 +25,11 @@ SRCS =											\
 				Parsing/fill_type				\
 				Parsing/parsing_to_executing	\
 				Parsing/parsing					\
-				Pipex/bonus_pipex				\
-				Pipex/bonus_cmds				\
-				Pipex/utils						\
-				Pipex/errors					\
-				Pipex/single_cmd				\
+				Pipex/pipex						\
+				Pipex/pipex_cmds				\
+				Pipex/pipex_utils				\
+				Pipex/pipex_errors				\
+				Pipex/pipex_single_cmd			\
 				ft_free							\
 				minishell						\
 				prints							\

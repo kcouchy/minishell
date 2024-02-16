@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:10:57 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/15 12:14:52 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/16 17:35:28 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,17 @@
 // if export (variable=value), then add "variable=value" to env
 // in both cases, overwrite variable if present, add if not
 
-int ft_export(int argc, char **argv, t_pipex *pipex)
+int ft_export(t_struct *main)
 {
 	int	i;
 
 	i = 0;
-	(void)argv;
-	if (argc == 1)
+	if (ft_tablen(main->args_list->command_table) == 1)
 	{
-		while(pipex->envp[i])
+		while(main->common.envp[i])
 		{
-			if (pipex->envp[i][0] != '_')
-				write(STDOUT_FILENO, pipex->envp[i], ft_strlen(pipex->envp[i]));
+			if (main->common.envp[i][0] != '_')
+				write(STDOUT_FILENO, main->common.envp[i], ft_strlen(main->common.envp[i]));
 			i++;
 		}
 	}

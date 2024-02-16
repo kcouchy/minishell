@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bonus_pipex.c                                      :+:      :+:    :+:   */
+/*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/16 10:38:54 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/16 18:35:10 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,43 +15,38 @@
 
 void	ft_bonus_pipex(t_pipex *pipex, t_struct *main)
 {
-	int	i;
+	int		i;
+	t_args	*child_args;
 
+	child_args = main->args_list;
 	i = 0;
-	if (pipex->commands == 1)
+	if (main->common.nb_commands == 1)
 	{
-		// pipex->child_args = ft_split
-		// 	(pipex->args[pipex->commands + 1 + pipex->heredoc - i], ' ');
-		// if (!pipex->child_args)
-		// 	ft_parse_fail(pipex);
-
-		if (!main->args_list->command_name) //equivalent of command is missing - change this to just exiting without error
-		{
-			printf("here\n");
-			ft_command_fail(pipex);
-		}
-		ft_single_cmd(pipex);
-		ft_execve(pipex, main->args_list, main->common);
-		ft_command_fail(pipex);
+		if (!child_args->command_name) //equivalent of command is missing - as with bash, exits without error
+			return ;
+		ft_single_cmd(pipex, child_args);
+		ft_execve(pipex, child_args, main->common.envp);
+		ft_command_fail(pipex, child_args, main);
 	}
 	else
 	{
-		while (i < pipex->commands)
+		while (child_args)
 		{
-			if (i < (pipex->commands - 1))
+			if (i < (main->common.nb_commands - 1))
 			{
 				if (pipe(pipex->pipe_fd) == -1)
 					ft_pipe_fail(pipex);
 			}
-			ft_bonus_forkchild(pipex, i, main);
+			ft_bonus_forkchild(pipex, i, child_args, main);
 			if (i == 0)
 				pipex->pid_last = pipex->pid;
-			if (i < (pipex->commands - 1))
+			if (i < (main->common.nb_commands - 1))
 				close(pipex->pipe_fd[0]);
 			i++;
+			child_args = child_args->next;
 		}
 		if (pipex->pid != 0)
-			ft_wait_parent(pipex);
+			ft_wait_parent(pipex, main->common.nb_commands);
 	}
 }
 
@@ -64,7 +59,7 @@ void	ft_heredoc(t_pipex *pipex, t_args *args_list)
 	pipex->infile_fd = open("/tmp/temp", O_RDWR | O_TRUNC | O_CREAT, 0644);
 	if (pipex->infile_fd == -1)
 	{
-		write(STDERR_FILENO, "pipex: open failed: heredoc\n", 28);
+		write(STDERR_FILENO, "finishell: open failed: heredoc\n", 32);
 		ft_open_fail(pipex);
 	}
 	while (1)
@@ -72,7 +67,7 @@ void	ft_heredoc(t_pipex *pipex, t_args *args_list)
 		write(STDERR_FILENO, "> ", 2);
 		buffer = get_next_line(STDIN_FILENO);
 		if (!buffer)
-			ft_byedoc(pipex);
+			ft_byedoc(pipex, args_list);
 		if (ft_strncmp(buffer, "\n", 1) != 0)
 			if (ft_strncmp(buffer, args_list->input_files[0],
 					(ft_strlen(buffer) - 1)) == 0)
@@ -86,30 +81,23 @@ void	ft_heredoc(t_pipex *pipex, t_args *args_list)
 
 void	ft_pipex_init(t_pipex *pipex, t_struct *main)
 {
-	// pipex->commands = num_args;
-	// pipex->envp = envp;
-	// pipex->args = argv;
-	// pipex->infile = argv[1];
 	pipex->infile_fd = -1;
-	// pipex->outfile = argv[argc - 1];
-	// pipex->child_args = NULL;
-	// pipex->temp_fd_out = -1;
+	pipex->temp_fd_out = -1;
 	pipex->heredoc = 0;
-	// pipex->exit_code = 0;
-	pipex->paths = ft_extract_paths(main->common->envp);
-	// pipex->pwd_origin = getcwd(NULL, 0);
+	pipex->exit_code = 0;
+	pipex->paths = ft_extract_paths(main->common.envp);
 }
 
 int		executing(t_struct *main)
 {
 	t_pipex	pipex;
 
-	// ft_pipex_init(&pipex, argc, argv, envp, num_args);
 	ft_pipex_init(&pipex, main);
-	if (main->args_list->input_redirs)
-		if (ft_strncmp(main->args_list->input_redirs[0], "<<", 2) == 0)
+	if (main->args_list->input_redirs) //will need to loop this to do as many heredocs as there are for each command (nodes on args_list)
+		if (ft_strcmp(main->args_list->input_redirs[0], "<<") == 0)
 			ft_heredoc(&pipex, main->args_list);
-	if (main->common->nb_commands < 1)
+			//will have to run the heredoc on loop through the structures in args_list, amd through input_args
+	if (main->common.nb_commands < 1)
 	{
 		if (pipex.heredoc == 1)
 			unlink("temp");
@@ -122,7 +110,6 @@ int		executing(t_struct *main)
 		unlink("temp");
 	}
 	ft_freetable(pipex.paths);
-	free(pipex.pwd_origin);
 	// printf("---------%d--------\n", pipex.exit_code);
 	return (pipex.exit_code);
 }
