@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:44:46 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/16 16:29:24 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/17 09:21:56 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ static void	_free_table(char	**tab)
 			free(tab[i]);
 			i++;
 		}
+		free(tab);
 	}
-	free(tab);
 }
 
 static void	_free_command(t_args *cmd)

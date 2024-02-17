@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   lexing_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 11:57:46 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 18:51:22 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/17 10:15:40 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	is_separator(char c)
 {
-	if (c == '<' || c == '>' || c == '|' || c == '=' || c == ' ')
+	if (c == '<' || c == '>' || c == '|' /*|| c == '=' */
+		|| is_space(c))
 		return (1);
 	return (0);
 }
@@ -26,18 +27,11 @@ int	is_space(char c)
 	return (0);
 }
 
-int	check_nothing(char *input)
+int	is_quote(char c)
 {
-	int	i;
-
-	i = 0;
-	while (input[i])
-	{
-		if (!is_space(input[i]))
-			return (0);
-		i++;
-	}
-	return (1);
+	if (c == '"' || c == '\'')
+		return (1);
+	return (0);
 }
 
 int	ft_strcmp(char *s1, char *s2)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/16 10:40:07 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/17 10:17:55 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ typedef struct s_struct
 /* ******************** utils.c ******************** */
 int		is_separator(char c);
 int		is_space(char c);
-int		check_nothing(char *input);
+int		is_quote(char c);
 int		ft_strcmp(char *s1, char *s2);
 void	is_argument_a_command(t_parsing *parse, int i);
 
@@ -103,6 +103,7 @@ int		check_commands(t_parsing *parse);
 void	fill_strings(t_args *cmd, t_struct *main, int start, int end);
 char	**fill_type(int type, t_struct *main, int start, int end);
 char	**fill_table(t_struct *main, int start, int end);
+int		check_nothing(char *input);
 int		parsing(t_struct *main, char *input);
 
 /*ft_free.c*/

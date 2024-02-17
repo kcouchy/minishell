@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+         #
+#    By: lribette <lribette@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
-#    Updated: 2024/02/16 18:20:20 by kcouchma         ###   ########.fr        #
+#    Updated: 2024/02/17 09:20:17 by lribette         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ SRCS =											\
 				Builtins/builtins_utils			\
 				Parsing/Lexing/alloc_tables		\
 				Parsing/Lexing/check_commands	\
-				Parsing/Lexing/utils			\
+				Parsing/Lexing/lexing_utils		\
 				Parsing/fill_strings			\
 				Parsing/fill_type				\
 				Parsing/parsing_to_executing	\
