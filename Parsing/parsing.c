@@ -6,13 +6,11 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/17 20:46:10 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/18 09:39:36 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
-
-//int	number_of_quotes()
 
 int	check_nothing(char *input)
 {
@@ -58,6 +56,7 @@ int	parsing(t_struct *main, char *input)
 // si la ligne est tres longue -> bug d'affichage avec readline qui va recommencer au debut de la ligne
 // regarder tous les mallocs
 // ecrire les commentaires de la bibliotheque
+// ./minishell
 
 // echo -n -nnn bonjour les amis -n > test.txt | cat -e < test.txt >bonjour.txt                 >salut.txt
 // echo -n bonjour -n -nn | cat -e Makefile main.c parsing.c > test.txt

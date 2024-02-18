@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/17 10:17:55 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/18 10:54:35 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ int		ft_strcmp(char *s1, char *s2);
 void	is_argument_a_command(t_parsing *parse, int i);
 
 /* ******************** Lexing ******************** */
+int		what_type(t_parsing *parse, char *input, int i, int separator);
 void	alloc_tables(t_parsing *parse, char *input);
 int		check_commands(t_parsing *parse);
 
