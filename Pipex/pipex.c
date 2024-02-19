@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/16 18:35:10 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:57:58 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,40 +20,49 @@ void	ft_bonus_pipex(t_pipex *pipex, t_struct *main)
 
 	child_args = main->args_list;
 	i = 0;
-	if (main->common.nb_commands == 1)
+	// if (main->common.nb_commands == 1)
+	// 	ft_single_cmd(pipex, child_args, main);
+	// else
+	// {
+	while (child_args)
 	{
-		if (!child_args->command_name) //equivalent of command is missing - as with bash, exits without error
-			return ;
-		ft_single_cmd(pipex, child_args);
-		ft_execve(pipex, child_args, main->common.envp);
-		ft_command_fail(pipex, child_args, main);
-	}
-	else
-	{
-		while (child_args)
+		if (i < (main->common.nb_commands - 1))
 		{
-			if (i < (main->common.nb_commands - 1))
-			{
-				if (pipe(pipex->pipe_fd) == -1)
-					ft_pipe_fail(pipex);
-			}
-			ft_bonus_forkchild(pipex, i, child_args, main);
-			if (i == 0)
-				pipex->pid_last = pipex->pid;
-			if (i < (main->common.nb_commands - 1))
-				close(pipex->pipe_fd[0]);
-			i++;
-			child_args = child_args->next;
+			if (pipe(pipex->pipe_fd) == -1)
+				ft_pipe_fail(pipex);
 		}
-		if (pipex->pid != 0)
-			ft_wait_parent(pipex, main->common.nb_commands);
+		ft_bonus_forkchild(pipex, i, child_args, main);
+		if (i == 0)
+			pipex->pid_last = pipex->pid;
+		if (i < (main->common.nb_commands - 1))
+			close(pipex->pipe_fd[0]);
+		i++;
+		child_args = child_args->next;
 	}
+	if (pipex->pid != 0)
+		ft_wait_parent(pipex, main->common.nb_commands);
+	// }
+}
+
+void	sigint_handler_hd(int signal)
+{
+	g_signal = 2;
+	if (signal == SIGINT)
+	{
+		rl_on_new_line(); //needed to reshow prompt
+		rl_replace_line("", 1); //empties readline buffer in case there's something before the ^C
+		write(1, "\n", 1);
+		// rl_redisplay(); //effectively forces the prompt to redisplay before you type
+	}
+	//set exitcode to 130 (will need a global variable to stock this)
 }
 
 void	ft_heredoc(t_pipex *pipex, t_args *args_list)
 {
 	char	*buffer;
 
+	// will need to change this input_files[0] to a limiter variable once multiple redirections are done
+	signal(SIGINT, &sigint_handler_hd);
 	buffer = NULL;
 	pipex->heredoc = 1;
 	pipex->infile_fd = open("/tmp/temp", O_RDWR | O_TRUNC | O_CREAT, 0644);
@@ -66,17 +75,31 @@ void	ft_heredoc(t_pipex *pipex, t_args *args_list)
 	{
 		write(STDERR_FILENO, "> ", 2);
 		buffer = get_next_line(STDIN_FILENO);
-		if (!buffer)
+		// buffer = readline("> ");
+		if (!buffer)// ctrl D
+		{
 			ft_byedoc(pipex, args_list);
-		if (ft_strncmp(buffer, "\n", 1) != 0)
+			break ;
+		}
+		else if (ft_strncmp(buffer, "\n", 1) != 0)
 			if (ft_strncmp(buffer, args_list->input_files[0],
 					(ft_strlen(buffer) - 1)) == 0)
 				break ;
 		write(pipex->infile_fd, buffer, ft_strlen(buffer));
+		if (args_list->input_files[0][0] == '\0' && ft_strncmp(buffer, "\n", 1) == 0) // should handle limiter of "", to end the heredoc
+			break;
+		if (g_signal == 2)
+		{
+			close(pipex->infile_fd);
+			pipex->infile_fd = open("/tmp/temp", O_RDWR | O_TRUNC | O_CREAT, 0644);
+			// write(STDERR_FILENO, "OK", 2);
+			break ;
+		}
 		free(buffer);
 	}
 	free(buffer);
 	close(pipex->infile_fd);
+	// signal(SIGINT, &sigint_handler);
 }
 
 void	ft_pipex_init(t_pipex *pipex, t_struct *main)
