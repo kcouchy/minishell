@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/18 10:54:35 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/19 18:02:10 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,6 @@ typedef struct s_parsing
 	char	**argv;
 	int		*types;
 	int		number_of_commands;
-	int		nb_of_inputs;
-	int		nb_of_outputs;
-	int		nb_of_flags;
 	int		error;
 }	t_parsing;
 
@@ -58,22 +55,21 @@ typedef struct s_common
 {
 	int		nb_commands;
 	char	**envp;
-	//int		already_freed;
 }	t_common;
 
 typedef struct s_args
 {
 	//echo -n bonjour | cat -e Makefile > test <salut
-	char	*whole_cmd; //cat -e Makefile minishell.h > test
-	char	**command_table; // cat ; -e ; Makefile ; minishell.h 
-	char	*command_name; //"\0" ; NULL ; cat
-	char	**flags; //-e
-	char	*args; //Makefile minishell.h
-	char	**input_redirs; //< ; <<
-	char	**input_files; //salut
-	char	**output_redirs; //> ; >>
-	char	**output_files; //test
-	int		is_builtin; //0
+	char			*whole_cmd; //cat -e Makefile minishell.h > test
+	char			**command_table; // cat ; -e ; Makefile ; minishell.h 
+	char			*command_name; //"\0" ; NULL ; cat
+	char			**flags; //-e
+	char			*args; //Makefile minishell.h
+	char			**input_redirs; //< ; <<
+	char			**input_files; //salut
+	char			**output_redirs; //> ; >>
+	char			**output_files; //test
+	int				is_builtin; //0
 	struct s_args	*next; //
 }	t_args;
 
@@ -82,6 +78,7 @@ typedef struct s_struct
 	t_parsing	parse;
 	t_common	common;
 	t_args		*args_list;
+	// exit_code
 }	t_struct;
 
 /******************************************************************************/
@@ -101,6 +98,7 @@ void	alloc_tables(t_parsing *parse, char *input);
 int		check_commands(t_parsing *parse);
 
 /* ******************** Parsing ******************** */
+char	*ft_argjoin(char *s1, char *s2);
 void	fill_strings(t_args *cmd, t_struct *main, int start, int end);
 char	**fill_type(int type, t_struct *main, int start, int end);
 char	**fill_table(t_struct *main, int start, int end);

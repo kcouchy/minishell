@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/17 09:53:58 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/19 12:15:07 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,10 @@ int	main(int argc, char **argv, char **envp)
 	{
 		input = readline(GREEN"finishell \e[5m🤯"RESET GREEN"> "RESET);
 		if (!input)
+		{
+			write(1, "\n", 1);
 			break ;
+		}
 		if (parsing(&main, input))
 		{
 			if (!main.parse.error)

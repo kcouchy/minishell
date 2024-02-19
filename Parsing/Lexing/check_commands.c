@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:12:01 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 18:50:22 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/18 11:08:31 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,9 @@ static void	_file(t_parsing *parse, int i)
 	{
 		parse->types[i - 1] = _which_redirection(parse, i - 1);
 		if (parse->types[i - 1] == INPUT_REDIR)
-		{
 			parse->types[i] = INPUT_FILE;
-			parse->nb_of_inputs++;
-		}
 		if (parse->types[i - 1] == OUTPUT_REDIR)
-		{
 			parse->types[i] = OUTPUT_FILE;
-			parse->nb_of_outputs++;
-		}
 	}
 }
 
@@ -58,10 +52,7 @@ static int	_not_separator(t_parsing *parse, int i)
 	{
 		is_argument_a_command(parse, i);
 		if (parse->argv[i][0] == '-' && parse->types[i] != COMMAND)
-		{
-			parse->nb_of_flags++;
 			parse->types[i] = OPTION;
-		}
 		else if (parse->argv[i][0] != '-' && parse->types[i] != COMMAND)
 			parse->types[i] = ARGUMENT;
 		_file(parse, i);

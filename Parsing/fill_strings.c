@@ -6,13 +6,13 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:41:09 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 17:35:22 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:43:12 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 
-static char	*_ft_argjoin(char *s1, char *s2)
+char	*ft_argjoin(char *s1, char *s2)
 {
 	char	*output;
 	int		i;
@@ -67,10 +67,10 @@ void	fill_strings(t_args *cmd, t_struct *main, int start, int end)
 	cmd->args = "";
 	while (start != end)
 	{
-		cmd->whole_cmd = _ft_argjoin(cmd->whole_cmd, main->parse.argv[start]);
+		cmd->whole_cmd = ft_argjoin(cmd->whole_cmd, main->parse.argv[start]);
 		if (main->parse.types[start] == ARGUMENT)
 		{
-			cmd->args = _ft_argjoin(cmd->args, main->parse.argv[start]);
+			cmd->args = ft_argjoin(cmd->args, main->parse.argv[start]);
 			number_of_args++;
 		}
 		start++;

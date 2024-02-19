@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:56:04 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 18:48:49 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/18 11:06:07 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ void	init_arg(t_args *cmd, t_struct *main, int start, int end)
 	fill_strings(cmd, main, start, end);
 	cmd->command_table = fill_table(main, start, end);
 	cmd->is_builtin = is_builtin(cmd->command_name);
-	//int		nb_of_inputs;
-	//int		nb_of_outputs;
 }
 
 t_args	*ft_structnew(t_struct *main, int start, int end)
