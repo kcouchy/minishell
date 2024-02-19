@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/16 18:17:10 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/19 16:07:41 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,15 +126,6 @@ void	ft_freetable(char **table);
  * (pipex->paths + pipex->child_args)
  */
 void	ft_command_fail(t_pipex *pipex, t_args *child_args, t_struct *main);
-
-/**
- * @brief Here because norminette. Called during the ft_(bonus)_forkchild
- * function if the ft_split function fails to create the list of child_args 
- * from the input. 
- * Relevant table of tables is freed, and the program exited with a FAILURE.
- * @param pipex structure containing the pipex->paths table to be freed.
- */
-// void	ft_parse_fail(t_pipex *pipex);
 
 /**
  * @brief Here because norminette. Called during the ft_heredoc function to 
@@ -313,7 +304,7 @@ int		executing(t_struct *main);
 /* single_cmd.c                                                               */
 /******************************************************************************/
 
-void	ft_single_cmd(t_pipex *pipex, t_args *child_args);
+void	ft_single_cmd(t_pipex *pipex, t_args *child_args, t_struct *main);
 
 /******************************************************************************/
 /* Builtins                                                                   */

@@ -6,16 +6,16 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/16 10:40:07 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:22:45 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define RED "\x1b[38;2;255;0;0;1mfinishell 🤬:"
-# define GREEN "\x1b[38;2;0;150;0;1m"
-# define RESET "\e[0m"
+/******************************************************************************/
+/* Headers                                                                    */
+/******************************************************************************/
 
 # include <stdio.h>
 # include <unistd.h>
@@ -24,6 +24,14 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "./Pipex/libft/libft.h"
+
+/******************************************************************************/
+/* Variables                                                                  */
+/******************************************************************************/
+
+# define RED "\x1b[38;2;255;0;0;1mfinishell 🤬:"
+# define GREEN "\x1b[38;2;0;150;0;1m"
+# define RESET "\e[0m"
 
 typedef enum e_type
 {
@@ -41,6 +49,16 @@ typedef enum e_type
 	OUTPUT_FILE,
 	EQUAL
 }	t_type;
+
+/******************************************************************************/
+/* Globals                                                                    */
+/******************************************************************************/
+
+extern volatile int g_signal;
+
+/******************************************************************************/
+/* Structures                                                                 */
+/******************************************************************************/
 
 typedef struct s_parsing
 {
@@ -65,7 +83,7 @@ typedef struct s_args
 {
 	//echo -n bonjour | cat -e Makefile > test <salut
 	char	*whole_cmd; //cat -e Makefile minishell.h > test
-	char	**command_table; // cat ; -e ; Makefile ; minishell.h 
+	char	**command_table; // cat ; -e ; Makefile ; minishell.h
 	char	*command_name; //"\0" ; NULL ; cat
 	char	**flags; //-e
 	char	*args; //Makefile minishell.h
@@ -85,7 +103,7 @@ typedef struct s_struct
 }	t_struct;
 
 /******************************************************************************/
-/* Parsing	                                                                  */
+/* Parsing                                                                    */
 /******************************************************************************/
 
 /* ******************** utils.c ******************** */
@@ -118,5 +136,6 @@ void	test_parsing(t_parsing *parse);
 void	test_liste_chainee(t_struct *main);
 
 int		is_builtin(char *command);
+void	sigint_handler(int signal);
 
 #endif

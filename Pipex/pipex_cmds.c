@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:28:50 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/16 18:28:51 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/19 10:46:05 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,9 @@ void	ft_bonus_forkchild(t_pipex *pipex, int i, t_args *child_args, t_struct *mai
 			ft_freetable(pipex->paths);
 			exit(EXIT_SUCCESS);
 		}
-		if (i == 0)
+		if (main->common.nb_commands == 1 && i == 0)
+			ft_single_cmd(pipex, child_args, main);
+		else if (main->common.nb_commands > 1 && i == 0)
 			ft_bonus_last_cmd(pipex, child_args);
 		else if (i == main->common.nb_commands - 1)
 			ft_bonus_first_cmd(pipex, child_args);

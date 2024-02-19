@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/16 18:53:08 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:25:25 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 void	sigint_handler(int signal)
 {
+	// g_signal = 1;
 	if (signal == SIGINT)
 	{
 		write(1, "\n", 1);
@@ -48,11 +49,14 @@ char	**finishell_env(char **envp)
 	return (f_envp);
 }
 
+volatile int			g_signal;
+
 int	main(int argc, char **argv, char **envp)
 {
 	char		*input;
 	t_struct	main;
 
+	g_signal = 0;
 	(void)argv;
 	if (argc != 1)
 	{
@@ -80,6 +84,7 @@ int	main(int argc, char **argv, char **envp)
 			ft_structclear(&main.args_list);
 		}
 	}
+	// free (input);
 	free_envp(main.common.envp);
 	return (0);
 }
