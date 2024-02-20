@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 13:45:14 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/16 15:45:21 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/20 10:28:07 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@
 /* includes                                                                   */
 /******************************************************************************/
 
-# include <unistd.h>	/*size_t (unsigned long)*/
-# include <stdlib.h>	/*malloc/free/calloc etc*/
-# include <fcntl.h>		/*open*/
-# include <stdio.h>		/*printf*/
-# include <stdarg.h>	/*va_arg macros*/
+# include <unistd.h>			/*size_t (unsigned long)*/
+# include <stdlib.h>			/*malloc/free/calloc etc*/
+# include <fcntl.h>				/*open*/
+# include <stdio.h>				/*printf*/
+# include <stdarg.h>			/*va_arg macros*/
+# include "../../minishell.h"
 
 /******************************************************************************/
 /* variables                                                                  */

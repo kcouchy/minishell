@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 14:19:54 by kcouchma          #+#    #+#             */
-/*   Updated: 2023/11/13 10:31:59 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/20 11:36:58 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,27 @@ char	*ft_read2buff(char *line, char *buffer, int fd)
 	return (line);
 }
 
+void	sigint_handler_gnl(int signal)
+{
+	g_signal = 2;
+	if (signal == SIGINT)
+	{
+		// rl_on_new_line(); //needed to reshow prompt
+		// rl_replace_line("", 1); //empties readline buffer in case there's something before the ^C
+		write(STDIN_FILENO, "\n", 1);
+		// printf("\n");
+		// rl_redisplay(); //effectively forces the prompt to redisplay before you type
+	}
+	//set exitcode to 130 (will need a global variable to stock this)
+}
+
 char	*get_next_line(int fd)
 {
 	static char	t_buffer[FD_MAX][BUFFER_SIZE + 1] = {0};
 	char		*buffer;
 	char		*line;
 
+	signal(SIGINT, &sigint_handler_gnl);
 	buffer = t_buffer[fd];
 	line = ft_gnl_calloc(1, sizeof(char));
 	if (line == NULL)
