@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/20 15:20:33 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:29:28 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,34 @@ int	check_nothing(char *input)
 	return (1);
 }
 
+int	check_error(t_parsing *parse, char *input, int should_free_tables)
+{
+	if (parse->error)
+	{
+		free(input);
+		if (should_free_tables)
+			ft_free_parsing(parse);
+		return (1);
+	}
+	return (0);
+}
+
 int	parsing(t_struct *main, char *input)
 {
-	// if (check_nothing(input))
-	// 	return (0);
 	main->parse.number_of_commands = 1;
 	main->parse.error = 0;
 	input = check_variables(&main->parse.var, main->common.envp, input);
 	if (check_nothing(input))
-		return (0);
-	alloc_tables(&main->parse, input);
-	if (main->parse.error)
-		return (0);
-	check_commands(&main->parse);
-	if (main->parse.error)
 	{
-		ft_free_parsing(&main->parse);
+		free(input);
 		return (0);
 	}
-	// prendre le cas ou check_commands renvoit exit failure
+	alloc_tables(&main->parse, input);
+	if (check_error(&main->parse, input, 0))
+		return (0);
+	check_commands(&main->parse);
+	if (check_error(&main->parse, input, 1))
+		return (0);
 	printf("argc = %d\n", main->parse.argc);
 	main->common.nb_commands = main->parse.number_of_commands;
 	test_parsing(&main->parse);
@@ -62,4 +71,4 @@ int	parsing(t_struct *main, char *input)
 
 // echo -n -nnn bonjour les amis -n > test.txt | cat -e < test.txt >bonjour.txt                 >salut.txt
 // echo -n bonjour -n -nn | cat -e Makefile main.c parsing.c > test.txt
-// echo "$USER" '$USER' "'$USER'" '"$USER"' salut
+// echo "$USER" '$USER' "'$USER'" '"$USER"' $? salut

@@ -6,7 +6,7 @@
 #    By: lribette <lribette@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
-#    Updated: 2024/02/19 18:38:43 by lribette         ###   ########.fr        #
+#    Updated: 2024/02/20 16:16:48 by lribette         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRCS =											\
 				Parsing/Lexing/check_commands	\
 				Parsing/Lexing/check_variables	\
 				Parsing/Lexing/lexing_utils		\
+				Parsing/Lexing/var_utils		\
 				Parsing/Lexing/what_type		\
 				Parsing/fill_strings			\
 				Parsing/fill_type				\

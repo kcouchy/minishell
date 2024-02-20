@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/20 15:09:35 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:32:14 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef enum e_type
 /* Globals                                                                    */
 /******************************************************************************/
 
-extern volatile int g_signal;
+extern volatile int	g_signal;
 
 /******************************************************************************/
 /* Structures                                                                 */
@@ -118,6 +118,9 @@ int		is_space(char c);
 int		is_quote(char c);
 int		ft_strcmp(char *s1, char *s2);
 void	is_argument_a_command(t_parsing *parse, int i);
+char	*ft_strndup(char *s, int start, int end, char *returned);
+char	*var_strdup(char *envp);
+char	*var_strjoin(char *s1, char *s2);
 
 /* ******************** Lexing ******************** */
 int		what_type(t_parsing *parse, char *input, int i, int separator);
