@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/19 18:02:22 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/20 15:20:33 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,13 @@ int	check_nothing(char *input)
 
 int	parsing(t_struct *main, char *input)
 {
-	if (check_nothing(input))
-		return (0);
+	// if (check_nothing(input))
+	// 	return (0);
 	main->parse.number_of_commands = 1;
 	main->parse.error = 0;
-	// input = check_variables(&main->common.envp, input);
+	input = check_variables(&main->parse.var, main->common.envp, input);
+	if (check_nothing(input))
+		return (0);
 	alloc_tables(&main->parse, input);
 	if (main->parse.error)
 		return (0);
@@ -46,6 +48,7 @@ int	parsing(t_struct *main, char *input)
 	printf("argc = %d\n", main->parse.argc);
 	main->common.nb_commands = main->parse.number_of_commands;
 	test_parsing(&main->parse);
+	free(input);
 	main->args_list = parsing_to_executing(main);
 	return (1);
 }
@@ -59,3 +62,4 @@ int	parsing(t_struct *main, char *input)
 
 // echo -n -nnn bonjour les amis -n > test.txt | cat -e < test.txt >bonjour.txt                 >salut.txt
 // echo -n bonjour -n -nn | cat -e Makefile main.c parsing.c > test.txt
+// echo "$USER" '$USER' "'$USER'" '"$USER"' salut

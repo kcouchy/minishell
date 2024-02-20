@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/19 17:57:58 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/19 18:32:00 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	ft_heredoc(t_pipex *pipex, t_args *args_list)
 	}
 	free(buffer);
 	close(pipex->infile_fd);
-	// signal(SIGINT, &sigint_handler);
+	signal(SIGINT, &sigint_handler);
 }
 
 void	ft_pipex_init(t_pipex *pipex, t_struct *main)

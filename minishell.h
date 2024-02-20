@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/19 18:06:18 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/20 15:09:35 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,22 @@ extern volatile int g_signal;
 /* Structures                                                                 */
 /******************************************************************************/
 
+typedef struct s_variables
+{
+	char	*str;
+	char	*left;
+	int		quote;
+	int		is_there_a_variable;
+}	t_variables;
+
 typedef struct s_parsing
 {
-	int		argc;
-	char	**argv;
-	int		*types;
-	int		number_of_commands;
-	int		error;
+	int			argc;
+	char		**argv;
+	int			*types;
+	int			number_of_commands;
+	int			error;
+	t_variables	var;
 }	t_parsing;
 
 typedef struct s_common
@@ -121,6 +130,7 @@ void	fill_strings(t_args *cmd, t_struct *main, int start, int end);
 char	**fill_type(int type, t_struct *main, int start, int end);
 char	**fill_table(t_struct *main, int start, int end);
 int		check_nothing(char *input);
+char	*check_variables(t_variables *variables, char **envp, char *input);
 int		parsing(t_struct *main, char *input);
 
 /*ft_free.c*/
