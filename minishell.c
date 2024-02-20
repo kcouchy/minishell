@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/20 15:20:10 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/20 18:29:22 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,12 @@ int	main(int argc, char **argv, char **envp)
 	//will need to implement pwd_origin = getcwd(NULL, 0);
 	while (1)
 	{
-		input = readline(GREEN"finishell \e[5m🤯"RESET GREEN"> "RESET);
+		printf("%sfinishell \e[5m🤯 %s", GREEN, RESET);
+		// input = readline(GREEN"finishell \e[5m🤯"RESET GREEN"> "RESET);
+		input = readline("> ");
 		if (!input)
 		{
+			
 			write(1, "\n", 1);
 			break ;
 		}
