@@ -6,11 +6,20 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/19 14:48:20 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:43:22 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	ft_free_pipex(t_pipex *pipex)
+{
+	if (pipex->infile)
+		free(pipex->infile);
+	if (pipex->outfile)
+		free(pipex->outfile);
+	ft_freetable(pipex->paths);
+}
 
 void	ft_freetable(char **table)
 {
@@ -44,7 +53,7 @@ void	ft_command_fail(t_pipex *pipex, t_args *child_args, t_struct *main)
 			free(msg);
 		}
 	}
-	ft_freetable(pipex->paths);
+	ft_free_pipex(pipex);
 	ft_structclear(&main->args_list);
 	free_envp(main->common.envp);
 	// free(pipex->pwd_origin);
@@ -80,7 +89,7 @@ void	ft_byedoc(t_pipex *pipex, t_args *child_args) //also needs to be triggered 
 void	ft_open_fail(t_pipex *pipex)
 {
 	// ft_freetable(pipex->child_args);
-	ft_freetable(pipex->paths);
+	ft_free_pipex(pipex);
 	// free(pipex->pwd_origin);
 	// exit(EXIT_FAILURE);
 	exit(EXIT_FAILURE);
@@ -89,7 +98,7 @@ void	ft_open_fail(t_pipex *pipex)
 void	ft_dup2_fail(t_pipex *pipex)
 {
 	// ft_freetable(pipex->child_args);
-	ft_freetable(pipex->paths);
+	ft_free_pipex(pipex);
 	// free(pipex->pwd_origin);
 	exit(EXIT_FAILURE);
 }
@@ -97,7 +106,7 @@ void	ft_dup2_fail(t_pipex *pipex)
 void	ft_pipe_fail(t_pipex *pipex)
 {
 	write(STDERR_FILENO, "pipex: pipe failed\n", 19);
-	ft_freetable(pipex->paths);
+	ft_free_pipex(pipex);
 	// free(pipex->pwd_origin);
 	exit(EXIT_FAILURE);
 }
@@ -105,7 +114,7 @@ void	ft_pipe_fail(t_pipex *pipex)
 void	ft_fork_fail(t_pipex *pipex)
 {
 	write(STDERR_FILENO, "pipex: fork failed\n", 19);
-	ft_freetable(pipex->paths);
+	ft_free_pipex(pipex);
 	// free(pipex->pwd_origin);
 	exit(EXIT_FAILURE);
 }

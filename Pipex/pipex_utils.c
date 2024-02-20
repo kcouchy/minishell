@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:30:14 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/16 18:19:44 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/20 15:59:50 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	ft_execve(t_pipex *pipex, t_args *child_arg, char **envp)
 		if (!cmd_path) //replace/move this with something from errors.c -> fatal error
 		{
 			write(STDERR_FILENO, "pipex: malloc failed: cmd_path\n", 31);
-			ft_freetable(pipex->paths);
+			ft_free_pipex(pipex);
 			exit(EXIT_FAILURE);
 		}
 		execve(cmd_path, child_arg->command_table, envp);
