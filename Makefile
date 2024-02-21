@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lribette <lribette@student.42.fr>          +#+  +:+       +#+         #
+#    By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
-#    Updated: 2024/02/20 16:16:48 by lribette         ###   ########.fr        #
+#    Updated: 2024/02/21 18:10:15 by kcouchma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRCS =											\
 				Pipex/pipex_utils				\
 				Pipex/pipex_errors				\
 				Pipex/pipex_single_cmd			\
+				Pipex/gnl						\
 				ft_free							\
 				minishell						\
 				prints							\

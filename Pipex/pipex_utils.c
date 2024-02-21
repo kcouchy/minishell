@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:30:14 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/21 15:10:13 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:40:13 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,8 @@ void	ft_execve(t_pipex *pipex, t_args *child_arg, t_struct *main)
 	i = 0;
 	while (pipex->paths[i])
 	{
-		// should be done in parsing now
-		// if (pipex->child_args[0][0] == '.' || pipex->child_args[0][0] == '/')
-		// 	execve(pipex->child_args[0], pipex->child_args, pipex->envp);
+		if (child_arg->command_name[0] == '.' || child_arg->command_name[0] == '/')
+			execve(child_arg->command_name, child_arg->command_table, main->common.envp);
 		cmd_path = ft_strjoin3(pipex->paths[i], "/", child_arg->command_name);
 		if (!cmd_path) //replace/move this with something from errors.c -> fatal error
 		{

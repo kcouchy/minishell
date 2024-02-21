@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/21 12:31:12 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/21 17:36:25 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	sigint_handler(int signal)
 {
-	// g_signal = 1;
+	g_signal = 1;
 	if (signal == SIGINT)
 	{
 		write(1, "\n", 1);
@@ -86,6 +86,7 @@ int	main(int argc, char **argv, char **envp)
 			}
 			ft_structclear(&main.args_list);
 		}
+		free(input);
 	}
 	free_envp(main.common.envp);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 13:45:14 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/20 10:28:07 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/21 17:53:04 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -553,7 +553,8 @@ char	*ft_buff2line(char *line, char *buffer);
 char	*ft_read2buff(char *line, char *buffer, int fd);
 
 /**
- * @brief Returns a line read from a file descriptor.
+ * @brief Returns a line read from a file descriptor. Can handle up to 1024
+ * file descriptors.
  * @param fd The file descriptor to read from.
  * @return char * The line that was read or NULL if there is nothing else 
  * to read, or an error occurred.
@@ -608,4 +609,5 @@ void	*ft_gnl_calloc(size_t nmemb, size_t size);
  * @return char* The new string, or NULL if the allocation fails.
  */
 char	*ft_gnl_strjoin(char *s1, char *s2);
+
 #endif

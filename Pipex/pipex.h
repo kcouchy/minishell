@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/21 15:08:23 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/21 18:14:26 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 //# define FILENOTFOUND 127
 # define FILENOTFOUND 127 //command doesn’t exist, or isn’t in $PATH.
+# define GNL_BUFFER_SIZE 1
 
 /******************************************************************************/
 /* Includes                                                                   */
@@ -277,7 +278,7 @@ void	ft_pipex(t_pipex *pipex, t_struct *main);
  * ft_bonus_first_cmd).
  * @param pipex 
  */
-int		ft_heredoc(t_pipex *pipex, t_args *args_list, int i);
+int		ft_heredoc(t_pipex *pipex, t_args **args_list, int i);
 
 /**
  * @brief Initialises a number of variables in the pipex structure. 
@@ -314,9 +315,23 @@ int		executing(t_struct *main);
 void	ft_single_cmd(t_pipex *pipex, t_args *child_args, t_struct *main);
 
 /******************************************************************************/
-/* Builtins                                                                   */
+/* Builtins.utils                                                             */
 /******************************************************************************/
 
 int		ft_tablen(char **tab);
+
+
+/******************************************************************************/
+/* gnl.c                                                                      */
+/******************************************************************************/
+
+/**
+ * @brief Simple version of get_next_line, returns a line read from a file 
+ * descriptor. Can only handle one fd at a time.
+ * @param fd The file descriptor to read from.
+ * @return char * The line that was read or NULL if there is nothing else 
+ * to read, or an error occurred, or ctrl+C (SIGINT) was intercepted.
+ */
+char	*gnl(int fd);
 
 #endif

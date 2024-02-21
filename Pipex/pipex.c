@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/21 15:28:50 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/21 19:08:49 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,70 +56,55 @@ void	ft_pipex(t_pipex *pipex, t_struct *main)
 // 	//set exitcode to 130 (will need a global variable to stock this)
 // }
 
-int	ft_heredoc(t_pipex *pipex, t_args *temp, int i)
+int	ft_heredoc(t_pipex *pipex, t_args **temp, int i)
 {
-	char	*buffer;
+	char	*line;
 	char	*char_i;
 	char	*temp_i;
 	int		temp_fd;
 
-	// will need to change this input_files[0] to a limiter variable once multiple redirections are done
-	// signal(SIGINT, &sigint_handler_hd); //this is now handled (or not) in gnl
-	buffer = NULL;
-	// pipex->heredoc = 1;
+	line = NULL;
 	char_i = ft_itoa(i);
 	if (!char_i)
 		return (EXIT_FAILURE);
 	temp_i = ft_strjoin("./heredocs/temp_", char_i);
 	if (!temp_i)
 		return (EXIT_FAILURE);
-	if (temp->input)
+	if ((*temp)->input)
 	{
-		free(temp->input);
-		temp->input = NULL;
+		free((*temp)->input);
+		(*temp)->input = NULL;
 	}
-	temp->input = temp_i;
+	(*temp)->input = temp_i;
 	temp_fd = open(temp_i, O_RDWR | O_TRUNC | O_CREAT, 0644);
 	if (temp_fd == -1) //can trigger this open fail with permissions for leak test
 		return (EXIT_FAILURE);
-	// {
-	// 	write(STDERR_FILENO, "finishell: open failed: heredoc\n", 32);
-	// 	ft_open_fail(pipex);
-	// }
-	// pipex->infile_fd = open("/tmp/temp", O_RDWR | O_TRUNC | O_CREAT, 0644);
-	// if (pipex->infile_fd == -1) //can trigger this open fail with permissions for leak test
-	// 	return (EXIT_FAILURE);
-	// {
-	// 	write(STDERR_FILENO, "finishell: open failed: heredoc\n", 32);
-	// 	ft_open_fail(pipex);
-	// }
 	while (1)
 	{
 		write(STDERR_FILENO, "> ", 2);
-		buffer = get_next_line(STDIN_FILENO);
-		// buffer = readline("> ");
-		if (!buffer)// ctrl D
-		{
-			ft_byedoc(pipex, temp);
-			break ;
-		}
-		else if (ft_strncmp(buffer, "\n", 1) != 0)
-			if (ft_strncmp(buffer, temp->input_files[i],
-					(ft_strlen(buffer) - 1)) == 0)
-				break ;
-		write(temp_fd, buffer, ft_strlen(buffer));
-		if (temp->input_files[i][0] == '\0' && ft_strncmp(buffer, "\n", 1) == 0) // should handle limiter of "", to end the heredoc
-			break;
+		line = gnl(STDIN_FILENO);
 		if (g_signal == 2)
 		{
 			close(temp_fd);
 			temp_fd = open(temp_i, O_RDWR | O_TRUNC | O_CREAT, 0644);
-			// write(STDERR_FILENO, "OK", 2);
 			break ;
 		}
-		free(buffer);
+		if (!line)
+		{
+			ft_byedoc(pipex, *temp);
+			break ;
+		}
+		else if (ft_strncmp(line, "\n", 1) != 0)
+			if (ft_strncmp(line, (*temp)->input_files[i],
+					(ft_strlen(line) - 1)) == 0)
+				break ;
+		write(temp_fd, line, ft_strlen(line));
+		if ((*temp)->input_files[i][0] == '\0' && ft_strncmp(line, "\n", 1) == 0) // should handle limiter of "", to end the heredoc
+			break;
+		free(line);
 	}
-	free(buffer);
+	g_signal = 0;
+	free(line);
 	free(char_i);
 	close(temp_fd);
 	signal(SIGINT, &sigint_handler);
@@ -128,17 +113,11 @@ int	ft_heredoc(t_pipex *pipex, t_args *temp, int i)
 
 void	ft_pipex_init(t_pipex *pipex, t_struct *main)
 {
-	// pipex->infile_fd = -1;
 	pipex->temp_fd_out = -1;
-	// pipex->heredoc = 0;
 	pipex->exit_code = 0;
-	// pipex->outfile_type = 0;
-	// pipex->infile = NULL;
-	// pipex->outfile = NULL;
 	pipex->paths = ft_extract_paths(main->common.envp);
 }
 
-//add escape path for open errors (return = 1)
 int	ft_redirections(t_pipex *pipex, t_struct *main)
 {
 	t_args	*temp;
@@ -152,7 +131,8 @@ int	ft_redirections(t_pipex *pipex, t_struct *main)
 	{
 		if (temp->input_files)
 		{
-			while (temp->input_redirs[i])
+			i = 0;
+			while (temp->input_files[i])
 			{
 				fd = -1;
 				if (ft_strcmp(temp->input_redirs[i], "<") == 0)
@@ -171,15 +151,15 @@ int	ft_redirections(t_pipex *pipex, t_struct *main)
 						return (EXIT_FAILURE);
 				}
 				else if (ft_strcmp(temp->input_redirs[i], "<<") == 0)
-					if (ft_heredoc(pipex, temp, i) == 1)
+					if (ft_heredoc(pipex, &temp, i) == 1)
 						return (EXIT_FAILURE);
 				i++;
 			}
 		}
-		i = 0;
 		if (temp->output_files)
 		{
-			while (temp->output_redirs[i])
+			i = 0;
+			while (temp->output_files[i])
 			{
 				fd = -1;
 				if (ft_strcmp(temp->output_redirs[i], ">") == 0)
@@ -203,9 +183,11 @@ int	ft_redirections(t_pipex *pipex, t_struct *main)
 				temp->output = NULL;
 			}
 			temp->output = ft_strdup(temp->output_files[i - 1]);
-			if(!temp->input)
+			if(!temp->output)
 				return (EXIT_FAILURE);
 		}
+		printf("temp->output %s\n", temp->output);
+		printf("temp->input %s\n", temp->input);
 		temp = temp->next;
 	}
 	return (0);
