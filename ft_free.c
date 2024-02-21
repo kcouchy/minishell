@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:44:46 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/16 16:29:24 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:24:13 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,10 @@ static void	_free_command(t_args *cmd)
 	_free_table(cmd->input_files);
 	_free_table(cmd->output_redirs);
 	_free_table(cmd->output_files);
+	if (cmd->input)
+		free(cmd->input);
+	if (cmd->output)
+		free(cmd->output);
 	free(cmd);
 }
 

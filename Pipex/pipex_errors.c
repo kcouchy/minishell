@@ -6,20 +6,20 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/21 12:38:38 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:15:29 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ft_free_pipex(t_pipex *pipex)
-{
-	// if (pipex->infile)
-	// 	free(pipex->infile);
-	// if (pipex->outfile)
-	// 	free(pipex->outfile);
-	ft_freetable(pipex->paths);
-}
+// void	ft_free_pipex(t_pipex *pipex)
+// {
+// 	// if (pipex->infile)
+// 	// 	free(pipex->infile);
+// 	// if (pipex->outfile)
+// 	// 	free(pipex->outfile);
+// 	ft_freetable(pipex->paths);
+// }
 
 void	ft_freetable(char **table)
 {
@@ -41,30 +41,28 @@ void	ft_command_fail(t_pipex *pipex, t_args *child_args, t_struct *main)
 	char	*msg;
 
 	if (!child_args->command_name)
-		write(STDERR_FILENO, "pipex: command not found: ''\n", 29);
+		write(STDERR_FILENO, "finishell: command not found: ''\n", 33);
 	else
 	{
 		msg = ft_strjoin3("\x1b[38;2;255;0;0;1mfinishell 🤬: command not found: ", child_args->command_name, "\n");
 		if (!msg)//may need to set malloc error here
-			write(STDERR_FILENO, "pipex: command not found\n", 25);
+			write(STDERR_FILENO, "finishell: command not found\n", 29);
 		else
 		{
 			write(STDERR_FILENO, msg, ft_strlen(msg));
 			free(msg);
 		}
 	}
-	ft_free_pipex(pipex);
+	ft_freetable(pipex->paths);
 	ft_structclear(&main->args_list);
 	free_envp(main->common.envp);
-	// free(pipex->pwd_origin);
 	exit(FILENOTFOUND);
 }
 
-void	ft_byedoc(t_pipex *pipex, t_args *child_args) //also needs to be triggered on ctrl D?
+void	ft_byedoc(t_pipex *pipex, t_args *child_args)
 {
 	char	*msg;
 
-	//triggered on ctrl D? - need to add limiter to input_files[0] in case of heredoc
 	g_signal = 0;
 	msg = ft_strjoin3 
 		("\x1b[38;2;255;0;0;1mfinishell 🤬: warning: here-document delimited by end-of-file (wanted `",
@@ -86,35 +84,28 @@ void	ft_byedoc(t_pipex *pipex, t_args *child_args) //also needs to be triggered 
 // 	ft_structclear(&main->args_list);
 // 	free_envp(main->common.envp);
 
-void	ft_open_fail(t_pipex *pipex)
+//open fail needs to return, not exit to handle the open fails in redirections
+
+void	ft_fatal_child(t_pipex *pipex, t_struct *main)
 {
-	// ft_freetable(pipex->child_args);
-	ft_free_pipex(pipex);
-	// free(pipex->pwd_origin);
-	// exit(EXIT_FAILURE);
+	ft_freetable(pipex->paths);
+	ft_structclear(&main->args_list);
+	free_envp(main->common.envp);
 	exit(EXIT_FAILURE);
 }
 
-void	ft_dup2_fail(t_pipex *pipex)
+int	ft_fatal_parent(t_pipex *pipex, t_struct *main)
 {
-	// ft_freetable(pipex->child_args);
-	ft_free_pipex(pipex);
-	// free(pipex->pwd_origin);
-	exit(EXIT_FAILURE);
+	(void)main; //remove or use
+	ft_freetable(pipex->paths);
+	return (EXIT_FAILURE);
 }
 
-void	ft_pipe_fail(t_pipex *pipex)
+int	ft_open_fail(t_pipex *pipex, t_struct *main)
 {
-	write(STDERR_FILENO, "pipex: pipe failed\n", 19);
-	ft_free_pipex(pipex);
-	// free(pipex->pwd_origin);
-	exit(EXIT_FAILURE);
-}
-
-void	ft_fork_fail(t_pipex *pipex)
-{
-	write(STDERR_FILENO, "pipex: fork failed\n", 19);
-	ft_free_pipex(pipex);
-	// free(pipex->pwd_origin);
-	exit(EXIT_FAILURE);
+	(void)main; //remove or use
+	ft_freetable(pipex->paths);
+	if (pipex->pid == 0)
+		exit(EXIT_FAILURE);
+	return (EXIT_FAILURE);
 }

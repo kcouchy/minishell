@@ -6,32 +6,32 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/21 12:32:06 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:20:32 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 #include "pipex.h"
 
-void	ft_bonus_pipex(t_pipex *pipex, t_struct *main)
+void	ft_pipex(t_pipex *pipex, t_struct *main)
 {
 	int		i;
 	t_args	*child_args;
 
 	child_args = main->args_list;
 	i = 0;
-	// if (main->common.nb_commands == 1)
-	// 	ft_single_cmd(pipex, child_args, main);
-	// else
-	// {
 	while (child_args)
 	{
 		if (i < (main->common.nb_commands - 1))
 		{
 			if (pipe(pipex->pipe_fd) == -1)
-				ft_pipe_fail(pipex);
+			{
+				write(STDERR_FILENO, "finishell: pipe failed\n", 23);
+				ft_fatal_parent(pipex, main); //CHECK IF IN PARENT ONLY
+				//NEEDS A RETURN HERE, OR JUST STRAIGHT EXIT AS IN CHILD
+			}
 		}
-		ft_bonus_forkchild(pipex, i, child_args, main);
+		ft_forkchild(pipex, i, child_args, main);
 		if (i == 0)
 			pipex->pid_last = pipex->pid;
 		if (i < (main->common.nb_commands - 1))
@@ -41,7 +41,6 @@ void	ft_bonus_pipex(t_pipex *pipex, t_struct *main)
 	}
 	if (pipex->pid != 0)
 		ft_wait_parent(pipex, main->common.nb_commands);
-	// }
 }
 
 // void	sigint_handler_hd(int signal)
@@ -169,6 +168,8 @@ int	ft_redirections(t_pipex *pipex, t_struct *main)
 						temp->input = NULL;
 					}
 					temp->input = ft_strdup(temp->input_files[i]);
+					if(!temp->input)
+						return (EXIT_FAILURE);
 				}
 				else if (ft_strcmp(temp->input_redirs[i], "<<") == 0)
 					if (ft_heredoc(pipex, temp, i) == 1)
@@ -203,6 +204,8 @@ int	ft_redirections(t_pipex *pipex, t_struct *main)
 				temp->output = NULL;
 			}
 			temp->output = ft_strdup(temp->output_files[i - 1]);
+			if(!temp->input)
+				return (EXIT_FAILURE);
 		}
 		temp = temp->next;
 	}
@@ -218,13 +221,9 @@ int		executing(t_struct *main)
 	if (ft_redirections(&pipex, main) == 1)
 	{
 		write(STDERR_FILENO, "finishell: open failure : redirections\n", 39);
-		ft_free_pipex(&pipex);
+		ft_freetable(pipex.paths);
 		return (EXIT_FAILURE);
 	}
-	// if (main->args_list->input_redirs) //will need to loop this to do as many heredocs as there are for each command (nodes on args_list)
-	// 	if (ft_strcmp(main->args_list->input_redirs[0], "<<") == 0)
-	// 		ft_heredoc(&pipex, main->args_list);
-	// 		//will have to run the heredoc on loop through the structures in args_list, amd through input_args
 
 	// UNLINK TEMP HEREDOC FILES
 	// if (main->common.nb_commands < 1)
@@ -234,7 +233,7 @@ int		executing(t_struct *main)
 	// 	return (0);
 	// }
 
-	ft_bonus_pipex(&pipex, main);
+	ft_pipex(&pipex, main);
 
 	// UNLINK TEMP HEREDOC FILES
 	// if (pipex.heredoc == 1 && pipex.infile_fd != -1)
@@ -243,7 +242,8 @@ int		executing(t_struct *main)
 	// 	unlink("temp");
 	// }
 
-	ft_free_pipex(&pipex);
+	ft_freetable(pipex.paths);
+	// ft_free_pipex(&pipex);
 	// printf("---------%d--------\n", pipex.exit_code);
 	return (pipex.exit_code);
 }
