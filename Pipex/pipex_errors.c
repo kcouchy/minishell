@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/20 16:43:22 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:38:38 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	ft_free_pipex(t_pipex *pipex)
 {
-	if (pipex->infile)
-		free(pipex->infile);
-	if (pipex->outfile)
-		free(pipex->outfile);
+	// if (pipex->infile)
+	// 	free(pipex->infile);
+	// if (pipex->outfile)
+	// 	free(pipex->outfile);
 	ft_freetable(pipex->paths);
 }
 

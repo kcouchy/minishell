@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/20 15:23:27 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/21 11:46:35 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,11 @@ typedef struct s_args
 	char	*args; //Makefile minishell.h
 	char	**input_redirs; //< ; <<
 	char	**input_files; //salut
-	// char	*input;
+	char	*input; //final input redirection
 	char	**output_redirs; //> ; >>
 	char	**output_files; //test
-	// char	*output;
+	char	*output; //final output redirection
+	int		output_type; //0 = trunc, 1 = append
 	int		is_builtin; //0
 	struct s_args	*next; //
 }	t_args;

@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 14:46:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/20 16:10:38 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:32:36 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 
 void	ft_single_cmd(t_pipex *pipex, t_args *child_args, t_struct *main)
 {
-	ft_inputs(pipex);
-	ft_outputs(pipex);
+	ft_inputs(pipex, child_args);
+	ft_outputs(pipex, child_args);
 	ft_execve(pipex, child_args, main->common.envp);
 	ft_command_fail(pipex, child_args, main);
 }

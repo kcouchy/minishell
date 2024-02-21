@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/20 16:06:11 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:30:52 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ typedef struct s_pipex_list
 	int				pid;			//current fork id
 	int				pid_last;		//pid of last (1st made) command to return
 	int				exit_code;		//of last command to return in parent
-	char			*infile;		//final input redirection
+	// char			*infile;		//final input redirection
 	// int				infile_fd;		//input file fd for heredoc version
-	int				outfile_type;	//0 = trunc, 1 = append
-	char			*outfile;		//final output redirection (heredoc or no)
+	// int				outfile_type;	//0 = trunc, 1 = append
+	// char			*outfile;		//final output redirection (heredoc or no)
 	// char			**envp;			//envp input
 	char			**paths;		//paths separated from envp PATH variable
 	// char			*pwd_origin;	//pwd at launch for backup in builtins
@@ -156,9 +156,9 @@ void	ft_fork_fail(t_pipex *pipex);
 /* bonus_cmds.c                                                               */
 /******************************************************************************/
 
-void	ft_inputs(t_pipex *pipex);
+void	ft_inputs(t_pipex *pipex, t_args *child_args);
 
-void	ft_outputs(t_pipex *pipex);
+void	ft_outputs(t_pipex *pipex, t_args *child_args);
 
 /**
  * @brief Identical to base program except for the heredoc case.
@@ -178,7 +178,7 @@ void	ft_outputs(t_pipex *pipex);
  * @param pipex structure containing the tables to be freed in case of error
  * (pipex->paths + pipex->child_args)
  */
-void	ft_bonus_last_cmd(t_pipex *pipex);
+void	ft_bonus_last_cmd(t_pipex *pipex, t_args *child_args);
 
 /**
  * @brief Identical to base program except for the heredoc case.
@@ -192,7 +192,7 @@ void	ft_bonus_last_cmd(t_pipex *pipex);
  * In the heredoc case, the temp file is used, otherwise the name of the input
  * file given in the command is used. Thft_pipe_fail(t_pipex *pipex)
  */
-void	ft_bonus_first_cmd(t_pipex *pipex);
+void	ft_bonus_first_cmd(t_pipex *pipex, t_args *child_args);
 
 /**
  * @brief Not present in base program.
@@ -208,7 +208,7 @@ void	ft_bonus_first_cmd(t_pipex *pipex);
  * and the original closed.
  * @param pipex 
  */
-void	ft_bonus_mid_cmd(t_pipex *pipex);
+void	ft_bonus_mid_cmd(t_pipex *pipex, t_args *child_args);
 
 /**
  * @brief Function launched in a while loop (where i is the number of input

@@ -6,20 +6,20 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:28:50 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/20 18:13:57 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:31:20 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ft_inputs(t_pipex *pipex)
+void	ft_inputs(t_pipex *pipex, t_args *child_args)
 {
 	int	in_fd;
 
 	in_fd = -1;
-	if (!pipex->infile)
+	if (!child_args->input)
 		return ;
-	in_fd = open(pipex->infile, O_RDONLY);
+	in_fd = open(child_args->input, O_RDONLY);
 	if (in_fd == -1)
 	{
 		write(STDERR_FILENO, "finishell: open failed: input\n", 30);
@@ -32,17 +32,17 @@ void	ft_inputs(t_pipex *pipex)
 	}
 }
 
-void	ft_outputs(t_pipex *pipex)
+void	ft_outputs(t_pipex *pipex, t_args *child_args)
 {
 	int	out_fd;
 
 	out_fd = -1;
-	if (!pipex->outfile)
+	if (!child_args->output)
 		return ;
-	if (pipex->outfile_type == 1)
-		out_fd = open(pipex->outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
-	else if (pipex->outfile_type == 0)
-		out_fd = open(pipex->outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	if (child_args->output_type == 1)
+		out_fd = open(child_args->output, O_WRONLY | O_APPEND | O_CREAT, 0644);
+	else if (child_args->output_type == 0)
+		out_fd = open(child_args->output, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (out_fd == -1)
 	{
 		write(STDERR_FILENO, "finishell: open failed: output\n", 31);
@@ -55,14 +55,14 @@ void	ft_outputs(t_pipex *pipex)
 	}
 }
 
-void	ft_bonus_last_cmd(t_pipex *pipex) //can modify ft_inputs to handle most of this
+void	ft_bonus_last_cmd(t_pipex *pipex, t_args *child_args) //can modify ft_inputs to handle most of this
 {
 	int	in_fd;
 
 	in_fd = -1;
 	close(pipex->pipe_fd[1]);
-	if (pipex->infile)
-		in_fd = open(pipex->infile, O_RDONLY);
+	if (child_args->input)
+		in_fd = open(child_args->input, O_RDONLY);
 	else
 		in_fd = pipex->pipe_fd[0];
 	if (in_fd == -1)
@@ -81,21 +81,21 @@ void	ft_bonus_last_cmd(t_pipex *pipex) //can modify ft_inputs to handle most of 
 	// 	ft_dup2_fail(pipex);
 	// }
 	close(in_fd);
-	ft_outputs(pipex);
+	ft_outputs(pipex, child_args);
 }
 
-void	ft_bonus_first_cmd(t_pipex *pipex) //can modify ft_outputs to handle most of this
+void	ft_bonus_first_cmd(t_pipex *pipex, t_args *child_args) //can modify ft_outputs to handle most of this
 {
 	int	out_fd;
 
 	out_fd = -1;
 	close(pipex->pipe_fd[0]);
-	if (pipex->outfile)
+	if (child_args->output)
 	{
-		if (pipex->outfile_type == 1)
-			out_fd = open(pipex->outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
-		else if (pipex->outfile_type == 0)
-			out_fd = open(pipex->outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		if (child_args->output_type == 1)
+			out_fd = open(child_args->output, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		else if (child_args->output_type == 0)
+			out_fd = open(child_args->output, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	}
 	else
 		out_fd = pipex->temp_fd_out;
@@ -115,10 +115,10 @@ void	ft_bonus_first_cmd(t_pipex *pipex) //can modify ft_outputs to handle most o
 	// 	ft_dup2_fail(pipex);
 	// }
 	close(out_fd);
-	ft_inputs(pipex);
+	ft_inputs(pipex, child_args);
 }
 
-void	ft_bonus_mid_cmd(t_pipex *pipex)
+void	ft_bonus_mid_cmd(t_pipex *pipex, t_args *child_args)
 {
 	int	out_fd;
 	int	in_fd;
@@ -126,12 +126,12 @@ void	ft_bonus_mid_cmd(t_pipex *pipex)
 	out_fd = -1;
 	in_fd = -1;
 	close(pipex->pipe_fd[1]);
-	if (pipex->outfile)
+	if (child_args->output)
 	{
-		if (pipex->outfile_type == 1)
-			out_fd = open(pipex->outfile, O_WRONLY | O_APPEND | O_CREAT, 0644);
-		else if (pipex->outfile_type == 0)
-			out_fd = open(pipex->outfile, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		if (child_args->output_type == 1)
+			out_fd = open(child_args->output, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		else if (child_args->output_type == 0)
+			out_fd = open(child_args->output, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	}
 	else
 		out_fd = pipex->temp_fd_out;
@@ -145,8 +145,8 @@ void	ft_bonus_mid_cmd(t_pipex *pipex)
 		write(STDERR_FILENO, "finishell: dup2 failed: mid_cmd\n", 32);
 		ft_dup2_fail(pipex);
 	}
-	if (pipex->infile)
-		in_fd = open(pipex->infile, O_RDONLY);
+	if (child_args->input)
+		in_fd = open(child_args->input, O_RDONLY);
 	else
 		in_fd = pipex->pipe_fd[0];
 	if (in_fd == -1)
@@ -194,11 +194,11 @@ void	ft_bonus_forkchild(t_pipex *pipex, int i, t_args *child_args, t_struct *mai
 		if (main->common.nb_commands == 1 && i == 0)
 			ft_single_cmd(pipex, child_args, main);
 		else if (main->common.nb_commands > 1 && i == 0)
-			ft_bonus_last_cmd(pipex);
+			ft_bonus_last_cmd(pipex, child_args);
 		else if (i == main->common.nb_commands - 1)
-			ft_bonus_first_cmd(pipex);
+			ft_bonus_first_cmd(pipex, child_args);
 		else if (i > 0 && i < (main->common.nb_commands - 1))
-			ft_bonus_mid_cmd(pipex);
+			ft_bonus_mid_cmd(pipex,child_args);
 		if (!child_args->command_table[0])
 			ft_command_fail(pipex, child_args, main);
 		ft_execve(pipex, child_args, main->common.envp);

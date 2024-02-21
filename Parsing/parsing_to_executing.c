@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:56:04 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/20 15:23:39 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/21 11:36:28 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,9 @@ void	init_arg(t_args *cmd, t_struct *main, int start, int end)
 	fill_strings(cmd, main, start, end);
 	cmd->command_table = fill_table(main, start, end);
 	cmd->is_builtin = is_builtin(cmd->command_name);
-	// cmd->input = NULL;
-	// cmd->output = NULL;
+	cmd->input = NULL;
+	cmd->output = NULL;
+	cmd->output_type = 0;
 	//int		nb_of_inputs;
 	//int		nb_of_outputs;
 }

@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/20 17:21:09 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:32:06 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,12 @@ int	ft_heredoc(t_pipex *pipex, t_args *temp, int i)
 	temp_i = ft_strjoin("./heredocs/temp_", char_i);
 	if (!temp_i)
 		return (EXIT_FAILURE);
-	if (pipex->infile)
+	if (temp->input)
 	{
-		free(pipex->infile);
-		pipex->infile = NULL;
+		free(temp->input);
+		temp->input = NULL;
 	}
-	pipex->infile = temp_i;
+	temp->input = temp_i;
 	temp_fd = open(temp_i, O_RDWR | O_TRUNC | O_CREAT, 0644);
 	if (temp_fd == -1) //can trigger this open fail with permissions for leak test
 		return (EXIT_FAILURE);
@@ -134,9 +134,9 @@ void	ft_pipex_init(t_pipex *pipex, t_struct *main)
 	pipex->temp_fd_out = -1;
 	// pipex->heredoc = 0;
 	pipex->exit_code = 0;
-	pipex->outfile_type = 0;
-	pipex->infile = NULL;
-	pipex->outfile = NULL;
+	// pipex->outfile_type = 0;
+	// pipex->infile = NULL;
+	// pipex->outfile = NULL;
 	pipex->paths = ft_extract_paths(main->common.envp);
 }
 
@@ -163,12 +163,12 @@ int	ft_redirections(t_pipex *pipex, t_struct *main)
 					if (fd == -1)
 						return (EXIT_FAILURE);
 					close(fd);
-					if(pipex->infile)
+					if(temp->input)
 					{
-						free(pipex->infile);
-						pipex->infile = NULL;
+						free(temp->input);
+						temp->input = NULL;
 					}
-					pipex->infile = ft_strdup(temp->input_files[i]);
+					temp->input = ft_strdup(temp->input_files[i]);
 				}
 				else if (ft_strcmp(temp->input_redirs[i], "<<") == 0)
 					if (ft_heredoc(pipex, temp, i) == 1)
@@ -185,24 +185,24 @@ int	ft_redirections(t_pipex *pipex, t_struct *main)
 				if (ft_strcmp(temp->output_redirs[i], ">") == 0)
 				{
 					fd = open(temp->output_files[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
-					pipex->outfile_type = 0;
+					temp->output_type = 0;
 				}
 				else if (ft_strcmp(temp->output_redirs[i], ">>") == 0)
 				{
 					fd = open(temp->output_files[i], O_WRONLY | O_APPEND | O_CREAT, 0644);
-					pipex->outfile_type = 1;
+					temp->output_type = 1;
 				}
 				if (fd == -1)
 					return (EXIT_FAILURE);
 				close(fd);
 				i++;
 			}
-			if(pipex->outfile)
+			if(temp->output)
 			{
-				free(pipex->outfile);
-				pipex->outfile = NULL;
+				free(temp->output);
+				temp->output = NULL;
 			}
-			pipex->outfile = ft_strdup(temp->output_files[i - 1]);
+			temp->output = ft_strdup(temp->output_files[i - 1]);
 		}
 		temp = temp->next;
 	}
@@ -221,8 +221,6 @@ int		executing(t_struct *main)
 		ft_free_pipex(&pipex);
 		return (EXIT_FAILURE);
 	}
-	printf("input : %s\n", pipex.infile);
-	printf("output : %s\n", pipex.outfile);
 	// if (main->args_list->input_redirs) //will need to loop this to do as many heredocs as there are for each command (nodes on args_list)
 	// 	if (ft_strcmp(main->args_list->input_redirs[0], "<<") == 0)
 	// 		ft_heredoc(&pipex, main->args_list);
