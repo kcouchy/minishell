@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_to_executing.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:56:04 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/18 11:06:07 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:27:09 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ void	init_arg(t_args *cmd, t_struct *main, int start, int end)
 	fill_strings(cmd, main, start, end);
 	cmd->command_table = fill_table(main, start, end);
 	cmd->is_builtin = is_builtin(cmd->command_name);
+	cmd->input = NULL;
+	cmd->output = NULL;
+	cmd->output_type = 0;
 }
 
 t_args	*ft_structnew(t_struct *main, int start, int end)

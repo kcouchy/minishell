@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/19 16:07:41 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:08:23 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 
 typedef struct s_pipex_list
 {
-	int				heredoc;		//boolean to handle heredoc input
+	// int				heredoc;		//boolean to handle heredoc input
 	int				pipe_fd[2];		//holds pipe fds: [0] = read, [1] = write
 	int				temp_fd_out;	//holds write fd between forks (forkchild)
 	// int				commands;		//no. of commands
@@ -48,9 +48,10 @@ typedef struct s_pipex_list
 	int				pid;			//current fork id
 	int				pid_last;		//pid of last (1st made) command to return
 	int				exit_code;		//of last command to return in parent
-	// char			*infile;		//input file (argv[1])
-	int				infile_fd;		//input file fd for heredoc version
-	// char			*outfile;		//output file (argv[n])
+	// char			*infile;		//final input redirection
+	// int				infile_fd;		//input file fd for heredoc version
+	// int				outfile_type;	//0 = trunc, 1 = append
+	// char			*outfile;		//final output redirection (heredoc or no)
 	// char			**envp;			//envp input
 	char			**paths;		//paths separated from envp PATH variable
 	// char			*pwd_origin;	//pwd at launch for backup in builtins
@@ -98,11 +99,13 @@ char	*ft_strjoin3(char const *s1, char const *s2, char const *s3);
  * @param pipex structure containing pipex->child_args, pipex->paths and 
  * pipex->envp for the execve command.
  */
-void	ft_execve(t_pipex *pipex, t_args *args_list, char **envp);
+void	ft_execve(t_pipex *pipex, t_args *child_arg, t_struct *main);
 
 /******************************************************************************/
 /* errors.c                                                                   */
 /******************************************************************************/
+
+// void	ft_free_pipex(t_pipex *pipex);
 
 /**
  * @brief If the pointer to the table of tables is not NULL, frees each member 
@@ -141,21 +144,25 @@ void	ft_byedoc(t_pipex *pipex, t_args *child_args);
  * where the open command for the temp file fails.
  * @param pipex structure containing the pipex->paths table to be freed.
  */
-void	ft_open_fail(t_pipex *pipex);
+int		ft_open_fail(t_pipex *pipex, t_struct *main);
 
-void	ft_dup2_fail(t_pipex *pipex);
+// void	ft_dup2_fail(t_pipex *pipex);
 
-void	ft_pipe_fail(t_pipex *pipex);
+// void	ft_pipe_fail(t_pipex *pipex);
 
-void	ft_fork_fail(t_pipex *pipex);
+// void	ft_fork_fail(t_pipex *pipex);
+
+int		ft_fatal_parent(t_pipex *pipex, t_struct *main);
+
+void	ft_fatal_child(t_pipex *pipex, t_struct *main);
 
 /******************************************************************************/
-/* bonus_cmds.c                                                               */
+/* pipex_cmds.c                                                               */
 /******************************************************************************/
 
-void	ft_inputs(t_pipex *pipex, t_args *child_args);
+void	ft_inputs(t_pipex *pipex, t_args *child_args, t_struct *main);
 
-void	ft_outputs(t_pipex *pipex, t_args *child_args);
+void	ft_outputs(t_pipex *pipex, t_args *child_args, t_struct *main);
 
 /**
  * @brief Identical to base program except for the heredoc case.
@@ -175,7 +182,7 @@ void	ft_outputs(t_pipex *pipex, t_args *child_args);
  * @param pipex structure containing the tables to be freed in case of error
  * (pipex->paths + pipex->child_args)
  */
-void	ft_bonus_last_cmd(t_pipex *pipex, t_args *child_args);
+void	ft_last_cmd(t_pipex *pipex, t_args *child_args, t_struct *main);
 
 /**
  * @brief Identical to base program except for the heredoc case.
@@ -189,7 +196,7 @@ void	ft_bonus_last_cmd(t_pipex *pipex, t_args *child_args);
  * In the heredoc case, the temp file is used, otherwise the name of the input
  * file given in the command is used. Thft_pipe_fail(t_pipex *pipex)
  */
-void	ft_bonus_first_cmd(t_pipex *pipex, t_args *child_args);
+void	ft_first_cmd(t_pipex *pipex, t_args *child_args, t_struct *main);
 
 /**
  * @brief Not present in base program.
@@ -205,7 +212,7 @@ void	ft_bonus_first_cmd(t_pipex *pipex, t_args *child_args);
  * and the original closed.
  * @param pipex 
  */
-void	ft_bonus_mid_cmd(t_pipex *pipex);
+void	ft_mid_cmd(t_pipex *pipex, t_args *child_args, t_struct *main);
 
 /**
  * @brief Function launched in a while loop (where i is the number of input
@@ -230,7 +237,7 @@ void	ft_bonus_mid_cmd(t_pipex *pipex);
  * to be freed in case of error (pipex->paths + pipex->child_args).
  * @param i input argument counter
  */
-void	ft_bonus_forkchild(t_pipex *pipex, int i, t_args *child_args, t_struct *main);
+void	ft_forkchild(t_pipex *pipex, int i, t_args *child_args, t_struct *main);
 
 /**
  * @brief Creates a wait(NULL) for each of the child processes 
@@ -241,7 +248,7 @@ void	ft_bonus_forkchild(t_pipex *pipex, int i, t_args *child_args, t_struct *mai
 void	ft_wait_parent(t_pipex *pipex, int nb_commands);
 
 /******************************************************************************/
-/* bonus_pipex.c                                                              */
+/* pipex.c                                                              */
 /******************************************************************************/
 
 /**
@@ -256,7 +263,7 @@ void	ft_wait_parent(t_pipex *pipex, int nb_commands);
  * (pipex->commands), and the tables to be freed in case of error (pipex->paths 
  * + pipex->child_args).
  */
-void	ft_bonus_pipex(t_pipex *pipex, t_struct *main);
+void	ft_pipex(t_pipex *pipex, t_struct *main);
 
 /**
  * @brief Handles the reinitialisation of variables for the heredoc case.
@@ -270,7 +277,7 @@ void	ft_bonus_pipex(t_pipex *pipex, t_struct *main);
  * ft_bonus_first_cmd).
  * @param pipex 
  */
-void	ft_heredoc(t_pipex *pipex, t_args *args_list);
+int		ft_heredoc(t_pipex *pipex, t_args *args_list, int i);
 
 /**
  * @brief Initialises a number of variables in the pipex structure. 
