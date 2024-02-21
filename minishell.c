@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/21 10:01:14 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:31:12 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,9 @@ int	main(int argc, char **argv, char **envp)
 	//will need to implement pwd_origin = getcwd(NULL, 0);
 	while (1)
 	{
-		// printf("%sfinishell \e[5m🤯 %s", GREEN, RESET);
-		// input = readline(GREEN"finishell \e[5m🤯"RESET GREEN"> "RESET);
-		input = readline(GREEN"finishell 🤯> "RESET);
-		// input = readline("> ");
+		input = readline(GREEN"finishell 🤯 > "RESET);
 		if (!input)
 		{
-			
 			write(1, "\n", 1);
 			break ;
 		}
@@ -91,7 +87,6 @@ int	main(int argc, char **argv, char **envp)
 			ft_structclear(&main.args_list);
 		}
 	}
-	// free (input);
 	free_envp(main.common.envp);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:39:03 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/20 16:33:32 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:14:53 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,7 @@ char	*check_variables(t_variables *var, char **envp, char *input)
 		var->str = var_strjoin(var->str, var->left);
 	if (var->str[0] == '\0')
 	{
-		if (var->str)
-			free(var->str);
+		free(var->str);
 		return (var->left);
 	}
 	free(var->left);

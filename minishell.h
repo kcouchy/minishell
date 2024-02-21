@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/20 16:32:14 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:26:17 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 
 # define RED "\x1b[38;2;255;0;0;1mfinishell 🤬:"
 # define GREEN "\x1b[38;2;0;150;0;1m"
+# define SHIT "\x1b[38;2;114;61;23;1m"
 # define RESET "\e[0m"
 
 typedef enum e_type
