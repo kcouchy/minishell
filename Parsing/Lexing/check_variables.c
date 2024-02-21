@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:39:03 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/21 12:14:53 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:01:08 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int	search_variable(t_variables *var, char **envp, int i)
 		i++;
 	variable = copy_variable(envp, var->left, start + 1, i);
 	buffer = ft_strndup(var->left, 0, start, buffer);
+	if (i == start + 1)
+		buffer = var_strjoin(buffer, "$");
 	var->str = var_strjoin(var->str, buffer);
 	var->str = var_strjoin(var->str, variable);
 	free(variable);
