@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 14:42:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/22 15:02:17 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/22 17:48:07 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,10 @@ void	builtins_parsing(t_parsing *parse)
 	i = 0;
 	while (parse->argv[i])
 	{
-		// if (parse->types[i] == COMMAND && is_builtin(parse->argv[i]))
-		// {
-		// 	if (!ft_strcmp(parse->argv[i], "echo"))
-		// 		echo_parsing(parse, i);
-		// }
-		i++;
+		if (parse->types[i] == COMMAND && is_builtin(parse->argv[i])
+			&& !ft_strcmp(parse->argv[i], "echo"))
+				i = echo_parsing(parse, i + 1);
+		else
+			i++;
 	}
 }
