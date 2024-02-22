@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_cmds.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:28:50 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 10:14:14 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:11:33 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,7 @@ void	ft_mid_cmd(t_pipex *pipex, t_args *child_args, t_struct *main)
 
 void	ft_forkchild(t_pipex *pipex, int i, t_args *child_args, t_struct *main)
 {
+	g_signal = 1;
 	pipex->pid = fork();
 	if (pipex->pid == -1)
 		ft_pipex_error(pipex, main, EXIT_FAILURE);

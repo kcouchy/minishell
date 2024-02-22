@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/21 15:26:26 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/22 14:58:38 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ char	*var_strjoin(char *s1, char *s2);
 /* ******************** Lexing ******************** */
 int		what_type(t_parsing *parse, char *input, int i, int separator);
 void	alloc_tables(t_parsing *parse, char *input);
-int		check_commands(t_parsing *parse);
+void	check_commands(t_parsing *parse);
 
 /* ******************** Parsing ******************** */
 char	*ft_argjoin(char *s1, char *s2);
@@ -138,7 +138,11 @@ char	**fill_type(int type, t_struct *main, int start, int end);
 char	**fill_table(t_struct *main, int start, int end);
 int		check_nothing(char *input);
 char	*check_variables(t_variables *variables, char **envp, char *input);
+void	builtins_parsing(t_parsing *parse);
 int		parsing(t_struct *main, char *input);
+
+/* builtins */
+void	echo_parsing(t_parsing *parse, int i);
 
 /*ft_free.c*/
 void	ft_free_parsing(t_parsing *parse);

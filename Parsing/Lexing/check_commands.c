@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:12:01 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/18 11:08:31 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/22 14:48:56 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static int	_separator(t_parsing *parse, int i)
 	return (i + 1);
 }
 
-int	check_commands(t_parsing *parse)
+void	check_commands(t_parsing *parse)
 {
 	int	i;
 
@@ -91,16 +91,15 @@ int	check_commands(t_parsing *parse)
 	{
 		printf("%s syntax error%s\n", RED, RESET);
 		parse->error = 1;
-		return (EXIT_FAILURE);
+		return ;
 	}
 	while (i < parse->argc)
 	{
 		if (parse->error)
-			return (EXIT_FAILURE);
+			return ;
 		if (parse->types[i] != SEPARATOR)
 			i = _not_separator(parse, i);
 		if (parse->types[i] == SEPARATOR)
 			i = _separator(parse, i);
 	}
-	return (0);
 }

@@ -1,39 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   builtin_parsing.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/01 13:26:27 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 15:01:47 by lribette         ###   ########.fr       */
+/*   Created: 2024/02/22 14:42:20 by lribette          #+#    #+#             */
+/*   Updated: 2024/02/22 15:02:17 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "./../Pipex/pipex.h"
+#include "./../../minishell.h"
 
-// void	echo_parsing(t_parsing *parse, int i)
-// {
-	// 
-// }
-
-int	ft_echo(int argc, char **argv)
+void	builtins_parsing(t_parsing *parse)
 {
 	int	i;
-	int	n;
 
 	i = 0;
-	if (ft_strncmp(argv[1], "-n", 2) == 0)
-		i = 1;
-	n = i;
-	while (i < argc)
+	while (parse->argv[i])
 	{
-		ft_putstr_fd(argv[i], STDOUT_FILENO);
+		// if (parse->types[i] == COMMAND && is_builtin(parse->argv[i]))
+		// {
+		// 	if (!ft_strcmp(parse->argv[i], "echo"))
+		// 		echo_parsing(parse, i);
+		// }
 		i++;
-		if(i != argc)
-			write(STDOUT_FILENO, " ", 1);
 	}
-	if (n == 0)
-		write(STDOUT_FILENO, "\n", 1);
-	return (0);
 }

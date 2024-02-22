@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 15:31:37 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:55:11 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,7 @@ int		executing(t_struct *main)
 	if (main->common.nb_commands < 1)
 		return (ft_pipex_error(&pipex, main, EXIT_SUCCESS));
 	ft_pipex(&pipex, main);
+	g_signal = 0;
 	ft_pipex_error(&pipex, main, EXIT_SUCCESS);
 	return (pipex.exit_code);
 }
