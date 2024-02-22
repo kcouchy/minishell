@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/21 15:29:11 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:03:05 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ void	ft_command_fail(t_pipex *pipex, t_args *child_args, t_struct *main)
 		write(STDERR_FILENO, "finishell: command not found: ''\n", 33);
 	else
 	{
-		msg = ft_strjoin3("\x1b[38;2;255;0;0;1mfinishell 🤬: command not found: ", child_args->command_name, "\e[0m\n");
+		msg = ft_strjoin3(
+			"\x1b[38;2;255;0;0;1mfinishell 🤬: command not found: ",
+			child_args->command_name, "\e[0m\n");
 		if (!msg)//may need to set malloc error here
 			write(STDERR_FILENO, "finishell: command not found\n", 29);
 		else
@@ -64,48 +66,47 @@ void	ft_byedoc(t_pipex *pipex, t_args *child_args)
 	char	*msg;
 
 	g_signal = 0;
-	msg = ft_strjoin3 
-		("\x1b[38;2;255;0;0;1mfinishell 🤬: warning: here-document delimited by end-of-file (wanted `",
-			child_args->input_files[0], "')\n");
-	if (!msg)//may need to set malloc error here
-		write(STDERR_FILENO, "\x1b[38;2;255;0;0;1mfinishell 🤬: warning: here-doc delimited by end-of-file\n",
-			25);
-	else
-	{
-		write(STDERR_FILENO, msg, ft_strlen(msg));
-		free(msg);
-	}
 	pipex->exit_code = EXIT_FAILURE;
+	msg = ft_strjoin3 
+		("\x1b[38;2;255;0;0;1mfinishell 🤬: warning: here-doc wanted `",
+			child_args->input_files[0], "'\n\e[0m");
+	if (!msg)//may need to set malloc error here
+		pipex->exit_code = EXIT_FAILURE; //Need to change to fatal error
+		// write(STDERR_FILENO,
+		// 	"\x1b[38;2;255;0;0;1mfinishell 🤬: warning: here-doc wanted \n",
+		// 	25);
+	write(STDERR_FILENO, msg, ft_strlen(msg));
+	free(msg);
 	return ;
 }
 
-// ----------------------------------
-// Need to add frees here for the child processes
-// 	ft_structclear(&main->args_list);
-// 	free_envp(main->common.envp);
-
-//open fail needs to return, not exit to handle the open fails in redirections
-
-void	ft_fatal_child(t_pipex *pipex, t_struct *main)
+int	ft_pipex_error(t_pipex *pipex, t_struct *main, int exit_code)
 {
-	ft_freetable(pipex->paths);
-	ft_structclear(&main->args_list);
-	free_envp(main->common.envp);
-	exit(EXIT_FAILURE);
-}
-
-int	ft_fatal_parent(t_pipex *pipex, t_struct *main)
-{
-	(void)main; //remove or use
-	ft_freetable(pipex->paths);
-	return (EXIT_FAILURE);
-}
-
-int	ft_open_fail(t_pipex *pipex, t_struct *main)
-{
-	(void)main; //remove or use
 	ft_freetable(pipex->paths);
 	if (pipex->pid == 0)
-		exit(EXIT_FAILURE);
+	{
+		ft_structclear(&main->args_list);
+		free_envp(main->common.envp);
+		exit(exit_code);
+	}
+	return (unlink_hds(main->common.nb_commands));
 	return (EXIT_FAILURE);
+}
+
+int		unlink_hds(int nb_commands)
+{
+	int		i;
+	char	*filename;
+
+	i = 0;
+	filename = NULL;
+	while (i < nb_commands)
+	{
+		filename = ft_strjoin("./heredocs/temp_", ft_itoa(i));
+		unlink(filename);
+		printf("%s\n", filename);
+		free(filename);
+		i++;
+	}
+	return (0);
 }

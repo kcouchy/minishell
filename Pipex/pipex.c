@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/21 19:08:49 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:07:37 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ void	ft_pipex(t_pipex *pipex, t_struct *main)
 			if (pipe(pipex->pipe_fd) == -1)
 			{
 				write(STDERR_FILENO, "finishell: pipe failed\n", 23);
-				ft_fatal_parent(pipex, main); //CHECK IF IN PARENT ONLY
-				//NEEDS A RETURN HERE, OR JUST STRAIGHT EXIT AS IN CHILD
+				ft_pipex_error(pipex, main, EXIT_FAILURE);
 			}
 		}
 		ft_forkchild(pipex, i, child_args, main);
@@ -42,19 +41,6 @@ void	ft_pipex(t_pipex *pipex, t_struct *main)
 	if (pipex->pid != 0)
 		ft_wait_parent(pipex, main->common.nb_commands);
 }
-
-// void	sigint_handler_hd(int signal)
-// {
-// 	g_signal = 2;
-// 	if (signal == SIGINT)
-// 	{
-// 		rl_on_new_line(); //needed to reshow prompt
-// 		rl_replace_line("", 1); //empties readline buffer in case there's something before the ^C
-// 		write(STDIN_FILENO, "\r", 1);
-// 		rl_redisplay(); //effectively forces the prompt to redisplay before you type
-// 	}
-// 	//set exitcode to 130 (will need a global variable to stock this)
-// }
 
 int	ft_heredoc(t_pipex *pipex, t_args **temp, int i)
 {
@@ -111,11 +97,15 @@ int	ft_heredoc(t_pipex *pipex, t_args **temp, int i)
 	return (0);
 }
 
-void	ft_pipex_init(t_pipex *pipex, t_struct *main)
+int	ft_pipex_init(t_pipex *pipex, t_struct *main)
 {
 	pipex->temp_fd_out = -1;
+	pipex->pid = -1;
 	pipex->exit_code = 0;
 	pipex->paths = ft_extract_paths(main->common.envp);
+	if (!pipex->paths)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 int	ft_redirections(t_pipex *pipex, t_struct *main)
@@ -186,45 +176,30 @@ int	ft_redirections(t_pipex *pipex, t_struct *main)
 			if(!temp->output)
 				return (EXIT_FAILURE);
 		}
-		printf("temp->output %s\n", temp->output);
-		printf("temp->input %s\n", temp->input);
+		printf("temp->input[%d] %s\n", i, temp->input);
+		printf("temp->output[%d] %s\n", i, temp->output);
 		temp = temp->next;
 	}
 	return (0);
 }
 
-
 int		executing(t_struct *main)
 {
 	t_pipex	pipex;
 
-	ft_pipex_init(&pipex, main);
-	if (ft_redirections(&pipex, main) == 1)
+	if (ft_pipex_init(&pipex, main) == EXIT_FAILURE)
 	{
-		write(STDERR_FILENO, "finishell: open failure : redirections\n", 39);
-		ft_freetable(pipex.paths);
+		write(STDERR_FILENO, "finishell: executing failure : init\n", 36);
 		return (EXIT_FAILURE);
 	}
-
-	// UNLINK TEMP HEREDOC FILES
-	// if (main->common.nb_commands < 1)
-	// {
-	// 	if (pipex.heredoc == 1)
-	// 		unlink("temp");
-	// 	return (0);
-	// }
-
+	if (ft_redirections(&pipex, main) == EXIT_FAILURE)
+	{
+		write(STDERR_FILENO, "finishell: open failure : redirections\n", 39);
+		return (ft_pipex_error(&pipex, main, EXIT_FAILURE));
+	}
+	if (main->common.nb_commands < 1)
+		return (ft_pipex_error(&pipex, main, EXIT_SUCCESS));
 	ft_pipex(&pipex, main);
-
-	// UNLINK TEMP HEREDOC FILES
-	// if (pipex.heredoc == 1 && pipex.infile_fd != -1)
-	// {
-	// 	close(pipex.infile_fd);
-	// 	unlink("temp");
-	// }
-
-	ft_freetable(pipex.paths);
-	// ft_free_pipex(&pipex);
-	// printf("---------%d--------\n", pipex.exit_code);
+	ft_pipex_error(&pipex, main, EXIT_SUCCESS);
 	return (pipex.exit_code);
 }

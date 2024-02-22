@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 10:34:45 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/21 19:04:00 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/22 12:15:42 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ char	*gnl(int fd)
 
 	ft_bzero(&act, sizeof(act));
 	act.sa_handler = &sigint_handler_gnl;
-	SA_RESTART;
+	// SA_RESTART;
 	sigaction(SIGINT, &act, NULL);
 	line = malloc(sizeof(char)*1);
 	if (!line)
