@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_errors.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 15:31:35 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:42:04 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,21 +90,26 @@ int	ft_pipex_error(t_pipex *pipex, t_struct *main, int exit_code)
 		exit(exit_code);
 	}
 	return (unlink_hds(main->common.nb_commands));
-	return (EXIT_FAILURE);
+	// return (EXIT_FAILURE);
 }
 
 int		unlink_hds(int nb_commands)
 {
 	int		i;
 	char	*filename;
+	char	*string_i;
 
 	i = 0;
 	filename = NULL;
+	string_i = NULL;
 	while (i < nb_commands)
 	{
-		filename = ft_strjoin("./Pipex/temp_", ft_itoa(i));
+		string_i = ft_itoa(i);
+		if (!string_i)
+			return (EXIT_FAILURE);
+		filename = ft_strjoin("./Pipex/temp_", string_i);
+		free(string_i);
 		unlink(filename);
-		printf("%s\n", filename);
 		free(filename);
 		i++;
 	}
