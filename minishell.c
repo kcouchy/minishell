@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/22 18:42:56 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/22 19:37:00 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	**finishell_env(char **envp)
 		i++;
 	if (!i)
 		return (NULL);
-	f_envp = ft_calloc(i + 1, sizeof(char *));
+	f_envp = ft_calloc(i + 2, sizeof(char *));
 	if (!f_envp)
 		return (NULL);
 	i = 0;
@@ -45,6 +45,7 @@ char	**finishell_env(char **envp)
 		f_envp[i] = ft_strdup(envp[i]);
 		i++;
 	}
+	f_envp[i] = ft_strdup("?=0");
 	return (f_envp);
 }
 
