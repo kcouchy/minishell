@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 16:37:55 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/22 17:56:33 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void	ft_command_fail(t_pipex *pipex, t_args *child_args, t_struct *main);
  * ft_printf used to replicate bash error message for the same case.
  * @param pipex structure containing the pipex->paths table to be freed.
  */
-void	ft_byedoc(t_pipex *pipex, t_args *child_args);
+int		ft_byedoc(t_pipex *pipex, t_args *child_args, int exit_code);
 
 /**
  * @brief Handles all other failures (fatal and otherwise) within executing.
@@ -260,20 +260,6 @@ void	ft_wait_parent(t_pipex *pipex, int nb_commands);
 void	ft_pipex(t_pipex *pipex, t_struct *main);
 
 /**
- * @brief Handles the reinitialisation of variables for the heredoc case.
- * Creates a temp file 'temp' to hold user input, and stocks the fd in 
- * pipex->infile_fd.
- * Using get_next_line, reads each line from the stdin and put it into the 
- * temp file until the line == the end of file tag LIMITER.
- * In the case where the program is exited without input (ctrlD : buffer == 0),
- * launches ft_byedoc to exit program.
- * Once writing is completed, temp file is closed (to be reopened in 
- * ft_bonus_first_cmd).
- * @param pipex 
- */
-int		ft_heredoc(t_pipex *pipex, t_args **args_list, int i);
-
-/**
  * @brief Initialises a number of variables in the pipex structure. 
  * The command paths are extracted from envp (ft_extract_paths).
  * @param pipex Structure to initialise.
@@ -316,6 +302,20 @@ int		ft_tablen(char **tab);
 /******************************************************************************/
 /* redirections.c                                                             */
 /******************************************************************************/
+
+/**
+ * @brief Handles the reinitialisation of variables for the heredoc case.
+ * Creates a temp file 'temp' to hold user input, and stocks the fd in 
+ * pipex->infile_fd.
+ * Using get_next_line, reads each line from the stdin and put it into the 
+ * temp file until the line == the end of file tag LIMITER.
+ * In the case where the program is exited without input (ctrlD : buffer == 0),
+ * launches ft_byedoc to exit program.
+ * Once writing is completed, temp file is closed (to be reopened in 
+ * ft_bonus_first_cmd).
+ * @param pipex 
+ */
+int		ft_heredoc(t_pipex *pipex, t_args **args_list, int i);
 
 int		ft_redirections(t_pipex *pipex, t_struct *main);
 

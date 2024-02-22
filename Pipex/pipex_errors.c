@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 16:16:00 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/22 17:55:38 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	ft_command_fail(t_pipex *pipex, t_args *child_args, t_struct *main)
 	exit(FILENOTFOUND);
 }
 
-void	ft_byedoc(t_pipex *pipex, t_args *child_args)
+int	ft_byedoc(t_pipex *pipex, t_args *child_args, int exit_code)
 {
 	char	*msg;
 
@@ -77,7 +77,7 @@ void	ft_byedoc(t_pipex *pipex, t_args *child_args)
 		// 	25);
 	write(STDERR_FILENO, msg, ft_strlen(msg));
 	free(msg);
-	return ;
+	return (exit_code);
 }
 
 int	ft_pipex_error(t_pipex *pipex, t_struct *main, int exit_code)
