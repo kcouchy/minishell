@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/21 12:16:07 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/22 14:51:01 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	parsing(t_struct *main, char *input)
 	check_commands(&main->parse);
 	if (check_error(&main->parse, input, 1))
 		return (0);
+	builtins_parsing(&main->parse);
 	printf("argc = %d\n", main->parse.argc);
 	main->common.nb_commands = main->parse.number_of_commands;
 	test_parsing(&main->parse);
