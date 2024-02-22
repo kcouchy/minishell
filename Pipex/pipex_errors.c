@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 15:03:05 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:31:35 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int		unlink_hds(int nb_commands)
 	filename = NULL;
 	while (i < nb_commands)
 	{
-		filename = ft_strjoin("./heredocs/temp_", ft_itoa(i));
+		filename = ft_strjoin("./Pipex/temp_", ft_itoa(i));
 		unlink(filename);
 		printf("%s\n", filename);
 		free(filename);

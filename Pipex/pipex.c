@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 15:19:06 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:31:37 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	ft_heredoc(t_pipex *pipex, t_args **temp, int i)
 	char_i = ft_itoa(i);
 	if (!char_i)
 		return (EXIT_FAILURE);
-	temp_i = ft_strjoin("./heredocs/temp_", char_i);
+	temp_i = ft_strjoin("./Pipex/temp_", char_i);
 	if (!temp_i)
 		return (EXIT_FAILURE);
 	if ((*temp)->input)
@@ -203,4 +203,3 @@ int		executing(t_struct *main)
 	ft_pipex_error(&pipex, main, EXIT_SUCCESS);
 	return (pipex.exit_code);
 }
-//change
