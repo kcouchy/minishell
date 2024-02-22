@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/21 19:08:49 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/22 13:06:13 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ int		executing(t_struct *main)
 	// }
 
 	ft_pipex(&pipex, main);
-
+	g_signal = 0;
 	// UNLINK TEMP HEREDOC FILES
 	// if (pipex.heredoc == 1 && pipex.infile_fd != -1)
 	// {

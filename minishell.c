@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/21 17:36:25 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/22 13:14:14 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 
 void	sigint_handler(int signal)
 {
-	g_signal = 1;
-	if (signal == SIGINT)
+	write(1, "\n", 1);
+	if (signal == SIGINT && g_signal != 1)
 	{
-		write(1, "\n", 1);
 		rl_on_new_line(); //needed to reshow prompt
 		rl_replace_line("", 1); //empties readline buffer in case there's something before the ^C
 		rl_redisplay(); //effectively forces the prompt to redisplay before you type
