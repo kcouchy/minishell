@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/21 18:14:26 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:01:15 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,21 +141,17 @@ void	ft_command_fail(t_pipex *pipex, t_args *child_args, t_struct *main);
 void	ft_byedoc(t_pipex *pipex, t_args *child_args);
 
 /**
- * @brief Here because norminette. Called in ft_heredoc to handle the case 
- * where the open command for the temp file fails.
- * @param pipex structure containing the pipex->paths table to be freed.
+ * @brief Handles all other failures (fatal and otherwise) within executing.
+ * Open, malloc, dup2 etc.
+ * 
+ * @param pipex pipex structure containing the pipex->paths table to be freed.
+ * @param main main structure to be freed in child processes.
+ * @param exit_code exit code to be passed
+ * @return int exit_code
  */
-int		ft_open_fail(t_pipex *pipex, t_struct *main);
+int		ft_pipex_error(t_pipex *pipex, t_struct *main, int exit_code);
 
-// void	ft_dup2_fail(t_pipex *pipex);
-
-// void	ft_pipe_fail(t_pipex *pipex);
-
-// void	ft_fork_fail(t_pipex *pipex);
-
-int		ft_fatal_parent(t_pipex *pipex, t_struct *main);
-
-void	ft_fatal_child(t_pipex *pipex, t_struct *main);
+int		unlink_hds(int nb_commands);
 
 /******************************************************************************/
 /* pipex_cmds.c                                                               */
@@ -285,7 +281,7 @@ int		ft_heredoc(t_pipex *pipex, t_args **args_list, int i);
  * The command paths are extracted from envp (ft_extract_paths).
  * @param pipex Structure to initialise.
  */
-void	ft_pipex_init(t_pipex *pipex, t_struct *main);
+int		ft_pipex_init(t_pipex *pipex, t_struct *main);
 
 /**
  * @brief Runs ft_pipex_init to initialises a number of variables in the pipex 

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:30:14 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 13:04:42 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:11:55 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,7 @@ char	**ft_extract_paths(char **envp)
 		while (envp[i])
 		{
 			if (ft_strncmp("PATH=", envp[i], 5) == 0)
-			{
 				paths = ft_split(envp[i] + 5, ':');
-				if (!paths)
-					(write(STDERR_FILENO, "pipex: malloc failed: paths\n", 28),
-						exit(EXIT_FAILURE));
-			}
 			i++;
 		}
 	}
@@ -37,8 +32,10 @@ char	**ft_extract_paths(char **envp)
 	{
 		paths = ft_split(". ", ' ');
 		if (!paths)
-			(write(STDERR_FILENO, "pipex: malloc failed: paths\n", 28),
-				exit(EXIT_FAILURE));
+		{
+			write(STDERR_FILENO, "pipex: malloc failed: paths\n", 28);
+			return (NULL);
+		}
 	}
 	return (paths);
 }
@@ -86,7 +83,7 @@ void	ft_execve(t_pipex *pipex, t_args *child_arg, t_struct *main)
 		if (!cmd_path) //replace/move this with something from errors.c -> fatal error
 		{
 			write(STDERR_FILENO, "pipex: malloc failed: cmd_path\n", 31);
-			ft_fatal_child(pipex, main);
+			ft_pipex_error(pipex, main, EXIT_FAILURE);
 		}
 		execve(cmd_path, child_arg->command_table, main->common.envp);
 		i++;
