@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 15:10:58 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:19:46 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,3 +204,4 @@ int		executing(t_struct *main)
 	ft_pipex_error(&pipex, main, EXIT_SUCCESS);
 	return (pipex.exit_code);
 }
+//change
