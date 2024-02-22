@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_errors.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 15:42:04 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:16:00 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,11 @@ int	ft_pipex_error(t_pipex *pipex, t_struct *main, int exit_code)
 		free_envp(main->common.envp);
 		exit(exit_code);
 	}
-	return (unlink_hds(main->common.nb_commands));
+	return (unlink_hds());
 	// return (EXIT_FAILURE);
 }
 
-int		unlink_hds(int nb_commands)
+int		unlink_hds(void)
 {
 	int		i;
 	char	*filename;
@@ -102,7 +102,7 @@ int		unlink_hds(int nb_commands)
 	i = 0;
 	filename = NULL;
 	string_i = NULL;
-	while (i < nb_commands)
+	while (i < 1024)
 	{
 		string_i = ft_itoa(i);
 		if (!string_i)

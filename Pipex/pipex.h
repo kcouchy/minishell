@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 15:01:15 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:37:55 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,11 @@
 
 typedef struct s_pipex_list
 {
-	// int				heredoc;		//boolean to handle heredoc input
 	int				pipe_fd[2];		//holds pipe fds: [0] = read, [1] = write
 	int				temp_fd_out;	//holds write fd between forks (forkchild)
-	// int				commands;		//no. of commands
-	// char			**args;			//all command structures (argv)
-	// char			**child_args;	//all parts of a single command
 	int				pid;			//current fork id
 	int				pid_last;		//pid of last (1st made) command to return
 	int				exit_code;		//of last command to return in parent
-	// char			*infile;		//final input redirection
-	// int				infile_fd;		//input file fd for heredoc version
-	// int				outfile_type;	//0 = trunc, 1 = append
-	// char			*outfile;		//final output redirection (heredoc or no)
-	// char			**envp;			//envp input
 	char			**paths;		//paths separated from envp PATH variable
 	// char			*pwd_origin;	//pwd at launch for backup in builtins
 }					t_pipex;
@@ -151,7 +142,13 @@ void	ft_byedoc(t_pipex *pipex, t_args *child_args);
  */
 int		ft_pipex_error(t_pipex *pipex, t_struct *main, int exit_code);
 
-int		unlink_hds(int nb_commands);
+/**
+ * @brief Unlinks temp heredoc files "temp_n" (stored in ./Pipex for the 
+ * duration of the function). Removes "temp_0" up to "temp_1024".
+ * 
+ * @return int 
+ */
+int		unlink_hds(void);
 
 /******************************************************************************/
 /* pipex_cmds.c                                                               */
@@ -316,6 +313,11 @@ void	ft_single_cmd(t_pipex *pipex, t_args *child_args, t_struct *main);
 
 int		ft_tablen(char **tab);
 
+/******************************************************************************/
+/* redirections.c                                                             */
+/******************************************************************************/
+
+int		ft_redirections(t_pipex *pipex, t_struct *main);
 
 /******************************************************************************/
 /* gnl.c                                                                      */

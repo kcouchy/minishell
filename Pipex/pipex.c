@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 15:56:01 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:38:34 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,80 +108,80 @@ int	ft_pipex_init(t_pipex *pipex, t_struct *main)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_redirections(t_pipex *pipex, t_struct *main)
-{
-	t_args	*temp;
-	int		i;
-	int		fd;
+// int	ft_redirections(t_pipex *pipex, t_struct *main)
+// {
+// 	t_args	*temp;
+// 	int		i;
+// 	int		fd;
 
-	temp = main->args_list;
-	i = 0;
-	fd = -1;
-	while (temp)
-	{
-		if (temp->input_files)
-		{
-			i = 0;
-			while (temp->input_files[i])
-			{
-				fd = -1;
-				if (ft_strcmp(temp->input_redirs[i], "<") == 0)
-				{
-					fd = open(temp->input_files[i], O_RDONLY);
-					if (fd == -1)
-						return (EXIT_FAILURE);
-					close(fd);
-					if(temp->input)
-					{
-						free(temp->input);
-						temp->input = NULL;
-					}
-					temp->input = ft_strdup(temp->input_files[i]);
-					if(!temp->input)
-						return (EXIT_FAILURE);
-				}
-				else if (ft_strcmp(temp->input_redirs[i], "<<") == 0)
-					if (ft_heredoc(pipex, &temp, i) == 1)
-						return (EXIT_FAILURE);
-				i++;
-			}
-		}
-		if (temp->output_files)
-		{
-			i = 0;
-			while (temp->output_files[i])
-			{
-				fd = -1;
-				if (ft_strcmp(temp->output_redirs[i], ">") == 0)
-				{
-					fd = open(temp->output_files[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
-					temp->output_type = 0;
-				}
-				else if (ft_strcmp(temp->output_redirs[i], ">>") == 0)
-				{
-					fd = open(temp->output_files[i], O_WRONLY | O_APPEND | O_CREAT, 0644);
-					temp->output_type = 1;
-				}
-				if (fd == -1)
-					return (EXIT_FAILURE);
-				close(fd);
-				i++;
-			}
-			if(temp->output)
-			{
-				free(temp->output);
-				temp->output = NULL;
-			}
-			temp->output = ft_strdup(temp->output_files[i - 1]);
-			if(!temp->output)
-				return (EXIT_FAILURE);
-		}
-		printf("temp->input[%d] %s\n", i, temp->input);
-		printf("temp->output[%d] %s\n", i, temp->output);
-		temp = temp->next;
-	}
-	return (0);
-}
+// 	temp = main->args_list;
+// 	i = 0;
+// 	fd = -1;
+// 	while (temp)
+// 	{
+// 		if (temp->input_files)
+// 		{
+// 			i = 0;
+// 			while (temp->input_files[i])
+// 			{
+// 				fd = -1;
+// 				if (ft_strcmp(temp->input_redirs[i], "<") == 0)
+// 				{
+// 					fd = open(temp->input_files[i], O_RDONLY);
+// 					if (fd == -1)
+// 						return (EXIT_FAILURE);
+// 					close(fd);
+// 					if(temp->input)
+// 					{
+// 						free(temp->input);
+// 						temp->input = NULL;
+// 					}
+// 					temp->input = ft_strdup(temp->input_files[i]);
+// 					if(!temp->input)
+// 						return (EXIT_FAILURE);
+// 				}
+// 				else if (ft_strcmp(temp->input_redirs[i], "<<") == 0)
+// 					if (ft_heredoc(pipex, &temp, i) == 1)
+// 						return (EXIT_FAILURE);
+// 				i++;
+// 			}
+// 		}
+// 		if (temp->output_files)
+// 		{
+// 			i = 0;
+// 			while (temp->output_files[i])
+// 			{
+// 				fd = -1;
+// 				if (ft_strcmp(temp->output_redirs[i], ">") == 0)
+// 				{
+// 					fd = open(temp->output_files[i], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+// 					temp->output_type = 0;
+// 				}
+// 				else if (ft_strcmp(temp->output_redirs[i], ">>") == 0)
+// 				{
+// 					fd = open(temp->output_files[i], O_WRONLY | O_APPEND | O_CREAT, 0644);
+// 					temp->output_type = 1;
+// 				}
+// 				if (fd == -1)
+// 					return (EXIT_FAILURE);
+// 				close(fd);
+// 				i++;
+// 			}
+// 			if(temp->output)
+// 			{
+// 				free(temp->output);
+// 				temp->output = NULL;
+// 			}
+// 			temp->output = ft_strdup(temp->output_files[i - 1]);
+// 			if(!temp->output)
+// 				return (EXIT_FAILURE);
+// 		}
+// 		printf("temp->input[%d] %s\n", i, temp->input);
+// 		printf("temp->output[%d] %s\n", i, temp->output);
+// 		temp = temp->next;
+// 	}
+// 	return (0);
+// }
 
 int		executing(t_struct *main)
 {
@@ -200,7 +200,6 @@ int		executing(t_struct *main)
 	if (main->common.nb_commands < 1)
 		return (ft_pipex_error(&pipex, main, EXIT_SUCCESS));
 	ft_pipex(&pipex, main);
-	g_signal = 0;
 	ft_pipex_error(&pipex, main, EXIT_SUCCESS);
 	return (pipex.exit_code);
 }
