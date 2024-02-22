@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/22 13:14:14 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/22 18:42:56 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,11 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		input = readline(GREEN"finishell 🤯 > "RESET);
-		if (!input)
+		if (!input || !ft_strcmp(input, "exit"))
 		{
-			write(1, "\n", 1);
+			write(1, "exit\n", 5);
+			if (input)
+				free(input);
 			break ;
 		}
 		if (parsing(&main, input))

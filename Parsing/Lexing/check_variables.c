@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:39:03 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/21 15:01:08 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/22 19:23:33 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,18 @@ int	check_quotes(t_variables *var, int i)
 	return (i);
 }
 
+int	is_heredoc(char *input, int i)
+{
+	while (i > -1 && (is_space(input[i]) || is_quote(input[i])))
+	{
+		printf("input[i] = %c, i = %d\n", input[i], i);
+		i--;
+	}
+	if (input[i] && input[i - 1] && input[i] == '<' && input[i - 1] == '<')
+		return (1);
+	return (0);
+}
+
 char	*check_variables(t_variables *var, char **envp, char *input)
 {
 	int		i;
@@ -95,7 +107,7 @@ char	*check_variables(t_variables *var, char **envp, char *input)
 	while (var->left[i])
 	{
 		i = check_quotes(var, i);
-		if (var->left[i] == '$')
+		if (var->left[i] == '$' && !is_heredoc(var->left, i - 1))
 			i = search_variable(var, envp, i + 1);
 		else if (var->left[i])
 			i++;
