@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 15:01:15 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/23 10:55:01 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 //# define FILENOTFOUND 127
 # define FILENOTFOUND 127 //command doesn’t exist, or isn’t in $PATH.
+# define EXIT_SIGINT 130 //SIGINT triggered closure
 # define GNL_BUFFER_SIZE 1
 
 /******************************************************************************/
@@ -40,21 +41,13 @@
 
 typedef struct s_pipex_list
 {
-	// int				heredoc;		//boolean to handle heredoc input
 	int				pipe_fd[2];		//holds pipe fds: [0] = read, [1] = write
 	int				temp_fd_out;	//holds write fd between forks (forkchild)
-	// int				commands;		//no. of commands
-	// char			**args;			//all command structures (argv)
-	// char			**child_args;	//all parts of a single command
 	int				pid;			//current fork id
 	int				pid_last;		//pid of last (1st made) command to return
 	int				exit_code;		//of last command to return in parent
-	// char			*infile;		//final input redirection
-	// int				infile_fd;		//input file fd for heredoc version
-	// int				outfile_type;	//0 = trunc, 1 = append
-	// char			*outfile;		//final output redirection (heredoc or no)
-	// char			**envp;			//envp input
 	char			**paths;		//paths separated from envp PATH variable
+	int				hd_temp_fd;		//temp to pass between heredoc functions
 	// char			*pwd_origin;	//pwd at launch for backup in builtins
 }					t_pipex;
 
@@ -138,7 +131,7 @@ void	ft_command_fail(t_pipex *pipex, t_args *child_args, t_struct *main);
  * ft_printf used to replicate bash error message for the same case.
  * @param pipex structure containing the pipex->paths table to be freed.
  */
-void	ft_byedoc(t_pipex *pipex, t_args *child_args);
+int		ft_byedoc(t_pipex *pipex, t_args *child_args, int exit_code);
 
 /**
  * @brief Handles all other failures (fatal and otherwise) within executing.
@@ -151,7 +144,13 @@ void	ft_byedoc(t_pipex *pipex, t_args *child_args);
  */
 int		ft_pipex_error(t_pipex *pipex, t_struct *main, int exit_code);
 
-int		unlink_hds(int nb_commands);
+/**
+ * @brief Unlinks temp heredoc files "temp_n" (stored in ./Pipex for the 
+ * duration of the function). Removes "temp_0" up to "temp_1024".
+ * 
+ * @return int 
+ */
+int		unlink_hds(void);
 
 /******************************************************************************/
 /* pipex_cmds.c                                                               */
@@ -263,20 +262,6 @@ void	ft_wait_parent(t_pipex *pipex, int nb_commands);
 void	ft_pipex(t_pipex *pipex, t_struct *main);
 
 /**
- * @brief Handles the reinitialisation of variables for the heredoc case.
- * Creates a temp file 'temp' to hold user input, and stocks the fd in 
- * pipex->infile_fd.
- * Using get_next_line, reads each line from the stdin and put it into the 
- * temp file until the line == the end of file tag LIMITER.
- * In the case where the program is exited without input (ctrlD : buffer == 0),
- * launches ft_byedoc to exit program.
- * Once writing is completed, temp file is closed (to be reopened in 
- * ft_bonus_first_cmd).
- * @param pipex 
- */
-int		ft_heredoc(t_pipex *pipex, t_args **args_list, int i);
-
-/**
  * @brief Initialises a number of variables in the pipex structure. 
  * The command paths are extracted from envp (ft_extract_paths).
  * @param pipex Structure to initialise.
@@ -316,6 +301,25 @@ void	ft_single_cmd(t_pipex *pipex, t_args *child_args, t_struct *main);
 
 int		ft_tablen(char **tab);
 
+/******************************************************************************/
+/* redirections.c                                                             */
+/******************************************************************************/
+
+/**
+ * @brief Handles the reinitialisation of variables for the heredoc case.
+ * Creates a temp file 'temp' to hold user input, and stocks the fd in 
+ * pipex->infile_fd.
+ * Using get_next_line, reads each line from the stdin and put it into the 
+ * temp file until the line == the end of file tag LIMITER.
+ * In the case where the program is exited without input (ctrlD : buffer == 0),
+ * launches ft_byedoc to exit program.
+ * Once writing is completed, temp file is closed (to be reopened in 
+ * ft_bonus_first_cmd).
+ * @param pipex 
+ */
+int		ft_heredoc(t_pipex *pipex, t_args **args_list, int i);
+
+int		ft_redirections(t_pipex *pipex, t_struct *main);
 
 /******************************************************************************/
 /* gnl.c                                                                      */
