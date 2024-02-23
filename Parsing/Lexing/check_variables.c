@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:39:03 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/23 12:16:03 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/23 12:35:42 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,10 @@ int	check_quotes(t_variables *var, int i)
 
 int	is_heredoc(char *input, int i)
 {
-	while (i > -1 && (is_space(input[i]) || is_quote(input[i])))
-	{
-		printf("input[i] = %c, i = %d\n", input[i], i);
+	while (i > -1 && is_quote(input[i]))
 		i--;
-	}
+	while (i > -1 && is_space(input[i]))
+		i--;
 	if (input[i] && input[i - 1] && input[i] == '<' && input[i - 1] == '<')
 		return (1);
 	return (0);
