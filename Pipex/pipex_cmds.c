@@ -6,61 +6,24 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:28:50 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/23 11:53:34 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/23 15:32:36 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ft_inputs(t_pipex *pipex, t_args *child_args, t_struct *main)
+// 0 = first command position = no redirection if there is no redirection in the command structure
+// 1 = last/mid command position = redirection to/from pipe if there is no redirection in the command structure
+
+void	ft_input(t_pipex *pipex, t_args *child_args, t_struct *main, int ired)
 {
 	int	in_fd;
 
 	in_fd = -1;
-	if (!child_args->input)
+	if (pipex->pipe_fd[ired] != -1)
+		close(pipex->pipe_fd[ired]);
+	if (!child_args->input && ired == 0)
 		return ;
-	in_fd = open(child_args->input, O_RDONLY);
-	if (in_fd == -1)
-	{
-		write(STDERR_FILENO, "finishell: open failed: input\n", 30);
-		ft_pipex_error(pipex, main, EXIT_FAILURE);
-	}
-	if (dup2(in_fd, STDIN_FILENO) == -1)
-	{
-		write(STDERR_FILENO, "finishell: dup2 failed: input\n", 30);
-		ft_pipex_error(pipex, main, EXIT_FAILURE);
-	}
-}
-
-void	ft_outputs(t_pipex *pipex, t_args *child_args, t_struct *main)
-{
-	int	out_fd;
-
-	out_fd = -1;
-	if (!child_args->output)
-		return ;
-	if (child_args->output_type == 1)
-		out_fd = open(child_args->output, O_WRONLY | O_APPEND | O_CREAT, 0644);
-	else if (child_args->output_type == 0)
-		out_fd = open(child_args->output, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-	if (out_fd == -1)
-	{
-		write(STDERR_FILENO, "finishell: open failed: output\n", 31);
-		ft_pipex_error(pipex, main, EXIT_FAILURE);
-	}
-	if (dup2(out_fd, STDOUT_FILENO) == -1)
-	{
-		write(STDERR_FILENO, "finishell: dup2 failed: output\n", 31);
-		ft_pipex_error(pipex, main, EXIT_FAILURE);
-	}
-}
-
-void	ft_last_cmd(t_pipex *pipex, t_args *child_args, t_struct *main) //can modify ft_inputs to handle most of this
-{
-	close(pipex->pipe_fd[1]);
-	int	in_fd;
-
-	in_fd = -1;
 	if (child_args->input)
 		in_fd = open(child_args->input, O_RDONLY);
 	else
@@ -75,16 +38,20 @@ void	ft_last_cmd(t_pipex *pipex, t_args *child_args, t_struct *main) //can modif
 		write(STDERR_FILENO, "finishell: dup2 failed: last_cmd\n", 33);
 		ft_pipex_error(pipex, main, EXIT_FAILURE);
 	}
-	close(in_fd);
-	ft_outputs(pipex, child_args, main);
+	if (ired == 1)
+		close(in_fd);
 }
 
-void	ft_first_cmd(t_pipex *pipex, t_args *child_args, t_struct *main) //can modify ft_outputs to handle most of this
+// 0 = last command position = no redirection if there is no redirection in the command structure
+// 1 = first/mid command position = redirection to/from pipe if there is no redirection in the command structure
+
+void	ft_output(t_pipex *pipex, t_args *child_args, t_struct *main, int ored)
 {
 	int	out_fd;
 
 	out_fd = -1;
-	close(pipex->pipe_fd[0]);
+	if (!child_args->output && ored == 0)
+		return ;
 	if (child_args->output)
 	{
 		if (child_args->output_type == 1)
@@ -96,61 +63,30 @@ void	ft_first_cmd(t_pipex *pipex, t_args *child_args, t_struct *main) //can modi
 		out_fd = pipex->temp_fd_out;
 	if (out_fd == -1)
 	{
-		write(STDERR_FILENO, "finishell: open failed: first_cmd\n", 34);
+		write(STDERR_FILENO, "finishell: open failed: output\n", 31);
 		ft_pipex_error(pipex, main, EXIT_FAILURE);
 	}
 	if (dup2(out_fd, STDOUT_FILENO) == -1)
 	{
-		write(STDERR_FILENO, "finishell: dup2 failed: first_cmd\n", 34);
+		write(STDERR_FILENO, "finishell: dup2 failed: output\n", 31);
 		ft_pipex_error(pipex, main, EXIT_FAILURE);
 	}
-	close(out_fd);
-	ft_inputs(pipex, child_args, main);
+	if (ored == 1)
+		close(out_fd);
 }
 
-void	ft_mid_cmd(t_pipex *pipex, t_args *child_args, t_struct *main)
+void	ft_cmd(t_pipex *pipex, t_args *child_args, t_struct *main, int red)
 {
-	int	out_fd;
-	int	in_fd;
-
-	out_fd = -1;
-	in_fd = -1;
-	close(pipex->pipe_fd[1]);
-	if (child_args->output)
+	if (red >= 10)
 	{
-		if (child_args->output_type == 1)
-			out_fd = open(child_args->output, O_WRONLY | O_APPEND | O_CREAT, 0644);
-		else if (child_args->output_type == 0)
-			out_fd = open(child_args->output, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		ft_input(pipex, child_args, main, 1);
+		ft_output(pipex, child_args, main, red % 10);
 	}
 	else
-		out_fd = pipex->temp_fd_out;
-	if (out_fd == -1)
 	{
-		write(STDERR_FILENO, "finishell: open failed: mid_cmd\n", 32);
-		ft_pipex_error(pipex, main, EXIT_FAILURE);
+		ft_input(pipex, child_args, main, 0);
+		ft_output(pipex, child_args, main, red);
 	}
-	if (dup2(out_fd, STDOUT_FILENO) == -1)
-	{
-		write(STDERR_FILENO, "finishell: dup2 failed: mid_cmd\n", 32);
-		ft_pipex_error(pipex, main, EXIT_FAILURE);
-	}
-	if (child_args->input)
-		in_fd = open(child_args->input, O_RDONLY);
-	else
-		in_fd = pipex->pipe_fd[0];
-	if (in_fd == -1)
-	{
-		write(STDERR_FILENO, "finishell: open failed: mid_cmd\n", 32);
-		ft_pipex_error(pipex, main, EXIT_FAILURE);
-	}
-	if (dup2(in_fd, STDIN_FILENO) == -1)
-	{
-		write(STDERR_FILENO, "finishell: dup2 failed: mid_cmd\n", 32);
-		ft_pipex_error(pipex, main, EXIT_FAILURE);
-	}
-	close(out_fd);
-	close(in_fd);
 }
 
 void	ft_forkchild(t_pipex *pipex, int i, t_args *child_args, t_struct *main)
@@ -164,13 +100,13 @@ void	ft_forkchild(t_pipex *pipex, int i, t_args *child_args, t_struct *main)
 		if (!child_args->command_name)
 			ft_pipex_error(pipex, main, EXIT_SUCCESS);
 		if (main->common.nb_commands == 1 && i == 0)
-			ft_single_cmd(pipex, child_args, main);
+			ft_cmd(pipex, child_args, main, 00);
 		else if (main->common.nb_commands > 1 && i == 0)
-			ft_last_cmd(pipex, child_args, main);
+			ft_cmd(pipex, child_args, main, 10);
 		else if (i == main->common.nb_commands - 1)
-			ft_first_cmd(pipex, child_args, main);
+			ft_cmd(pipex, child_args, main, 01);
 		else if (i > 0 && i < (main->common.nb_commands - 1))
-			ft_mid_cmd(pipex,child_args, main);
+			ft_cmd(pipex, child_args, main, 11);
 		if (!child_args->command_table[0])
 			ft_command_fail(pipex, child_args, main);
 		ft_execve(pipex, child_args, main);

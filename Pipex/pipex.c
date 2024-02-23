@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/23 12:20:52 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/23 15:02:56 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	ft_pipex_init(t_pipex *pipex, t_struct *main)
 	pipex->pid = -1;
 	pipex->exit_code = 0;
 	pipex->hd_temp_fd = -1;
+	pipex->pipe_fd[0] = -1;
+	pipex->pipe_fd[1] = -1;
 	pipex->paths = ft_extract_paths(main->common.f_envp);
 	if (!pipex->paths)
 		return (EXIT_FAILURE);

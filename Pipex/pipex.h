@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/23 12:21:20 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/23 14:43:52 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ typedef struct s_pipex_list
 	int				exit_code;		//of last command to return in parent
 	char			**paths;		//paths separated from envp PATH variable
 	int				hd_temp_fd;		//temp to pass between heredoc functions
-	// char			*pwd_origin;	//pwd at launch for backup in builtins
 }					t_pipex;
 
 /******************************************************************************/
@@ -156,9 +155,11 @@ int		unlink_hds(void);
 /* pipex_cmds.c                                                               */
 /******************************************************************************/
 
-void	ft_inputs(t_pipex *pipex, t_args *child_args, t_struct *main);
+void	ft_input(t_pipex *pipex, t_args *child_args, t_struct *main, int ired);
+// void	ft_inputs(t_pipex *pipex, t_args *child_args, t_struct *main);
 
-void	ft_outputs(t_pipex *pipex, t_args *child_args, t_struct *main);
+void	ft_output(t_pipex *pipex, t_args *child_args, t_struct *main, int ored);
+// void	ft_outputs(t_pipex *pipex, t_args *child_args, t_struct *main);
 
 /**
  * @brief Identical to base program except for the heredoc case.
