@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/23 12:16:19 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/23 12:21:59 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ void	ft_command_fail(t_pipex *pipex, t_args *child_args, t_struct *main)
 	else
 	{
 		msg = ft_strjoin3(
-			"\x1b[38;2;255;0;0;1mfinishell 🤬: command not found: ",
-			child_args->command_name, "\e[0m\n");
+				"\x1b[38;2;255;0;0;1mfinishell 🤬: command not found: ",
+				child_args->command_name, "\e[0m\n");
 		if (!msg)//may need to set malloc error here
 			write(STDERR_FILENO, "finishell: command not found\n", 29);
 		else
@@ -61,13 +61,13 @@ void	ft_command_fail(t_pipex *pipex, t_args *child_args, t_struct *main)
 	exit(FILENOTFOUND);
 }
 
-void	ft_byedoc(t_pipex *pipex, t_args *child_args)
+int	ft_byedoc(t_pipex *pipex, t_args *child_args, int exit_code)
 {
 	char	*msg;
 
 	g_signal = 0;
 	pipex->exit_code = EXIT_FAILURE;
-	msg = ft_strjoin3 
+	msg = ft_strjoin3
 		("\x1b[38;2;255;0;0;1mfinishell 🤬: warning: here-doc wanted `",
 			child_args->input_files[0], "'\n\e[0m");
 	if (!msg)//may need to set malloc error here
@@ -77,7 +77,7 @@ void	ft_byedoc(t_pipex *pipex, t_args *child_args)
 		// 	25);
 	write(STDERR_FILENO, msg, ft_strlen(msg));
 	free(msg);
-	return ;
+	return (exit_code);
 }
 
 int	ft_pipex_error(t_pipex *pipex, t_struct *main, int exit_code)
@@ -89,11 +89,11 @@ int	ft_pipex_error(t_pipex *pipex, t_struct *main, int exit_code)
 		free_envp(main->common.f_envp);
 		exit(exit_code);
 	}
-	return (unlink_hds(main->common.nb_commands));
+	return (unlink_hds());
 	// return (EXIT_FAILURE);
 }
 
-int		unlink_hds(int nb_commands)
+int	unlink_hds(void)
 {
 	int		i;
 	char	*filename;
@@ -102,7 +102,7 @@ int		unlink_hds(int nb_commands)
 	i = 0;
 	filename = NULL;
 	string_i = NULL;
-	while (i < nb_commands)
+	while (i < 1024)
 	{
 		string_i = ft_itoa(i);
 		if (!string_i)
