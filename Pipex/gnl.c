@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gnl.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 10:34:45 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 15:09:50 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/23 11:01:02 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*ft_gnl_read2buff(char *line, char *buffer, int fd)
 		if (readlen == 0)
 		{
 			buffer[0] = '\0';
-			break;
+			break ;
 		}
 		else
 		{
@@ -101,9 +101,8 @@ char	*gnl(int fd)
 
 	ft_bzero(&act, sizeof(act));
 	act.sa_handler = &sigint_handler_gnl;
-	// SA_RESTART;
 	sigaction(SIGINT, &act, NULL);
-	line = malloc(sizeof(char)*1);
+	line = malloc(sizeof(char) * 1);
 	if (!line)
 		return (NULL);
 	line[0] = '\0';

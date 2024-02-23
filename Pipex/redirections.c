@@ -6,13 +6,13 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 15:59:31 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 18:51:30 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/23 11:05:48 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static int	_hd_read(t_pipex *pipex, t_args **temp, char *temp_i, int temp_fd, int i)
+static int	_hd_read(t_pipex *pipex, t_args **temp, char *temp_i, int i)
 {
 	char	*line;
 
@@ -23,19 +23,19 @@ static int	_hd_read(t_pipex *pipex, t_args **temp, char *temp_i, int temp_fd, in
 		line = gnl(STDIN_FILENO);
 		if (g_signal == 2)
 		{
-			close(temp_fd);
-			temp_fd = open(temp_i, O_RDWR | O_TRUNC | O_CREAT, 0644);
-			return (EXIT_SUCCESS); //does ctrl C exit leave it as a success?
+			(close(pipex->hd_temp_fd), free (line));
+			pipex->hd_temp_fd = open(temp_i, O_RDWR | O_TRUNC | O_CREAT, 0644);
+			return (EXIT_SIGINT);
 		}
 		if (!line)
-			return (ft_byedoc(pipex, *temp, EXIT_SUCCESS)); //should be exit failure?
+			return (ft_byedoc(pipex, *temp, EXIT_FAILURE)); //fatal exit failure only?
 		else if (ft_strncmp(line, "\n", 1) != 0)
 			if (ft_strncmp(line, (*temp)->input_files[i],
 					(ft_strlen(line) - 1)) == 0)
-				return (EXIT_SUCCESS);
-		write(temp_fd, line, ft_strlen(line));
-		if (!(*temp)->input_files[i][0] && ft_strncmp(line, "\n", 1) == 0) // should handle limiter of "", to end the heredoc
-			return (EXIT_SUCCESS);
+				break ;
+		write(pipex->hd_temp_fd, line, ft_strlen(line));
+		if (!(*temp)->input_files[i][0] && ft_strncmp(line, "\n", 1) == 0)
+			break ;
 		free(line);
 	}
 	return (free(line), EXIT_SUCCESS);
@@ -45,30 +45,32 @@ int	ft_heredoc(t_pipex *pipex, t_args **temp, int i)
 {
 	char	*char_i;
 	char	*temp_i;
-	int		temp_fd;
+	int		hd_read_out;
 
+	hd_read_out = 0;
 	char_i = ft_itoa(i);
 	if (!char_i)
 		return (EXIT_FAILURE);
 	temp_i = ft_strjoin("./Pipex/temp_", char_i);
 	if (!temp_i)
+		free(char_i);
+	if (!temp_i)
 		return (EXIT_FAILURE);
 	if ((*temp)->input)
 		(free((*temp)->input), (*temp)->input = NULL);
 	(*temp)->input = temp_i;
-	temp_fd = open(temp_i, O_RDWR | O_TRUNC | O_CREAT, 0644);
-	if (temp_fd == -1) //can trigger this open fail with permissions for leak test
+	pipex->hd_temp_fd = open(temp_i, O_RDWR | O_TRUNC | O_CREAT, 0644);
+	if (pipex->hd_temp_fd == -1) //can trigger this open fail with permissions for leak test
+		(free(char_i), free(temp_i));
+	if (pipex->hd_temp_fd == -1)
 		return (EXIT_FAILURE);
-	if (_hd_read(pipex, temp, temp_i, temp_fd, i) == 1)
-		return (EXIT_FAILURE);
-	g_signal = 0;
-	free(char_i);
-	close(temp_fd);
+	hd_read_out = _hd_read(pipex, temp, temp_i, i);
+	(free(char_i), close(pipex->hd_temp_fd), g_signal = 0);
 	signal(SIGINT, &sigint_handler);
-	return (EXIT_SUCCESS);
+	return (hd_read_out);
 }
 
-static int	_inputs(t_pipex *pipex, t_args *temp)
+static int	_red_inputs(t_pipex *pipex, t_args *temp)
 {
 	int		fd;
 	int		i;
@@ -97,7 +99,7 @@ static int	_inputs(t_pipex *pipex, t_args *temp)
 	return (EXIT_SUCCESS);
 }
 
-static int	_outputs(t_args *temp, int *i)
+static int	_red_outputs(t_args *temp, int *i)
 {
 	int		fd;
 
@@ -134,11 +136,11 @@ int	ft_redirections(t_pipex *pipex, t_struct *main)
 	while (temp)
 	{
 		if (temp->input_files)
-			if (_inputs(pipex, temp) == 1)
+			if (_red_inputs(pipex, temp) == 1)
 				return (EXIT_FAILURE);
 		if (temp->output_files)
 		{
-			if (_outputs(temp, &i) == 1)
+			if (_red_outputs(temp, &i) == 1)
 				return (EXIT_FAILURE);
 			if (temp->output)
 				(free(temp->output), temp->output = NULL);

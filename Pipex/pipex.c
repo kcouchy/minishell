@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 19:04:03 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/23 11:44:44 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,14 @@ int	ft_pipex_init(t_pipex *pipex, t_struct *main)
 	pipex->temp_fd_out = -1;
 	pipex->pid = -1;
 	pipex->exit_code = 0;
+	pipex->hd_temp_fd = -1;
 	pipex->paths = ft_extract_paths(main->common.envp);
 	if (!pipex->paths)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
-int		executing(t_struct *main)
+int	executing(t_struct *main)
 {
 	t_pipex	pipex;
 
@@ -70,6 +71,7 @@ int		executing(t_struct *main)
 	if (main->common.nb_commands < 1)
 		return (ft_pipex_error(&pipex, main, EXIT_SUCCESS));
 	ft_pipex(&pipex, main);
+	g_signal = 0;
 	ft_pipex_error(&pipex, main, EXIT_SUCCESS);
 	return (pipex.exit_code);
 }

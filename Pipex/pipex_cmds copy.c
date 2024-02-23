@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_cmds.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:28:50 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/23 11:53:34 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:11:33 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ void	ft_outputs(t_pipex *pipex, t_args *child_args, t_struct *main)
 
 void	ft_last_cmd(t_pipex *pipex, t_args *child_args, t_struct *main) //can modify ft_inputs to handle most of this
 {
-	close(pipex->pipe_fd[1]);
 	int	in_fd;
 
 	in_fd = -1;
+	close(pipex->pipe_fd[1]);
 	if (child_args->input)
 		in_fd = open(child_args->input, O_RDONLY);
 	else
@@ -75,6 +75,11 @@ void	ft_last_cmd(t_pipex *pipex, t_args *child_args, t_struct *main) //can modif
 		write(STDERR_FILENO, "finishell: dup2 failed: last_cmd\n", 33);
 		ft_pipex_error(pipex, main, EXIT_FAILURE);
 	}
+	// if (dup2(pipex->pipe_fd[0], STDIN_FILENO) == -1)
+	// {
+	// 	write(STDERR_FILENO, "pipex: dup2 failed: last_cmd\n", 29);
+	// 	ft_dup2_fail(pipex);
+	// }
 	close(in_fd);
 	ft_outputs(pipex, child_args, main);
 }
@@ -104,6 +109,11 @@ void	ft_first_cmd(t_pipex *pipex, t_args *child_args, t_struct *main) //can modi
 		write(STDERR_FILENO, "finishell: dup2 failed: first_cmd\n", 34);
 		ft_pipex_error(pipex, main, EXIT_FAILURE);
 	}
+	// if (dup2(pipex->temp_fd_out, STDOUT_FILENO) == -1)
+	// {
+	// 	write(STDERR_FILENO, "pipex: dup2 failed: first_cmd\n", 30);
+	// 	ft_dup2_fail(pipex);
+	// }
 	close(out_fd);
 	ft_inputs(pipex, child_args, main);
 }
@@ -149,6 +159,22 @@ void	ft_mid_cmd(t_pipex *pipex, t_args *child_args, t_struct *main)
 		write(STDERR_FILENO, "finishell: dup2 failed: mid_cmd\n", 32);
 		ft_pipex_error(pipex, main, EXIT_FAILURE);
 	}
+	//if (outfile) then dup2 to outfile, else if :
+	// if (dup2(pipex->temp_fd_out, STDOUT_FILENO) == -1)
+	// {
+	// 	write(STDERR_FILENO, "pipex: dup2 failed: mid_cmd\n", 28);
+	// 	ft_dup2_fail(pipex);
+	// }
+	// close(pipex->temp_fd_out);
+
+
+	//if (infile) then dup2 to infile, else if :
+	// if (dup2(pipex->pipe_fd[0], STDIN_FILENO) == -1)
+	// {
+	// 	write(STDERR_FILENO, "pipex: dup2 failed: mid_cmd\n", 28);
+	// 	ft_dup2_fail(pipex);
+	// }
+	// close(pipex->pipe_fd[0]);
 	close(out_fd);
 	close(in_fd);
 }
@@ -161,7 +187,7 @@ void	ft_forkchild(t_pipex *pipex, int i, t_args *child_args, t_struct *main)
 		ft_pipex_error(pipex, main, EXIT_FAILURE);
 	if (pipex->pid == 0)
 	{
-		if (!child_args->command_name)
+		if (!child_args->command_name) //equivalent of command is missing - as with bash, exits without error
 			ft_pipex_error(pipex, main, EXIT_SUCCESS);
 		if (main->common.nb_commands == 1 && i == 0)
 			ft_single_cmd(pipex, child_args, main);

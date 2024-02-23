@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 17:56:33 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/23 10:55:01 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 //# define FILENOTFOUND 127
 # define FILENOTFOUND 127 //command doesn’t exist, or isn’t in $PATH.
+# define EXIT_SIGINT 130 //SIGINT triggered closure
 # define GNL_BUFFER_SIZE 1
 
 /******************************************************************************/
@@ -46,6 +47,7 @@ typedef struct s_pipex_list
 	int				pid_last;		//pid of last (1st made) command to return
 	int				exit_code;		//of last command to return in parent
 	char			**paths;		//paths separated from envp PATH variable
+	int				hd_temp_fd;		//temp to pass between heredoc functions
 	// char			*pwd_origin;	//pwd at launch for backup in builtins
 }					t_pipex;
 
