@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:30:14 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/23 12:46:28 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:28:29 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*ft_strjoin3(char const *s1, char const *s2, char const *s3)
 	return (output);
 }
 
-void	ft_execve(t_pipex *pipex, t_args *child_arg, t_struct *main)
+/*void	ft_execve(t_pipex *pipex, t_args *child_arg, t_struct *main)
 {
 	char	*cmd_path;
 	int		i;
@@ -89,4 +89,4 @@ void	ft_execve(t_pipex *pipex, t_args *child_arg, t_struct *main)
 		i++;
 		free(cmd_path);
 	}
-}
+}*/

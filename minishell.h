@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/23 14:12:23 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:26:50 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ int		parsing(t_struct *main, char *input);
 
 /* builtins */
 int		echo_parsing(t_parsing *parse, int i);
+int		ft_echo(t_args *arg);
 
 /*ft_free.c*/
 void	ft_free_parsing(t_parsing *parse);

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:27:08 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/23 16:09:01 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:28:13 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_tablen(char **tab)
 	int	i;
 
 	i = 0;
-	if (!tab)
+	if (tab)
 		while (tab[i])
 			i++;
 	return (i);
@@ -38,12 +38,27 @@ void	builtins_parsing(t_parsing *parse)
 	}
 }
 
-// void	builtins_executing(t_args *child_arg)
-// {
-	
-// }
+int	builtins_executing(t_args *arg)
+{
+	if (!ft_strcmp(arg->command_name, "echo"))
+		return (ft_echo(arg));
+	if (!ft_strcmp(arg->command_name, "cd") && !arg->flags)
+		return (1);
+	if (!ft_strcmp(arg->command_name, "pwd") && !arg->flags)
+		return (1);
+	if (!ft_strcmp(arg->command_name, "export") && !arg->flags)
+		return (1);
+	if (!ft_strcmp(arg->command_name, "unset") && !arg->flags)
+		return (1);
+	if (!ft_strcmp(arg->command_name, "env") && !arg->flags && !arg->args)
+		return (1);
+	if (!ft_strcmp(arg->command_name, "exit") && !arg->flags)
+		return (1);
+	else
+		return (EXIT_FAILURE);
+}
 
-/*void	ft_execve(t_pipex *pipex, t_args *child_arg, t_struct *main)
+void	ft_execve(t_pipex *pipex, t_args *child_arg, t_struct *main)
 {
 	char	*cmd_path;
 	int		i;
@@ -69,4 +84,4 @@ void	builtins_parsing(t_parsing *parse)
 		i++;
 		free(cmd_path);
 	}
-}*/
+}

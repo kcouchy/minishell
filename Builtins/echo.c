@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 13:26:27 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 18:31:06 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:31:35 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,23 +39,11 @@ int	echo_parsing(t_parsing *parse, int i)
 	return (i);
 }
 
-int	ft_echo(int argc, char **argv)
+int	ft_echo(t_args *arg)
 {
-	int	i;
-	int	n;
-
-	i = 0;
-	if (ft_strncmp(argv[1], "-n", 2) == 0)
-		i = 1;
-	n = i;
-	while (i < argc)
-	{
-		ft_putstr_fd(argv[i], STDOUT_FILENO);
-		i++;
-		if(i != argc)
-			write(STDOUT_FILENO, " ", 1);
-	}
-	if (n == 0)
+	if (arg->args)
+		ft_putstr_fd(arg->args, STDOUT_FILENO);
+	if (!arg->flags)
 		write(STDOUT_FILENO, "\n", 1);
 	return (0);
 }
