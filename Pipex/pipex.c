@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 15:37:20 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/23 12:16:50 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	ft_pipex_init(t_pipex *pipex, t_struct *main)
 	pipex->temp_fd_out = -1;
 	pipex->pid = -1;
 	pipex->exit_code = 0;
-	pipex->paths = ft_extract_paths(main->common.envp);
+	pipex->paths = ft_extract_paths(main->common.f_envp);
 	if (!pipex->paths)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);

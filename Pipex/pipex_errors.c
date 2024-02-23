@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 15:42:04 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/23 12:16:19 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	ft_command_fail(t_pipex *pipex, t_args *child_args, t_struct *main)
 	}
 	ft_freetable(pipex->paths);
 	ft_structclear(&main->args_list);
-	free_envp(main->common.envp);
+	free_envp(main->common.f_envp);
 	exit(FILENOTFOUND);
 }
 
@@ -86,7 +86,7 @@ int	ft_pipex_error(t_pipex *pipex, t_struct *main, int exit_code)
 	if (pipex->pid == 0)
 	{
 		ft_structclear(&main->args_list);
-		free_envp(main->common.envp);
+		free_envp(main->common.f_envp);
 		exit(exit_code);
 	}
 	return (unlink_hds(main->common.nb_commands));

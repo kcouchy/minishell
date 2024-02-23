@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/22 21:54:45 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/23 12:13:28 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	main(int argc, char **argv, char **envp)
 	//use sigaction
 	signal(SIGINT, &sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
-	main.common.envp = finishell_env(envp);
+	main.common.f_envp = finishell_env(envp);
 	//will need to implement pwd_origin = getcwd(NULL, 0);
 	while (1)
 	{
@@ -90,6 +90,6 @@ int	main(int argc, char **argv, char **envp)
 		}
 		free(input);
 	}
-	free_envp(main.common.envp);
+	free_envp(main.common.f_envp);
 	return (0);
 }

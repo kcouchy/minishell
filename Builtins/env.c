@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:46:56 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/16 17:37:05 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/23 12:14:58 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int ft_env(t_struct *main)
 	char	**f_envp;
 
 	i = 0;
-	f_envp = main->common.envp;
+	f_envp = main->common.f_envp;
 	if (ft_tablen(main->args_list->command_table) > 1)
 	{
 		printf("finishell: env: too many arguments");

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/22 18:48:21 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/23 12:14:36 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ typedef struct s_parsing
 typedef struct s_common
 {
 	int		nb_commands;
-	char	**envp;
+	char	**f_envp;
 }	t_common;
 
 typedef struct s_args
@@ -123,7 +123,7 @@ int		is_quote(char c);
 int		ft_strcmp(char *s1, char *s2);
 void	is_argument_a_command(t_parsing *parse, int i);
 char	*ft_strndup(char *s, int start, int end, char *returned);
-char	*var_strdup(char *envp);
+char	*var_strdup(char *f_envp);
 char	*var_strjoin(char *s1, char *s2);
 
 /* ******************** Lexing ******************** */
@@ -137,7 +137,7 @@ void	fill_strings(t_args *cmd, t_struct *main, int start, int end);
 char	**fill_type(int type, t_struct *main, int start, int end);
 char	**fill_table(t_struct *main, int start, int end);
 int		check_nothing(char *input);
-char	*check_variables(t_variables *variables, char **envp, char *input);
+char	*check_variables(t_variables *variables, char **f_envp, char *input);
 void	builtins_parsing(t_parsing *parse);
 int		parsing(t_struct *main, char *input);
 
@@ -147,7 +147,7 @@ int		echo_parsing(t_parsing *parse, int i);
 /*ft_free.c*/
 void	ft_free_parsing(t_parsing *parse);
 void	ft_structclear(t_args **cmd);
-void	free_envp(char **envp);
+void	free_envp(char **f_envp);
 
 /* ************* Parsing to Executing ************** */
 t_args	*parsing_to_executing(t_struct *main);

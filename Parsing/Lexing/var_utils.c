@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:16:21 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/20 16:34:16 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/23 12:14:19 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*ft_strndup(char *s, int start, int end, char *returned)
 	return (output);
 }
 
-char	*var_strdup(char *envp)
+char	*var_strdup(char *f_envp)
 {
 	int		i;
 	int		j;
@@ -44,9 +44,9 @@ char	*var_strdup(char *envp)
 	i = 0;
 	j = 0;
 	start = 0;
-	while (envp[i])
+	while (f_envp[i])
 	{
-		if (envp[i] == '=' && !start)
+		if (f_envp[i] == '=' && !start)
 		{
 			i++;
 			start = i;
@@ -56,8 +56,8 @@ char	*var_strdup(char *envp)
 	output = ft_calloc(i - start + 1, sizeof(char));
 	if (output == NULL)
 		return (NULL);
-	while (start < i && envp[start])
-		output[j++] = envp[start++];
+	while (start < i && f_envp[start])
+		output[j++] = f_envp[start++];
 	return (output);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 15:01:15 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/23 12:17:00 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct s_pipex_list
 	// int				infile_fd;		//input file fd for heredoc version
 	// int				outfile_type;	//0 = trunc, 1 = append
 	// char			*outfile;		//final output redirection (heredoc or no)
-	// char			**envp;			//envp input
+	// char			**f_envp;			//envp input
 	char			**paths;		//paths separated from envp PATH variable
 	// char			*pwd_origin;	//pwd at launch for backup in builtins
 }					t_pipex;

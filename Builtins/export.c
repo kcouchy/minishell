@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:10:57 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/16 17:35:28 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/23 12:15:22 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ int ft_export(t_struct *main)
 	i = 0;
 	if (ft_tablen(main->args_list->command_table) == 1)
 	{
-		while(main->common.envp[i])
+		while(main->common.f_envp[i])
 		{
-			if (main->common.envp[i][0] != '_')
-				write(STDOUT_FILENO, main->common.envp[i], ft_strlen(main->common.envp[i]));
+			if (main->common.f_envp[i][0] != '_')
+				write(STDOUT_FILENO, main->common.f_envp[i], ft_strlen(main->common.f_envp[i]));
 			i++;
 		}
 	}

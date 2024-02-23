@@ -6,13 +6,13 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:39:03 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/22 19:23:33 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/23 12:16:03 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	*copy_variable(char **envp, char *input, int start, int i)
+char	*copy_variable(char **f_envp, char *input, int start, int i)
 {
 	char	*buffer;
 	int		j;
@@ -22,16 +22,16 @@ char	*copy_variable(char **envp, char *input, int start, int i)
 	j = 0;
 	k = 0;
 	s = start;
-	while (envp[j])
+	while (f_envp[j])
 	{
 		k = 0;
 		s = start;
-		while (envp[j][k] && s < i && envp[j][k] == input[s++])
+		while (f_envp[j][k] && s < i && f_envp[j][k] == input[s++])
 			k++;
-		if (envp[j][k] && envp[j][k] == '=')
+		if (f_envp[j][k] && f_envp[j][k] == '=')
 		{
 			k++;
-			buffer = var_strdup(envp[j]);
+			buffer = var_strdup(f_envp[j]);
 			return (buffer);
 		}
 		j++;
@@ -39,7 +39,7 @@ char	*copy_variable(char **envp, char *input, int start, int i)
 	return (var_strdup(""));
 }
 
-int	search_variable(t_variables *var, char **envp, int i)
+int	search_variable(t_variables *var, char **f_envp, int i)
 {
 	int		start;
 	char	*buffer;
@@ -51,7 +51,7 @@ int	search_variable(t_variables *var, char **envp, int i)
 	while (var->left[i] && (isalnum(var->left[i])
 			|| var->left[i] == '_' || var->left[i] == '?'))
 		i++;
-	variable = copy_variable(envp, var->left, start + 1, i);
+	variable = copy_variable(f_envp, var->left, start + 1, i);
 	buffer = ft_strndup(var->left, 0, start, buffer);
 	if (i == start + 1)
 		buffer = var_strjoin(buffer, "$");
@@ -95,7 +95,7 @@ int	is_heredoc(char *input, int i)
 	return (0);
 }
 
-char	*check_variables(t_variables *var, char **envp, char *input)
+char	*check_variables(t_variables *var, char **f_envp, char *input)
 {
 	int		i;
 
@@ -108,7 +108,7 @@ char	*check_variables(t_variables *var, char **envp, char *input)
 	{
 		i = check_quotes(var, i);
 		if (var->left[i] == '$' && !is_heredoc(var->left, i - 1))
-			i = search_variable(var, envp, i + 1);
+			i = search_variable(var, f_envp, i + 1);
 		else if (var->left[i])
 			i++;
 	}

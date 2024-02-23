@@ -6,25 +6,25 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:30:14 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/22 15:11:55 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/23 12:16:43 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	**ft_extract_paths(char **envp)
+char	**ft_extract_paths(char **f_envp)
 {
 	char	**paths;
 	int		i;
 
 	paths = NULL;
 	i = 0;
-	if (envp)
+	if (f_envp)
 	{
-		while (envp[i])
+		while (f_envp[i])
 		{
-			if (ft_strncmp("PATH=", envp[i], 5) == 0)
-				paths = ft_split(envp[i] + 5, ':');
+			if (ft_strncmp("PATH=", f_envp[i], 5) == 0)
+				paths = ft_split(f_envp[i] + 5, ':');
 			i++;
 		}
 	}
@@ -78,14 +78,14 @@ void	ft_execve(t_pipex *pipex, t_args *child_arg, t_struct *main)
 	while (pipex->paths[i])
 	{
 		if (child_arg->command_name[0] == '.' || child_arg->command_name[0] == '/')
-			execve(child_arg->command_name, child_arg->command_table, main->common.envp);
+			execve(child_arg->command_name, child_arg->command_table, main->common.f_envp);
 		cmd_path = ft_strjoin3(pipex->paths[i], "/", child_arg->command_name);
 		if (!cmd_path) //replace/move this with something from errors.c -> fatal error
 		{
 			write(STDERR_FILENO, "pipex: malloc failed: cmd_path\n", 31);
 			ft_pipex_error(pipex, main, EXIT_FAILURE);
 		}
-		execve(cmd_path, child_arg->command_table, main->common.envp);
+		execve(cmd_path, child_arg->command_table, main->common.f_envp);
 		i++;
 		free(cmd_path);
 	}

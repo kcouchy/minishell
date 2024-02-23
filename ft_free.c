@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:44:46 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/21 15:26:01 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/23 12:12:54 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,18 +77,18 @@ void	ft_structclear(t_args **cmd)
 	}
 }
 
-void	free_envp(char **envp)
+void	free_envp(char **f_envp)
 {
 	int	i;
 
 	i = 0;
-	if (envp)
+	if (f_envp)
 	{
-		while (envp[i])
+		while (f_envp[i])
 		{
-			free(envp[i]);
+			free(f_envp[i]);
 			i++;
 		}
-		free(envp);
+		free(f_envp);
 	}
 }
