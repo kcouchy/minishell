@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/23 14:43:52 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/23 15:51:26 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 /* Defines                                                                    */
 /******************************************************************************/
 
-//# define FILENOTFOUND 127
 # define FILENOTFOUND 127 //command doesn’t exist, or isn’t in $PATH.
 # define EXIT_SIGINT 130 //SIGINT triggered closure
 # define GNL_BUFFER_SIZE 1
@@ -156,60 +155,60 @@ int		unlink_hds(void);
 /******************************************************************************/
 
 void	ft_input(t_pipex *pipex, t_args *child_args, t_struct *main, int ired);
-// void	ft_inputs(t_pipex *pipex, t_args *child_args, t_struct *main);
 
 void	ft_output(t_pipex *pipex, t_args *child_args, t_struct *main, int ored);
-// void	ft_outputs(t_pipex *pipex, t_args *child_args, t_struct *main);
 
-/**
- * @brief Identical to base program except for the heredoc case.
- * Creates the relevant redirections in the child that will run the last
- * command in the series (this is the first to be created).
- * The unused write end of the pipe is closed.
- * The read end of the pipe is duplicated to replace the standard input, and 
- * the original closed.
- * In the heredoc case, the output file is opened with the following flags 
- * (fd stocked in out_fd):
- * O_WRONLY, 0644 : write-only (permissions 644)
- * O_APPEND : append (new info will be appended to contents if the file exists)
- * O_CREAT : file will be created if it does not already exist.
- * In the normal bonus case, the output file is opened similarly except:
- * O_TRUNC : truncated (will overwrite all contents if the file exists)
- * The fd of the output file is then duped to replace the standard output.
- * @param pipex structure containing the tables to be freed in case of error
- * (pipex->paths + pipex->child_args)
- */
-void	ft_last_cmd(t_pipex *pipex, t_args *child_args, t_struct *main);
+void	ft_cmd(t_pipex *pipex, t_args *child_args, t_struct *main, int red);
 
-/**
- * @brief Identical to base program except for the heredoc case.
- * Creates the relevant redirections in the child that will run the first
- * command in the series (this is the last to be created).
- * The unused read end of the pipe is closed.
- * The write end of the pipe is duplicated to replace the standard output, and 
- * the original closed.
- * The input file is opened with the following flags (fd stocked in in_fd):
- * O_RDONLY : read-only
- * In the heredoc case, the temp file is used, otherwise the name of the input
- * file given in the command is used. Thft_pipe_fail(t_pipex *pipex)
- */
-void	ft_first_cmd(t_pipex *pipex, t_args *child_args, t_struct *main);
+// /**
+//  * @brief Identical to base program except for the heredoc case.
+//  * Creates the relevant redirections in the child that will run the last
+//  * command in the series (this is the first to be created).
+//  * The unused write end of the pipe is closed.
+//  * The read end of the pipe is duplicated to replace the standard input, and 
+//  * the original closed.
+//  * In the heredoc case, the output file is opened with the following flags 
+//  * (fd stocked in out_fd):
+//  * O_WRONLY, 0644 : write-only (permissions 644)
+//  * O_APPEND : append (new info will be appended to contents if the file exists)
+//  * O_CREAT : file will be created if it does not already exist.
+//  * In the normal bonus case, the output file is opened similarly except:
+//  * O_TRUNC : truncated (will overwrite all contents if the file exists)
+//  * The fd of the output file is then duped to replace the standard output.
+//  * @param pipex structure containing the tables to be freed in case of error
+//  * (pipex->paths + pipex->child_args)
+//  */
+// void	ft_last_cmd(t_pipex *pipex, t_args *child_args, t_struct *main);
 
-/**
- * @brief Not present in base program.
- * Handles all commands that come between the first and last commands in the 
- * chain (they all read and write from/to pipes and are thus identical).
- * Closes the unused write end of the pipe.
- * The write end of the pipe is retrieved from temp file containing the write 
- * end of the pipe created in the previous command's fork (because the pipe_fd 
- * in the structure is overwritten with the new pipe, and this process needs to 
- * write to the previous fork's input). This is then duped to replace the 
- * standard output, and the original closed.
- * The read end of the new pipe is duplicated to replace the standard input, 
- * and the original closed.
- * @param pipex 
- */
-void	ft_mid_cmd(t_pipex *pipex, t_args *child_args, t_struct *main);
+// /**
+//  * @brief Identical to base program except for the heredoc case.
+//  * Creates the relevant redirections in the child that will run the first
+//  * command in the series (this is the last to be created).
+//  * The unused read end of the pipe is closed.
+//  * The write end of the pipe is duplicated to replace the standard output, and 
+//  * the original closed.
+//  * The input file is opened with the following flags (fd stocked in in_fd):
+//  * O_RDONLY : read-only
+//  * In the heredoc case, the temp file is used, otherwise the name of the input
+//  * file given in the command is used. Thft_pipe_fail(t_pipex *pipex)
+//  */
+// void	ft_first_cmd(t_pipex *pipex, t_args *child_args, t_struct *main);
+
+// /**
+//  * @brief Not present in base program.
+//  * Handles all commands that come between the first and last commands in the 
+//  * chain (they all read and write from/to pipes and are thus identical).
+//  * Closes the unused write end of the pipe.
+//  * The write end of the pipe is retrieved from temp file containing the write 
+//  * end of the pipe created in the previous command's fork (because the pipe_fd 
+//  * in the structure is overwritten with the new pipe, and this process needs to 
+//  * write to the previous fork's input). This is then duped to replace the 
+//  * standard output, and the original closed.
+//  * The read end of the new pipe is duplicated to replace the standard input, 
+//  * and the original closed.
+//  * @param pipex 
+//  */
+// void	ft_mid_cmd(t_pipex *pipex, t_args *child_args, t_struct *main);
 
 /**
  * @brief Function launched in a while loop (where i is the number of input
@@ -289,12 +288,6 @@ int		ft_pipex_init(t_pipex *pipex, t_struct *main);
 // int		executing(int argc, char **argv, char **envp, int num_args);
 //int		executing(t_args *args, char **envp, int num_args);
 int		executing(t_struct *main);
-
-/******************************************************************************/
-/* single_cmd.c                                                               */
-/******************************************************************************/
-
-void	ft_single_cmd(t_pipex *pipex, t_args *child_args, t_struct *main);
 
 /******************************************************************************/
 /* Builtins.utils                                                             */
