@@ -6,7 +6,7 @@
 #    By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
-#    Updated: 2024/02/22 16:39:48 by kcouchma         ###   ########.fr        #
+#    Updated: 2024/02/23 11:57:05 by kcouchma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,6 @@ SRCS =											\
 				Builtins/pwd					\
 				Builtins/builtins_utils			\
 				Parsing/Lexing/alloc_tables		\
-				Parsing/Lexing/builtin_parsing	\
 				Parsing/Lexing/check_commands	\
 				Parsing/Lexing/check_variables	\
 				Parsing/Lexing/lexing_utils		\

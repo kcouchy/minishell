@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:12:01 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/22 14:48:56 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/22 21:35:37 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,7 @@ static int	_which_redirection(t_parsing *parse, int i)
 	else if (!ft_strcmp(parse->argv[i], ">")
 		|| !ft_strcmp(parse->argv[i], ">>"))
 		return (OUTPUT_REDIR);
-	else
-	{
-		printf("%s syntax error%s\n", RED, RESET);
-		parse->error = 1;
-		return (0);
-	}
+	return (0);
 }
 
 static void	_file(t_parsing *parse, int i)

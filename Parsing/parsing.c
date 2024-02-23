@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/22 14:51:01 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/22 22:32:18 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,8 @@ int	parsing(t_struct *main, char *input)
 	return (1);
 }
 
-// comptabiliser les guillemets
-// si la ligne est tres longue -> bug d'affichage avec readline qui va recommencer au debut de la ligne
 // regarder tous les mallocs
 // ecrire les commentaires de la bibliotheque
-// ./minishell
-// echo << ""
 
 // echo -n -nnn bonjour les amis -n > test.txt | cat -e < test.txt >bonjour.txt                 >salut.txt
 // echo -n bonjour -n -nn | cat -e Makefile main.c parsing.c > test.txt

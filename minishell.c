@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/23 10:29:21 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/23 11:57:11 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	**finishell_env(char **envp)
 		i++;
 	if (!i)
 		return (NULL);
-	f_envp = ft_calloc(i + 1, sizeof(char *));
+	f_envp = ft_calloc(i + 2, sizeof(char *));
 	if (!f_envp)
 		return (NULL);
 	i = 0;
@@ -45,6 +45,7 @@ char	**finishell_env(char **envp)
 		f_envp[i] = ft_strdup(envp[i]);
 		i++;
 	}
+	f_envp[i] = ft_strdup("?=0");
 	return (f_envp);
 }
 
@@ -70,9 +71,11 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		input = readline(GREEN"finishell 🤯 > "RESET);
-		if (!input)
+		if (!input || !ft_strcmp(input, "exit"))
 		{
-			write(1, "\n", 1);
+			write(1, "exit\n", 5);
+			if (input)
+				free(input);
 			break ;
 		}
 		if (parsing(&main, input))
