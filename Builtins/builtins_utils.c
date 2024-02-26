@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:27:08 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/26 10:55:44 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/26 16:37:10 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	builtins_executing(t_args *arg)
 	else if (!ft_strcmp(arg->command_name, "unset") && !arg->flags)
 		return (1);
 	else if (!ft_strcmp(arg->command_name, "env") && !arg->flags && !arg->args)
-		return (1);
+		return (ft_env(main));
 	else if (!ft_strcmp(arg->command_name, "exit") && !arg->flags)
 		return (1);
 	else

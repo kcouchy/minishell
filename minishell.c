@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/23 14:28:26 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/26 15:40:36 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,5 @@ int	main(int argc, char **argv, char **envp)
 	}
 	rl_clear_history();
 	free_envp(main.common.f_envp);
-	return (0);
+	return (0); //return 1 in case of catastrophic failure
 }
