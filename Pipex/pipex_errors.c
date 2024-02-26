@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_errors.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/23 12:21:59 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/26 11:05:39 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,17 @@ void	ft_freetable(char **table)
 	free(table);
 }
 
-void	ft_command_fail(t_pipex *pipex, t_args *child_args, t_struct *main)
+void	ft_command_fail(t_pipex *pipex, t_args *arg, t_struct *main)
 {
 	char	*msg;
 
-	if (!child_args->command_name)
+	if (!arg->command_name)
 		write(STDERR_FILENO, "finishell: command not found: ''\n", 33);
 	else
 	{
 		msg = ft_strjoin3(
 				"\x1b[38;2;255;0;0;1mfinishell 🤬: command not found: ",
-				child_args->command_name, "\e[0m\n");
+				arg->command_name, "\e[0m\n");
 		if (!msg)//may need to set malloc error here
 			write(STDERR_FILENO, "finishell: command not found\n", 29);
 		else
@@ -61,7 +61,7 @@ void	ft_command_fail(t_pipex *pipex, t_args *child_args, t_struct *main)
 	exit(FILENOTFOUND);
 }
 
-int	ft_byedoc(t_pipex *pipex, t_args *child_args, int exit_code)
+int	ft_byedoc(t_pipex *pipex, t_args *arg, int exit_code)
 {
 	char	*msg;
 
@@ -69,7 +69,7 @@ int	ft_byedoc(t_pipex *pipex, t_args *child_args, int exit_code)
 	pipex->exit_code = EXIT_FAILURE;
 	msg = ft_strjoin3
 		("\x1b[38;2;255;0;0;1mfinishell 🤬: warning: here-doc wanted `",
-			child_args->input_files[0], "'\n\e[0m");
+			arg->input_files[0], "'\n\e[0m");
 	if (!msg)//may need to set malloc error here
 		pipex->exit_code = EXIT_FAILURE; //Need to change to fatal error
 		// write(STDERR_FILENO,
