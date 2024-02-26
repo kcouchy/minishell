@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:41:09 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/19 17:43:12 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/26 16:32:56 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ char	*ft_argjoin(char *s1, char *s2)
 	}
 	output[i] = ' ';
 	output[i + 1] = '\0';
-	if (s1[0])
-		free(s1);
+	free(s1);
 	return (output);
 }
 
@@ -46,6 +45,7 @@ static char	*_remove_space(char *str)
 	char	*s;
 
 	i = 0;
+	
 	len = ft_strlen(str) - 1;
 	s = ft_calloc(len + 1, sizeof(char));
 	while (i < len)
@@ -63,8 +63,8 @@ void	fill_strings(t_args *cmd, t_struct *main, int start, int end)
 	int	number_of_args;
 
 	number_of_args = 0;
-	cmd->whole_cmd = "";
-	cmd->args = "";
+	cmd->whole_cmd = ft_strdup("");
+	cmd->args = ft_strdup("");
 	while (start != end)
 	{
 		cmd->whole_cmd = ft_argjoin(cmd->whole_cmd, main->parse.argv[start]);
@@ -80,5 +80,8 @@ void	fill_strings(t_args *cmd, t_struct *main, int start, int end)
 	if (number_of_args)
 		cmd->args = _remove_space(cmd->args);
 	if (!ft_strcmp(cmd->args, ""))
+	{
+		free(cmd->args);
 		cmd->args = NULL;
+	}
 }

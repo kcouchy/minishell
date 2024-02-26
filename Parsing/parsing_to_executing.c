@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_to_executing.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:56:04 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/21 15:27:09 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/26 15:51:23 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ t_args	*parsing_to_executing(t_struct *main)
 	i = 0;
 	end = 0;
 	cmd = NULL;
-	printf("number_of_commands = %d\n", main->parse.number_of_commands);
 	while (i < main->parse.number_of_commands)
 	{
 		if (main->parse.types[end] == PIPE)
@@ -80,6 +79,5 @@ t_args	*parsing_to_executing(t_struct *main)
 		cmd = temp;
 		i++;
 	}
-	// n'oublie pas de free la liste chainee!
 	return (cmd);
 }

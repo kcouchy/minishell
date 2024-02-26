@@ -6,11 +6,11 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:27:08 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/26 14:49:41 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/26 16:37:43 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "./../Pipex/pipex.h"
+#include "./../Pipex/pipex.h"
 
 int	ft_tablen(char **tab)
 {
@@ -32,13 +32,13 @@ void	builtins_parsing(t_parsing *parse)
 	{
 		if (parse->types[i] == COMMAND && is_builtin(parse->argv[i])
 			&& !ft_strcmp(parse->argv[i], "echo"))
-				i = echo_parsing(parse, i + 1);
+			i = echo_parsing(parse, i + 1);
 		else
 			i++;
 	}
 }
 
-int	builtins_executing(t_args *arg)
+int	builtins_executing(t_args *arg, t_struct *main)
 {
 	if (!ft_strcmp(arg->command_name, "echo"))
 		return (ft_echo(arg));
@@ -51,7 +51,7 @@ int	builtins_executing(t_args *arg)
 	else if (!ft_strcmp(arg->command_name, "unset") && !arg->flags)
 		return (1);
 	else if (!ft_strcmp(arg->command_name, "env") && !arg->flags && !arg->args)
-		return (1);
+		return (ft_env(main));
 	else if (!ft_strcmp(arg->command_name, "exit") && !arg->flags)
 		return (1);
 	else
@@ -75,29 +75,29 @@ void	ft_builtin_fail(t_pipex *pipex, t_args *arg, t_struct *main)
 	ft_exit_error(pipex, main, exit_code);
 }
 
-void	ft_execve(t_pipex *pipex, t_args *child_arg, t_struct *main)
+void	ft_execve(t_pipex *pipex, t_args *arg, t_struct *main)
 {
 	char	*cmd_path;
 	int		i;
 
 	cmd_path = 0;
 	i = 0;
-	if (child_arg->is_builtin)
+	if (arg->is_builtin)
 	{
-		builtins_executing(child_arg);
+		builtins_executing(arg, main);
 		return ;
 	}
 	while (pipex->paths[i])
 	{
-		if (child_arg->command_name[0] == '.' || child_arg->command_name[0] == '/')
-			execve(child_arg->command_name, child_arg->command_table, main->common.f_envp);
-		cmd_path = ft_strjoin3(pipex->paths[i], "/", child_arg->command_name);
+		if (arg->command_name[0] == '.' || arg->command_name[0] == '/')
+			execve(arg->command_name, arg->command_table, main->common.f_envp);
+		cmd_path = ft_strjoin3(pipex->paths[i], "/", arg->command_name);
 		if (!cmd_path) //replace/move this with something from errors.c -> fatal error
 		{
 			write(STDERR_FILENO, "pipex: malloc failed: cmd_path\n", 31);
 			ft_pipex_error(pipex, main, EXIT_FAILURE);
 		}
-		execve(cmd_path, child_arg->command_table, main->common.f_envp);
+		execve(cmd_path, arg->command_table, main->common.f_envp);
 		i++;
 		free(cmd_path);
 	}

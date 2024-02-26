@@ -6,11 +6,11 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 13:26:27 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/23 16:31:35 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/26 15:53:59 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "./../Pipex/pipex.h"
+#include "./../Pipex/pipex.h"
 
 int	echo_parsing(t_parsing *parse, int i)
 {

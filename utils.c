@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 18:51:04 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/26 12:25:07 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/26 16:22:38 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ void	ft_exit_error(t_pipex *pipex, t_struct *main, int exit_code)
 	ft_freetable(pipex->paths);
 	ft_structclear(&main->args_list);
 	free_envp(main->common.f_envp);
+	rl_clear_history();
 	exit(exit_code);
 }
