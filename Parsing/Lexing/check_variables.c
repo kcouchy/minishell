@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:39:03 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/23 18:16:13 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/24 09:46:33 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 char	*copy_variable(char **f_envp, char *input, int start, int i)
 {
-	char	*buffer;
 	int		j;
 	int		k;
 	int		s;
@@ -31,8 +30,7 @@ char	*copy_variable(char **f_envp, char *input, int start, int i)
 		if (f_envp[j][k] && f_envp[j][k] == '=')
 		{
 			k++;
-			buffer = var_strdup(f_envp[j]);
-			return (buffer);
+			return (var_strdup(f_envp[j]));
 		}
 		j++;
 	}
@@ -59,10 +57,9 @@ int	search_variable(t_variables *var, char **f_envp, int i)
 	var->str = var_strjoin(var->str, variable);
 	free(variable);
 	var->left = ft_strndup(var->left, i, ft_strlen(var->left), var->left);
-	i = 0;
 	if (buffer)
 		free(buffer);
-	return (i);
+	return (0);
 }
 
 int	check_quotes(t_variables *var, int i)

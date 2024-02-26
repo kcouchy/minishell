@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:27:08 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/23 16:28:13 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/26 09:51:57 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	ft_execve(t_pipex *pipex, t_args *child_arg, t_struct *main)
 
 	cmd_path = 0;
 	i = 0;
-	if (is_builtin(child_arg->command_name))
+	if (child_arg->is_builtin)
 	{
 		builtins_executing(child_arg);
 		return ;
