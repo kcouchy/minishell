@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:27:08 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/26 16:41:41 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/26 17:48:39 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	builtins_executing(t_args *arg, t_struct *main)
 	else if (!ft_strcmp(arg->command_name, "pwd") && !arg->flags)
 		return (1);
 	else if (!ft_strcmp(arg->command_name, "export") && !arg->flags)
-		return (1);
+		return (ft_export(main));
 	else if (!ft_strcmp(arg->command_name, "unset") && !arg->flags)
 		return (1);
 	else if (!ft_strcmp(arg->command_name, "env") && !arg->flags && !arg->args)

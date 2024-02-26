@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/26 16:38:05 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/26 18:31:47 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,9 +143,12 @@ void	builtins_parsing(t_parsing *parse);
 int		parsing(t_struct *main, char *input);
 
 /* builtins */
+int		ft_tablen(char **tab);
 int		echo_parsing(t_parsing *parse, int i);
 int		ft_echo(t_args *arg);
-int 	ft_env(t_struct *main);
+int		ft_env(t_struct *main);
+int		ft_export(char **envp);
+// int		ft_export(t_struct *main);
 
 /*ft_free.c*/
 void	ft_free_parsing(t_parsing *parse);
