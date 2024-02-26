@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/26 11:06:30 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/26 14:23:00 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,16 @@ void	ft_pipex(t_pipex *pipex, t_struct *main)
 	int		i;
 	t_args	*arg;
 
-	arg = main->args_list;
 	i = 0;
+	arg = main->args_list;
 	while (arg)
 	{
-		if (i < (main->common.nb_commands - 1))
+		if (i < (main->common.nb_commands - 1) && (pipe(pipex->pipe_fd) == -1))
 		{
-			if (pipe(pipex->pipe_fd) == -1)
-			{
-				write(STDERR_FILENO, "finishell: pipe failed\n", 23);
-				ft_pipex_error(pipex, main, EXIT_FAILURE);
-			}
+			write(STDERR_FILENO, "finishell: pipe failed\n", 23);
+			ft_pipex_error(pipex, main, EXIT_FAILURE);
 		}
+		g_signal = 1;
 		ft_forkchild(pipex, i, arg, main);
 		if (i == 0)
 			pipex->pid_last = pipex->pid;

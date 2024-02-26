@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:28:50 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/26 14:46:27 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/26 16:42:03 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,9 @@ void	ft_output(t_pipex *pipex, t_args *arg, t_struct *main, int ored)
 	else
 		out_fd = pipex->temp_fd_out;
 	if (out_fd == -1)
-	{
 		write(STDERR_FILENO, "finishell: open failed: output\n", 31);
+	if (out_fd == -1)
 		ft_pipex_error(pipex, main, EXIT_FAILURE);
-	}
 	if (dup2(out_fd, STDOUT_FILENO) == -1)
 	{
 		write(STDERR_FILENO, "finishell: dup2 failed: output\n", 31);
@@ -91,7 +90,6 @@ void	ft_cmd(t_pipex *pipex, t_args *arg, t_struct *main, int red)
 
 void	ft_forkchild(t_pipex *pipex, int i, t_args *arg, t_struct *main)
 {
-	g_signal = 1;
 	pipex->pid = fork();
 	if (pipex->pid == -1)
 		ft_pipex_error(pipex, main, EXIT_FAILURE);

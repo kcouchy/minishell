@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 15:59:31 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/23 11:05:48 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/26 15:32:21 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	_hd_read(t_pipex *pipex, t_args **temp, char *temp_i, int i)
 			return (EXIT_SIGINT);
 		}
 		if (!line)
-			return (ft_byedoc(pipex, *temp, EXIT_FAILURE)); //fatal exit failure only?
+			return (ft_byedoc(pipex, *temp, EXIT_SUCCESS)); //ctrl D = EXIT_SUCCESS. For malloc fail need to exit from inside gnl
 		else if (ft_strncmp(line, "\n", 1) != 0)
 			if (ft_strncmp(line, (*temp)->input_files[i],
 					(ft_strlen(line) - 1)) == 0)
@@ -60,7 +60,7 @@ int	ft_heredoc(t_pipex *pipex, t_args **temp, int i)
 		(free((*temp)->input), (*temp)->input = NULL);
 	(*temp)->input = temp_i;
 	pipex->hd_temp_fd = open(temp_i, O_RDWR | O_TRUNC | O_CREAT, 0644);
-	if (pipex->hd_temp_fd == -1) //can trigger this open fail with permissions for leak test
+	if (pipex->hd_temp_fd == -1)
 		(free(char_i), free(temp_i));
 	if (pipex->hd_temp_fd == -1)
 		return (EXIT_FAILURE);
