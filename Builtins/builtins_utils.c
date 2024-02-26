@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:27:08 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/26 09:51:57 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/26 10:55:44 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,17 +42,17 @@ int	builtins_executing(t_args *arg)
 {
 	if (!ft_strcmp(arg->command_name, "echo"))
 		return (ft_echo(arg));
-	if (!ft_strcmp(arg->command_name, "cd") && !arg->flags)
+	else if (!ft_strcmp(arg->command_name, "cd") && !arg->flags)
 		return (1);
-	if (!ft_strcmp(arg->command_name, "pwd") && !arg->flags)
+	else if (!ft_strcmp(arg->command_name, "pwd") && !arg->flags)
 		return (1);
-	if (!ft_strcmp(arg->command_name, "export") && !arg->flags)
+	else if (!ft_strcmp(arg->command_name, "export") && !arg->flags)
 		return (1);
-	if (!ft_strcmp(arg->command_name, "unset") && !arg->flags)
+	else if (!ft_strcmp(arg->command_name, "unset") && !arg->flags)
 		return (1);
-	if (!ft_strcmp(arg->command_name, "env") && !arg->flags && !arg->args)
+	else if (!ft_strcmp(arg->command_name, "env") && !arg->flags && !arg->args)
 		return (1);
-	if (!ft_strcmp(arg->command_name, "exit") && !arg->flags)
+	else if (!ft_strcmp(arg->command_name, "exit") && !arg->flags)
 		return (1);
 	else
 		return (EXIT_FAILURE);
