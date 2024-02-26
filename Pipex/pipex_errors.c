@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_errors.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/26 11:05:39 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/26 14:50:16 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,7 @@ void	ft_command_fail(t_pipex *pipex, t_args *arg, t_struct *main)
 			free(msg);
 		}
 	}
-	ft_freetable(pipex->paths);
-	ft_structclear(&main->args_list);
-	free_envp(main->common.f_envp);
-	exit(FILENOTFOUND);
+	ft_exit_error(pipex, main, FILENOTFOUND);
 }
 
 int	ft_byedoc(t_pipex *pipex, t_args *arg, int exit_code)

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/23 12:11:46 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/26 11:41:55 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	check_nothing(char *input)
 			return (0);
 		i++;
 	}
+	free(input);
 	return (1);
 }
 
@@ -40,23 +41,26 @@ int	check_error(t_parsing *parse, char *input, int should_free_tables)
 
 int	parsing(t_struct *main, char *input)
 {
+	char	*input2;
+
 	main->parse.number_of_commands = 1;
 	main->parse.error = 0;
 	if (check_nothing(input))
 		return (0);
 	add_history(input);
-	input = check_variables(&main->parse.var, main->common.f_envp, input);
-	alloc_tables(&main->parse, input);
-	if (check_error(&main->parse, input, 0))
+	input2 = check_variables(&main->parse.var, main->common.f_envp, input);
+	free(input);
+	alloc_tables(&main->parse, input2);
+	if (check_error(&main->parse, input2, 0))
 		return (0);
 	check_commands(&main->parse);
-	if (check_error(&main->parse, input, 1))
+	if (check_error(&main->parse, input2, 1))
 		return (0);
 	builtins_parsing(&main->parse);
 	printf("argc = %d\n", main->parse.argc);
 	main->common.nb_commands = main->parse.number_of_commands;
 	test_parsing(&main->parse);
-	free(input);
+	free(input2);
 	main->args_list = parsing_to_executing(main);
 	return (1);
 }

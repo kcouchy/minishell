@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/23 14:28:26 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/26 13:01:07 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ int	main(int argc, char **argv, char **envp)
 			}
 			ft_structclear(&main.args_list);
 		}
-		free(input);
 	}
 	rl_clear_history();
 	free_envp(main.common.f_envp);

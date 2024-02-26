@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/26 11:06:30 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/26 14:58:45 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 /* Defines                                                                    */
 /******************************************************************************/
 
+# define BUILTIN_ERROR 42 //the builtin doesn't respect the subject
 # define FILENOTFOUND 127 //command doesn’t exist, or isn’t in $PATH.
 # define EXIT_SIGINT 130 //SIGINT triggered closure
 # define GNL_BUFFER_SIZE 1
@@ -327,5 +328,8 @@ int		ft_redirections(t_pipex *pipex, t_struct *main);
  * to read, or an error occurred, or ctrl+C (SIGINT) was intercepted.
  */
 char	*gnl(int fd);
+
+void	ft_builtin_fail(t_pipex *pipex, t_args *arg, t_struct *main);
+void	ft_exit_error(t_pipex *pipex, t_struct *main, int exit_code);
 
 #endif

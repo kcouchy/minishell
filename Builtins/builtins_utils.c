@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:27:08 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/26 10:55:44 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/26 14:49:41 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,24 @@ int	builtins_executing(t_args *arg)
 	else if (!ft_strcmp(arg->command_name, "exit") && !arg->flags)
 		return (1);
 	else
+	{
+		arg->is_builtin = 2;
 		return (EXIT_FAILURE);
+	}
+}
+
+void	ft_builtin_fail(t_pipex *pipex, t_args *arg, t_struct *main)
+{
+	int	exit_code;
+
+	if (arg->is_builtin == 1)
+		exit_code = EXIT_SUCCESS;
+	else
+	{
+		write(STDERR_FILENO, RED" misuse of a builtin\n"RESET, 54);
+		exit_code = BUILTIN_ERROR;
+	}
+	ft_exit_error(pipex, main, exit_code);
 }
 
 void	ft_execve(t_pipex *pipex, t_args *child_arg, t_struct *main)
