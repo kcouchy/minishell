@@ -6,11 +6,11 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:50:23 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/27 15:54:47 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/27 18:44:55 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "./../Pipex/pipex.h"
+#include "./../Pipex/pipex.h"
 
 //leaks like hell, need to make sure to free everything that has been malloced
 //up until this point in the program - even if you're in the middle of a pipeline
@@ -52,7 +52,7 @@ static int	_error(char *str)
 
 int	exit_atoi(char *str)
 {
-	int	i;
+	int					i;
 	unsigned long long	integer;
 	unsigned long long	nega;
 
@@ -69,12 +69,12 @@ int	exit_atoi(char *str)
 		integer = integer * 10 + str[i++] - 48;
 		if (integer > 9223372036854775807 + nega)
 		{
-			_error(str);
+			integer = _error(str);
 			break ;
 		}
 	}
 	if (str[i])
-		_error(str);
+		integer = _error(str);
 	return (integer % 256);
 }
 
@@ -86,5 +86,4 @@ int	ft_exit(t_args *arg)
 	if (arg->args)
 		exit_code = exit_atoi(arg->command_table[1]);
 	return (exit_code);
-	// ft_exit_error(pipex, main, main->exit_code);
 }

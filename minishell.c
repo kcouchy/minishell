@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/26 16:41:48 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/27 18:16:08 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		input = readline(GREEN"finishell 🤯 > "RESET);
-		if (!input || !ft_strcmp(input, "exit"))
+		if (!input/* || !ft_strcmp(input, "exit")*/)
 		{
 			write(1, "exit\n", 5);
 			if (input)

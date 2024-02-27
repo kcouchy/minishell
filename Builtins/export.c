@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:10:57 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/27 15:46:07 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/27 18:43:46 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "./../Pipex/pipex.h"
+#include "./../Pipex/pipex.h"
 
 // regarde avec rien au debut de l'arg
 
@@ -23,12 +23,12 @@ static int	_nb_args(t_parsing *parse, int start, int end)
 	{
 		if (parse->types[start] == COMMAND
 			|| (parse->types[start] == ARGUMENT
-			&& parse->argv[start][0] != '='))
+				&& parse->argv[start][0] != '='))
 			counter++;
 		else if (parse->types[start] == ARGUMENT
 			&& parse->argv[start][0] == '=')
 			printf("%s export: `%s' not a valid indentifier%s\n",
-			ORANGE, parse->argv[start], RESET);
+				ORANGE, parse->argv[start], RESET);
 		start++;
 	}
 	return (counter);
@@ -51,7 +51,7 @@ char	**export_parsing(t_struct *main, int start, int end)
 	{
 		if (main->parse.types[start] == COMMAND
 			|| (main->parse.types[start] == ARGUMENT
-			&& main->parse.argv[start][0] != '='))
+				&& main->parse.argv[start][0] != '='))
 		{
 			tab[i] = ft_strdup(main->parse.argv[start]);
 			i++;
@@ -65,7 +65,7 @@ char	**export_parsing(t_struct *main, int start, int end)
 int	error_export(char **command_table)
 {
 	int	i;
-	
+
 	i = 1;
 	while (command_table[i])
 	{
