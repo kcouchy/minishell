@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/26 19:29:12 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/27 12:46:38 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ typedef struct s_struct
 	t_parsing	parse;
 	t_common	common;
 	t_args		*args_list;
-	// exit_code
 }	t_struct;
 
 /******************************************************************************/
@@ -149,6 +148,7 @@ char	**export_parsing(t_struct *main, int start, int end);
 int		error_export(char **command_table);
 int		ft_echo(t_args *arg);
 int 	ft_env(t_struct *main);
+int		ft_exit(t_args *arg);
 
 /*ft_free.c*/
 void	ft_free_parsing(t_parsing *parse);

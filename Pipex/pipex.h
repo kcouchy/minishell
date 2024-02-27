@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/26 14:58:45 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/27 12:29:44 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 /* Defines                                                                    */
 /******************************************************************************/
 
+# define EXIT_ERROR 2 //the exit code isn't a number
 # define BUILTIN_ERROR 42 //the builtin doesn't respect the subject
 # define FILENOTFOUND 127 //command doesn’t exist, or isn’t in $PATH.
 # define EXIT_SIGINT 130 //SIGINT triggered closure
