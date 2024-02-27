@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/27 14:20:29 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/27 14:53:14 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ typedef struct s_args
 	char			**command_table; // cat ; -e ; Makefile ; minishell.h
 	char			*command_name; //"\0" ; NULL ; cat
 	char			**flags; //-e
-	char			*args; //Makefile minishell.h
+	char			*args; //arguments : Makefile minishell.h
 	char			**input_redirs; //< ; <<
 	char			**input_files; //salut
 	char			*input; //final input redirection
@@ -101,7 +101,7 @@ typedef struct s_args
 	char			**output_files; //test
 	char			*output; //final output redirection
 	int				output_type; //0 = trunc, 1 = append
-	int				is_builtin; //0
+	int				is_builtin; //0 ; 1
 	struct s_args	*next; //
 }	t_args;
 
@@ -163,5 +163,5 @@ void	test_liste_chainee(t_struct *main);
 
 int		is_builtin(char *command);
 void	sigint_handler(int signal);
-
+/***/
 #endif
