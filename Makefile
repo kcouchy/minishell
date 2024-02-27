@@ -6,7 +6,7 @@
 #    By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
-#    Updated: 2024/02/23 15:32:47 by kcouchma         ###   ########.fr        #
+#    Updated: 2024/02/27 15:31:39 by kcouchma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,10 @@ SRCS =											\
 
 INC_FILES = -I Pipex/libft
 
+H_FILES =	./Pipex/libft/libft.h				\
+			./Pipex/pipex.h						\
+			minishell.h
+
 SRC = $(addsuffix .c,$(SRCS))
 OBJ = $(addsuffix .o,$(SRCS))
 
@@ -51,7 +55,7 @@ NAME = minishell
 
 all: $(NAME)
 
-$(NAME) : $(OBJ)
+$(NAME) : $(OBJ) $(H_FILES)
 	$(MAKE) -C ./Pipex/libft/ bonus
 	$(CC) -o $@ $(OBJ) ./Pipex/libft/libft.a -lreadline
 

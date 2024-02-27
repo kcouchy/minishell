@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:10:57 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/27 15:14:37 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:46:07 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,12 +155,11 @@ int ft_export(t_args *arg, t_struct *main)
 	int		i;
 	char	**f_envp;
 
-	i = 0;
 	f_envp = main->common.f_envp;
 	
 	if (!arg->args)
 		exit(_print_export(f_envp));
-	//if commmand is "export" only
-	
+	i = 1;
+	// if (strncmp(arg->command_table[i]))
 	return (EXIT_SUCCESS);
 }

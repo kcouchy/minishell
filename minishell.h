@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/27 15:17:21 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:32:16 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,5 +166,5 @@ void	test_liste_chainee(t_struct *main);
 
 int		is_builtin(char *command);
 void	sigint_handler(int signal);
-/***/
+
 #endif
