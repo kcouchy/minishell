@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/27 14:53:14 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:17:21 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@
 /******************************************************************************/
 
 # define RED "\x1b[38;2;255;0;0;1mfinishell 🤬:"
+# define ORANGE "\x1b[38;2;255;113;0;1mfinishell ⚠️ :"
 # define WR_CMD " command not found"
 # define GREEN "\x1b[38;2;0;150;0;1m"
-# define SHIT "\x1b[38;2;114;61;23;1m"
+# define SHIT "\x1b[38;2;114;61;23;1mfinishell 💩:"
 # define RESET "\e[0m"
 
 typedef enum e_type
@@ -110,7 +111,6 @@ typedef struct s_struct
 	t_parsing	parse;
 	t_common	common;
 	t_args		*args_list;
-	// exit_code
 }	t_struct;
 
 /******************************************************************************/
@@ -145,9 +145,12 @@ int		parsing(t_struct *main, char *input);
 /* builtins */
 int		ft_tablen(char **tab);
 int		echo_parsing(t_parsing *parse, int i);
+char	**export_parsing(t_struct *main, int start, int end);
+int		error_export(char **command_table);
 int		ft_echo(t_args *arg);
+int		ft_export(t_args *arg, t_struct *main);
 int		ft_env(t_struct *main);
-int		ft_export(t_struct *main);
+int		ft_exit(t_args *arg);
 
 /*ft_free.c*/
 void	ft_free_parsing(t_parsing *parse);

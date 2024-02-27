@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:27:08 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/26 17:48:39 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:13:58 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	builtins_executing(t_args *arg, t_struct *main)
 	else if (!ft_strcmp(arg->command_name, "env") && !arg->flags && !arg->args)
 		return (ft_env(main));
 	else if (!ft_strcmp(arg->command_name, "exit") && !arg->flags)
-		return (1);
+		return (ft_exit(arg));
 	else
 	{
 		arg->is_builtin = 2;
