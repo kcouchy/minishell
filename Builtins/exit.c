@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:50:23 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/27 12:31:17 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:54:47 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,13 @@ void	ft_write_join(char *error_type, char *cmd, char *arg, char *str)
 	write(STDOUT_FILENO, RESET, ft_strlen(RESET));
 }
 
+static int	_error(char *str)
+{
+	ft_write_join(ORANGE, " exit: ", str,
+		": numeric argument required\n");
+	return (2);
+}
+
 int	exit_atoi(char *str)
 {
 	int	i;
@@ -59,22 +66,15 @@ int	exit_atoi(char *str)
 	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		integer = integer * 10 + str[i] - 48;
-		i++;
+		integer = integer * 10 + str[i++] - 48;
 		if (integer > 9223372036854775807 + nega)
 		{
-			integer = 2;
-			ft_write_join(ORANGE, " exit: ", str,
-				": numeric argument required\n");
+			_error(str);
 			break ;
 		}
 	}
 	if (str[i])
-		{
-			integer = 2;
-			ft_write_join(ORANGE, " exit: ", str,
-				": numeric argument required\n");
-		}
+		_error(str);
 	return (integer % 256);
 }
 
