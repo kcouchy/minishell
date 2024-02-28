@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:08:23 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/22 17:47:06 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/28 16:21:32 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	skip_to_quote(t_parsing *parse, char *input, int i)
 	if (quote && !input[i])
 	{
 		printf("%s syntax error%s\n", RED, RESET);
-		parse->error = 1;
+		parse->error = 2;
 		return (i);
 	}
 	i++;

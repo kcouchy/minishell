@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/27 15:32:16 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/28 17:06:17 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ typedef struct s_struct
 	t_parsing	parse;
 	t_common	common;
 	t_args		*args_list;
+	int			exit_code;
 }	t_struct;
 
 /******************************************************************************/
@@ -150,7 +151,6 @@ int		error_export(char **command_table);
 int		ft_echo(t_args *arg);
 int		ft_export(t_args *arg, t_struct *main);
 int		ft_env(t_struct *main);
-int		ft_exit(t_args *arg);
 
 /*ft_free.c*/
 void	ft_free_parsing(t_parsing *parse);

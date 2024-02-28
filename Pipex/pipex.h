@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/27 12:29:44 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/28 17:06:25 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 /* Defines                                                                    */
 /******************************************************************************/
 
-# define EXIT_ERROR 2 //the exit code isn't a number
+# define NOTHING -1 //there is no error and no commands
+# define SYNTAX_ERROR 2
 # define BUILTIN_ERROR 42 //the builtin doesn't respect the subject
 # define FILENOTFOUND 127 //command doesn’t exist, or isn’t in $PATH.
 # define EXIT_SIGINT 130 //SIGINT triggered closure
@@ -331,6 +332,7 @@ int		ft_redirections(t_pipex *pipex, t_struct *main);
 char	*gnl(int fd);
 
 void	ft_builtin_fail(t_pipex *pipex, t_args *arg, t_struct *main);
+void	ft_exit(t_pipex *pipex, t_struct *main, t_args *arg);
 void	ft_exit_error(t_pipex *pipex, t_struct *main, int exit_code);
 
 #endif

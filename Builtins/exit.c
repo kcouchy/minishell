@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:50:23 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/27 18:44:55 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/28 17:05:44 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	_error(char *str)
 {
 	ft_write_join(ORANGE, " exit: ", str,
 		": numeric argument required\n");
-	return (2);
+	return (SYNTAX_ERROR);
 }
 
 int	exit_atoi(char *str)
@@ -78,12 +78,12 @@ int	exit_atoi(char *str)
 	return (integer % 256);
 }
 
-int	ft_exit(t_args *arg)
+void	ft_exit(t_pipex *pipex, t_struct *main, t_args *arg)
 {
 	int	exit_code;
 
 	exit_code = 0;
 	if (arg->args)
 		exit_code = exit_atoi(arg->command_table[1]);
-	return (exit_code);
+	ft_exit_error(pipex, main, exit_code);
 }

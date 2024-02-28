@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/27 18:16:08 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/28 17:09:13 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	main(int argc, char **argv, char **envp)
 	//will need to implement pwd_origin = getcwd(NULL, 0);
 	while (1)
 	{
+		main.exit_code = 0;
 		input = readline(GREEN"finishell 🤯 > "RESET);
 		if (!input/* || !ft_strcmp(input, "exit")*/)
 		{
@@ -78,18 +79,18 @@ int	main(int argc, char **argv, char **envp)
 				free(input);
 			break ;
 		}
-		if (parsing(&main, input))
+		if (parsing(&main, input) == EXIT_SUCCESS)
 		{
 			if (!main.parse.error)
 			{
 				test_liste_chainee(&main);
 				ft_free_parsing(&main.parse);
-				executing(&main);
+				main.exit_code = executing(&main);
 			}
 			ft_structclear(&main.args_list);
 		}
 	}
 	rl_clear_history();
 	free_envp(main.common.f_envp);
-	return (0); //return 1 in case of catastrophic failure
+	return (main.exit_code); //return 1 in case of catastrophic failure
 }

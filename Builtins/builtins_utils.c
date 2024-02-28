@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:27:08 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/27 15:18:36 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/28 17:05:08 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	builtins_parsing(t_parsing *parse)
 	}
 }
 
-int	builtins_executing(t_args *arg, t_struct *main)
+int	builtins_executing(t_pipex *pipex, t_args *arg, t_struct *main)
 {
 	if (!ft_strcmp(arg->command_name, "echo"))
 		return (ft_echo(arg));
@@ -52,10 +52,10 @@ int	builtins_executing(t_args *arg, t_struct *main)
 		return (1);
 	else if (!ft_strcmp(arg->command_name, "env") && !arg->flags && !arg->args)
 		return (ft_env(main));
-	else if (!ft_strcmp(arg->command_name, "exit") && !arg->flags)
-		return (ft_exit(arg));
 	else
 	{
+		if (!ft_strcmp(arg->command_name, "exit") && !arg->flags)
+			ft_exit(pipex, main, arg);
 		arg->is_builtin = 2;
 		return (EXIT_FAILURE);
 	}
@@ -84,7 +84,7 @@ void	ft_execve(t_pipex *pipex, t_args *arg, t_struct *main)
 	i = 0;
 	if (arg->is_builtin)
 	{
-		builtins_executing(arg, main);
+		builtins_executing(pipex, arg, main);
 		return ;
 	}
 	while (pipex->paths[i])

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:12:01 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/22 21:35:37 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/28 16:21:55 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static int	_separator(t_parsing *parse, int i)
 		&& !(parse->types[i] == PIPE && _which_redirection(parse, i + 1)))
 	{
 		printf("%s syntax error%s\n", RED, RESET);
-		parse->error = 1;
+		parse->error = 2;
 	}
 	return (i + 1);
 }
@@ -85,7 +85,7 @@ void	check_commands(t_parsing *parse)
 		|| parse->types[parse->argc - 1] == SEPARATOR)
 	{
 		printf("%s syntax error%s\n", RED, RESET);
-		parse->error = 1;
+		parse->error = 2;
 		return ;
 	}
 	while (i < parse->argc)
