@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/28 17:17:18 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/28 17:43:55 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ int		parsing(t_struct *main, char *input);
 /* builtins */
 int		ft_tablen(char **tab);
 int		echo_parsing(t_parsing *parse, int i);
+int		exit_parsing(t_parsing *parse, int i);
 char	**export_parsing(t_struct *main, int start, int end);
 int		error_export(char **command_table);
 int		ft_echo(t_args *arg);

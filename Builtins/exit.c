@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:50:23 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/28 17:05:44 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/28 18:20:24 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,28 @@
 // 	return (EXIT_SUCCESS); //replace with return n value (above)
 // }
 
+int	exit_parsing(t_parsing *parse, int i)
+{
+	int	j;
+
+	j = 0;
+	while (parse->argv[i] && parse->types[i] != PIPE)
+	{
+		j = 0;
+		if (parse->types[i] == OPTION)
+		{
+			j++;
+			while (parse->argv[i][j]
+				&& parse->argv[i][j] >='0' && parse->argv[i][j] <= '9')
+				j++;
+			if (!parse->argv[i][j])
+				parse->types[i] = ARGUMENT;
+		}
+		i++;
+	}
+	return (i);
+}
+
 void	ft_write_join(char *error_type, char *cmd, char *arg, char *str)
 {
 	write(STDOUT_FILENO, error_type, ft_strlen(error_type));
@@ -58,16 +80,16 @@ int	exit_atoi(char *str)
 
 	i = 0;
 	integer = 0;
-	nega = 0;
+	nega = 1;
 	if (str[i] == '-')
 	{
-		nega = 1;
+		nega = -1;
 		i++;
 	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		integer = integer * 10 + str[i++] - 48;
-		if (integer > 9223372036854775807 + nega)
+		if (integer > 9223372036854775807)
 		{
 			integer = _error(str);
 			break ;
@@ -75,8 +97,9 @@ int	exit_atoi(char *str)
 	}
 	if (str[i])
 		integer = _error(str);
-	return (integer % 256);
+	return ((integer * nega) % 256);
 }
+// exit -9223372036854775808 ; $?
 
 void	ft_exit(t_pipex *pipex, t_struct *main, t_args *arg)
 {
