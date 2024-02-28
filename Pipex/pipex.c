@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/26 14:23:00 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/28 16:42:35 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,20 @@ int	executing(t_struct *main)
 	}
 	if (main->common.nb_commands < 1)
 		return (ft_pipex_error(&pipex, main, EXIT_SUCCESS));
-	ft_pipex(&pipex, main);
+	//no fork if export is a single command - others too?
+	if (main->common.nb_commands == 1 && main->args_list->is_builtin
+		&& !((ft_strcmp(main->args_list->command_name, "export") == 0)
+		&& !main->args_list->args))
+			builtins_executing(main->args_list, main);
+	// (main->common.nb_commands == 1
+	// && ft_strcmp(main->args_list->command_name, "export") == 0
+	// && main->args_list->args != NULL))
+	// 	ft_export(main->args_list, main);
+	// if (main->common.nb_commands == 1
+	// 	&& ft_strcmp(main->args_list->command_name, "cd") == 0)
+	// 	ft_cd(main->args_list, main);
+	else
+		ft_pipex(&pipex, main);
 	g_signal = 0;
 	ft_pipex_error(&pipex, main, EXIT_SUCCESS);
 	return (pipex.exit_code);

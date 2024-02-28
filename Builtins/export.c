@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:10:57 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/27 18:39:33 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/28 16:10:44 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,28 +127,27 @@ static int	_print_export(char **f_envp)
 	int		i;
 	char	**export;
 
-	i = 0;
+	i = -1;
 	export = malloc(sizeof(char *) * (ft_tablen(f_envp) + 1));
 	if (!export)
 		return (EXIT_FAILURE);
-	while (f_envp[i])
+	while (f_envp[++i])
 	{
 		export[i] = ft_strdup(f_envp[i]);
 		if (!export[i])
 			return (ft_freetable(export), EXIT_FAILURE);
-		i++;
 	}
 	export[i] = NULL;
 	_sort_export(export);
-	i = 0;
-	while (export[i])
+	i = -1;
+	while (export[++i])
 	{
-		if (export[i][0] != '_')
+		if (ft_strncmp(export[i], "_=", 2) != 0
+			&& ft_strncmp(export[i], "?=", 2) != 0)
 		{
 			write(STDOUT_FILENO, export[i], ft_strlen(export[i]));
 			write(STDOUT_FILENO, "\n", 1);
 		}
-		i++;
 	}
 	return (ft_freetable(export), EXIT_SUCCESS);
 }
@@ -177,39 +176,42 @@ static int	_find_arg(char *arg, char **f_envp)
 	return (-1);
 }
 
-int ft_export(t_args *arg, t_struct *main)
+int	ft_mod_fevnp(char *arg, char **f_envp)
 {
-	char	**f_envp;
-	char	**cmdtab;
-	int		i;
-	int		j;
+	int	i;
 
-	f_envp = main->common.f_envp;
-	cmdtab = arg->command_table;
-	if (!arg->args)
-		exit(_print_export(f_envp));
-	i = 0;
-	j = 1;
-	while (cmdtab[j])
+	i = _find_arg(arg, f_envp);
+	if (i != -1)
 	{
-		i = _find_arg(cmdtab[j], f_envp);
-		if (i != -1)
-		{
-			free(f_envp[i]);
-			f_envp[i] = ft_strdup(cmdtab[j]);
-			if (!f_envp[i])
-				return (EXIT_FAILURE);
-		}
-		else
-		{
-			f_envp[ft_tablen(f_envp)] = ft_strdup(cmdtab[j]);
-			if (!f_envp[ft_tablen(f_envp)])
-				return (EXIT_FAILURE);
-			f_envp[ft_tablen(f_envp) + 1] = malloc(sizeof(char *) * 1);
-			f_envp[ft_tablen(f_envp) + 1] = NULL;
-		}
+		free(f_envp[i]);
+		f_envp[i] = ft_strdup(arg);
+		if (!f_envp[i])
+			return (EXIT_FAILURE);
+	}
+	else
+	{
+		f_envp[ft_tablen(f_envp)] = ft_strdup(arg);
+		if (!f_envp[ft_tablen(f_envp)])
+			return (EXIT_FAILURE);
+		f_envp[ft_tablen(f_envp) + 1] = malloc(sizeof(char *) * 1);
+		f_envp[ft_tablen(f_envp) + 1] = NULL;
+	}
+	return (EXIT_SUCCESS);
+}
+
+int	ft_export(t_args *arg, t_struct *main)
+{
+	int	j;
+
+	j = 1;
+	if (!arg->args)
+		return (_print_export(main->common.f_envp));
+	while (arg->command_table[j])
+	{
+		if (ft_mod_fevnp(arg->command_table[j], main->common.f_envp) == 1)
+			return (EXIT_FAILURE);
 		j++;
 	}
-	printf("/////////////////////here///////////////\n");
 	return (EXIT_SUCCESS);
+
 }
