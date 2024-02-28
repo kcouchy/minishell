@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:46:56 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/27 15:14:10 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/28 16:00:36 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int ft_env(t_struct *main)
 	f_envp = main->common.f_envp;
 	while (f_envp[i])
 	{
-		if(f_envp[i][0] != '?' && !_arg_null(f_envp[i]))
+		if(ft_strncmp(f_envp[i], "?=", 2) != 0 && !_arg_null(f_envp[i]))
 		{
 			write(STDOUT_FILENO, f_envp[i], ft_strlen(f_envp[i]));
 			write(STDOUT_FILENO, "\n", 1);
