@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/28 17:06:25 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/28 17:17:35 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,16 @@
 /* Structures                                                                 */
 /******************************************************************************/
 
-typedef struct s_pipex_list
-{
-	int				pipe_fd[2];		//holds pipe fds: [0] = read, [1] = write
-	int				temp_fd_out;	//holds write fd between forks (forkchild)
-	int				pid;			//current fork id
-	int				pid_last;		//pid of last (1st made) command to return
-	int				exit_code;		//of last command to return in parent
-	char			**paths;		//paths separated from envp PATH variable
-	int				hd_temp_fd;		//temp to pass between heredoc functions
-}					t_pipex;
+// typedef struct s_pipex_list
+// {
+// 	int				pipe_fd[2];		//holds pipe fds: [0] = read, [1] = write
+// 	int				temp_fd_out;	//holds write fd between forks (forkchild)
+// 	int				pid;			//current fork id
+// 	int				pid_last;		//pid of last (1st made) command to return
+// 	int				exit_code;		//of last command to return in parent
+// 	char			**paths;		//paths separated from envp PATH variable
+// 	int				hd_temp_fd;		//temp to pass between heredoc functions
+// }					t_pipex;
 
 /******************************************************************************/
 /* utils.c                                                                    */

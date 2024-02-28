@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/28 17:07:15 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/28 17:14:07 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	check_error(t_parsing *parse, char *input, int should_free, t_struct *main)
 	return (0);
 }
 
-void	check_exit(t_struct *main)
+/*void	check_exit(t_struct *main)
 {
 	int		exit_code;
 	t_pipex	pipex;
@@ -59,7 +59,7 @@ void	check_exit(t_struct *main)
 		free_envp(main->common.f_envp);
 		exit(exit_code);
 	}
-}
+}*/
 
 int	parsing(t_struct *main, char *input)
 {
@@ -84,7 +84,7 @@ int	parsing(t_struct *main, char *input)
 	test_parsing(&main->parse);
 	free(input2);
 	main->args_list = parsing_to_executing(main);
-	check_exit(main);
+	// check_exit(main);
 	return (EXIT_SUCCESS);
 }
 

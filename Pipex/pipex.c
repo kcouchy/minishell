@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/28 16:42:35 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/28 17:18:11 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	executing(t_struct *main)
 	if (main->common.nb_commands == 1 && main->args_list->is_builtin
 		&& !((ft_strcmp(main->args_list->command_name, "export") == 0)
 		&& !main->args_list->args))
-			builtins_executing(main->args_list, main);
+			builtins_executing(&pipex, main->args_list, main);
 	// (main->common.nb_commands == 1
 	// && ft_strcmp(main->args_list->command_name, "export") == 0
 	// && main->args_list->args != NULL))

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/28 17:13:22 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/28 17:17:18 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,17 @@
 # define GREEN "\x1b[38;2;0;150;0;1m"
 # define SHIT "\x1b[38;2;114;61;23;1mfinishell 💩:"
 # define RESET "\e[0m"
+
+typedef struct s_pipex_list
+{
+	int				pipe_fd[2];		//holds pipe fds: [0] = read, [1] = write
+	int				temp_fd_out;	//holds write fd between forks (forkchild)
+	int				pid;			//current fork id
+	int				pid_last;		//pid of last (1st made) command to return
+	int				exit_code;		//of last command to return in parent
+	char			**paths;		//paths separated from envp PATH variable
+	int				hd_temp_fd;		//temp to pass between heredoc functions
+}					t_pipex;
 
 typedef enum e_type
 {
@@ -153,7 +164,7 @@ int		ft_export(t_args *arg, t_struct *main);
 int		ft_env(t_struct *main);
 int		ft_pwd(t_args *arg, t_struct *main);
 int		ft_mod_fevnp(char *arg, char **f_envp);
-int		builtins_executing(t_args *arg, t_struct *main);
+int	builtins_executing(t_pipex *pipex, t_args *arg, t_struct *main);
 
 /*ft_free.c*/
 void	ft_free_parsing(t_parsing *parse);
