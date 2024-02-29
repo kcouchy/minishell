@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/28 17:43:55 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/29 13:23:23 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,7 @@ void	test_parsing(t_parsing *parse);
 void	test_liste_chainee(t_struct *main);
 
 int		is_builtin(char *command);
+char	**ch_exit_code(int exit_code, char **f_envp);
 void	sigint_handler(int signal);
 
 #endif

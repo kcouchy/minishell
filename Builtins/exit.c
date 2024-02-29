@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:50:23 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/29 12:15:56 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/29 13:55:37 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,7 @@ int	exit_parsing(t_parsing *parse, int i)
 	{
 		j = 0;
 		if (parse->types[i] == OPTION)
-		{
-			j++;
-			while (parse->argv[i][j]
-				&& parse->argv[i][j] >='0' && parse->argv[i][j] <= '9')
-				j++;
-			if (!parse->argv[i][j])
 				parse->types[i] = ARGUMENT;
-		}
 		i++;
 	}
 	return (i);
@@ -82,9 +75,10 @@ int	exit_atoi(char *str)
 	i = 0;
 	integer = 0;
 	nega = 1;
+	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (str[i] == '-')
 	{
-		nega *= -1;
+		nega = -1;
 		i++;
 	}
 	while (str[i] >= '0' && str[i] <= '9')
@@ -94,15 +88,17 @@ int	exit_atoi(char *str)
 			&& ft_strcmp(str, "-9223372036854775808"))
 			return(_error(str));
 	}
-	if (str[i])
+	if (str[i] || !ft_strcmp(str, "-"))
 		return(_error(str));
 	return ((integer * nega) % 256);
 }
 
 void	ft_exit(t_pipex *pipex, t_struct *main, t_args *arg)
 {
-	pipex->exit_code = 0;
+	int exit_code;
+
+	exit_code = 0;
 	if (arg->args)
-		pipex->exit_code = exit_atoi(arg->command_table[1]);
-	ft_exit_error(pipex, main, pipex->exit_code);
+		exit_code = exit_atoi(arg->command_table[1]);
+	ft_exit_error(pipex, main, exit_code);
 }

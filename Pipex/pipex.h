@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/28 17:17:35 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/29 14:07:11 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # define BUILTIN_ERROR 42 //the builtin doesn't respect the subject
 # define FILENOTFOUND 127 //command doesn’t exist, or isn’t in $PATH.
 # define EXIT_SIGINT 130 //SIGINT triggered closure
+# define EXIT_SIGQUIT 131 //SIGQUIT triggered closure
 # define GNL_BUFFER_SIZE 1
 
 /******************************************************************************/
