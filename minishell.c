@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/29 14:03:58 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/29 18:36:21 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 
 void	sigint_handler(int signal)
 {
-	write(1, "\n", 1);
-	if (signal == SIGINT && g_signal != 1)
+	// write(1, "\n", 1);
+	if (signal == SIGINT)
 	{
+		write(1, "\n", 1);
 		rl_on_new_line(); //needed to reshow prompt
 		rl_replace_line("", 1); //empties readline buffer in case there's something before the ^C
 		rl_redisplay(); //effectively forces the prompt to redisplay before you type
@@ -63,13 +64,12 @@ int	main(int argc, char **argv, char **envp)
 		printf("Just write \x1b[38;2;200;100;0;1m./minishell\e[0m\n");
 		exit(EXIT_FAILURE);
 	}
-	//use sigaction
-	signal(SIGINT, &sigint_handler);
-	signal(SIGQUIT, SIG_IGN);
 	main.common.f_envp = finishell_env(envp);
 	//will need to implement pwd_origin = getcwd(NULL, 0);
 	while (1)
 	{
+		signal(SIGINT, &sigint_handler);
+		signal(SIGQUIT, SIG_IGN);
 		main.exit_code = 0;
 		input = readline(GREEN"finishell 🤯 > "RESET);
 		if (!input/* || !ft_strcmp(input, "exit")*/)

@@ -6,41 +6,11 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:22 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/28 16:56:04 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/29 15:26:05 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "./../Pipex/pipex.h"
-
-// chdir apparently handles relative and absolute paths and ".."
-static char	*_ft_strljoin(char *s1, char *s2, int len)
-{
-	int		i;
-	int		j;
-	char	*output;
-
-	i = 0;
-	j = 0;
-	output = malloc(ft_strlen(s1) + len + 1);
-	if (!output)
-		return (NULL);
-	while (s1[i])
-	{
-		output[i] = s1[i];
-		i++;
-	}
-	while (len > 0)
-	{
-		output[i] = s2[j];
-		i++;
-		j++;
-		len--;
-	}
-	output[i] = '\0';
-	free(s2);
-	return (output);
-}
-
 
 int ft_cd(t_args *arg, t_struct *main)
 {
@@ -48,17 +18,19 @@ int ft_cd(t_args *arg, t_struct *main)
 	char	*NEW_PWD;
 
 	OLD_PWD = getcwd(NULL, 0);
-	OLD_PWD = _ft_strljoin("OLDPWD=", OLD_PWD, ft_strlen(OLD_PWD));
+	OLD_PWD = ft_strjoinf("OLDPWD=", OLD_PWD, 2);
 	if (!OLD_PWD)
 		return (EXIT_FAILURE);
-	if (chdir(arg->command_table[1]) == -1)
+	if (!arg->args)
+		arg->args = ex_fenvp("OLDPWD=", main);
+	if (chdir(arg->args) == -1)
 	{
-		printf("finishell: cd: chdir failure");
+		write(STDERR_FILENO, "finishell: cd: No such file or directory\n", 41);
 		free (OLD_PWD);
 		return (EXIT_FAILURE);
 	}
 	NEW_PWD = getcwd(NULL, 0);
-	NEW_PWD = _ft_strljoin("PWD=", NEW_PWD, ft_strlen(NEW_PWD));
+	NEW_PWD = ft_strjoinf("PWD=", NEW_PWD, 2);
 	if (!NEW_PWD)
 		return (free(OLD_PWD), EXIT_FAILURE);
 	ft_mod_fevnp(OLD_PWD, main->common.f_envp);
