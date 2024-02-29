@@ -6,11 +6,12 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:50:23 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/28 18:20:24 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/29 12:15:56 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../Pipex/pipex.h"
+#include <limits.h>
 
 //leaks like hell, need to make sure to free everything that has been malloced
 //up until this point in the program - even if you're in the middle of a pipeline
@@ -76,37 +77,32 @@ int	exit_atoi(char *str)
 {
 	int					i;
 	unsigned long long	integer;
-	unsigned long long	nega;
+	int	nega;
 
 	i = 0;
 	integer = 0;
 	nega = 1;
 	if (str[i] == '-')
 	{
-		nega = -1;
+		nega *= -1;
 		i++;
 	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		integer = integer * 10 + str[i++] - 48;
-		if (integer > 9223372036854775807)
-		{
-			integer = _error(str);
-			break ;
-		}
+		if (integer > 9223372036854775807
+			&& ft_strcmp(str, "-9223372036854775808"))
+			return(_error(str));
 	}
 	if (str[i])
-		integer = _error(str);
+		return(_error(str));
 	return ((integer * nega) % 256);
 }
-// exit -9223372036854775808 ; $?
 
 void	ft_exit(t_pipex *pipex, t_struct *main, t_args *arg)
 {
-	int	exit_code;
-
-	exit_code = 0;
+	pipex->exit_code = 0;
 	if (arg->args)
-		exit_code = exit_atoi(arg->command_table[1]);
-	ft_exit_error(pipex, main, exit_code);
+		pipex->exit_code = exit_atoi(arg->command_table[1]);
+	ft_exit_error(pipex, main, pipex->exit_code);
 }
