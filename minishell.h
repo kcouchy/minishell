@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/28 17:17:18 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/29 15:09:10 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,7 @@ int		parsing(t_struct *main, char *input);
 
 /* builtins */
 int		ft_tablen(char **tab);
+char	*ex_fenvp(char *var, t_struct *main);
 int		echo_parsing(t_parsing *parse, int i);
 char	**export_parsing(t_struct *main, int start, int end);
 int		error_export(char **command_table);
@@ -163,8 +164,10 @@ int		ft_echo(t_args *arg);
 int		ft_export(t_args *arg, t_struct *main);
 int		ft_env(t_struct *main);
 int		ft_pwd(t_args *arg, t_struct *main);
+int		ft_cd(t_args *arg, t_struct *main);
 int		ft_mod_fevnp(char *arg, char **f_envp);
-int	builtins_executing(t_pipex *pipex, t_args *arg, t_struct *main);
+int		ft_find_eq(char *f_envp);
+int		builtins_executing(t_pipex *pipex, t_args *arg, t_struct *main);
 
 /*ft_free.c*/
 void	ft_free_parsing(t_parsing *parse);

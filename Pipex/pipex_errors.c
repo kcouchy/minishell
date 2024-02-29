@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_errors.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/26 16:42:14 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/29 18:29:27 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,13 @@ void	ft_command_fail(t_pipex *pipex, t_args *arg, t_struct *main)
 	ft_exit_error(pipex, main, FILENOTFOUND);
 }
 
-//ctrl D (EXIT_SUCESS) exit code only
 int	ft_byedoc(t_pipex *pipex, t_args *arg, int exit_code)
 {
 	char	*msg;
 
-	g_signal = 0;
 	pipex->exit_code = exit_code;
 	msg = ft_strjoin3
-		("\x1b[38;2;255;100;0;1mfinishell 🤬: warning: here-doc wanted `",
+		("\x1b[38;2;255;113;0;1mfinishell ⚠️ : warning: here-doc wanted `",
 			arg->input_files[0], "'\n\e[0m");
 	if (!msg)//may need to set malloc error here
 		return(exit_code); //Need to change to fatal error?

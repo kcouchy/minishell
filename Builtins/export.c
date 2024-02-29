@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:10:57 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/28 17:12:05 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/29 15:14:07 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,20 @@ static void	_sort_export(char **ex)
 	}
 }
 
+static void	_print_(char *var)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = ft_find_eq(var) + 1;
+	write(STDOUT_FILENO, "declare -x ", 11);
+	write(STDOUT_FILENO, var, j);
+	write(STDOUT_FILENO, "\"", 1);
+	write(STDOUT_FILENO, var + j, ft_strlen(var));
+	write(STDOUT_FILENO, "\"\n", 2);
+}
+
 static int	_print_export(char **f_envp)
 {
 	int		i;
@@ -144,59 +158,9 @@ static int	_print_export(char **f_envp)
 	{
 		if (ft_strncmp(export[i], "_=", 2) != 0
 			&& ft_strncmp(export[i], "?=", 2) != 0)
-		{
-			write(STDOUT_FILENO, export[i], ft_strlen(export[i]));
-			write(STDOUT_FILENO, "\n", 1);
-		}
+			_print_(export[i]);
 	}
 	return (ft_freetable(export), EXIT_SUCCESS);
-}
-
-static int	_find_eq(char *f_envp)
-{
-	int	i;
-
-	i = 0;
-	while (f_envp[i] && f_envp[i] != '=')
-		i++;
-	return (i);
-}
-
-static int	_find_arg(char *arg, char **f_envp)
-{
-	int	i;
-
-	i = 0;
-	while (f_envp[i])
-	{
-		if (strncmp(arg, f_envp[i], _find_eq(arg)) == 0)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
-int	ft_mod_fevnp(char *arg, char **f_envp)
-{
-	int	i;
-
-	i = _find_arg(arg, f_envp);
-	if (i != -1)
-	{
-		free(f_envp[i]);
-		f_envp[i] = ft_strdup(arg);
-		if (!f_envp[i])
-			return (EXIT_FAILURE);
-	}
-	else
-	{
-		f_envp[ft_tablen(f_envp)] = ft_strdup(arg);
-		if (!f_envp[ft_tablen(f_envp)])
-			return (EXIT_FAILURE);
-		f_envp[ft_tablen(f_envp) + 1] = malloc(sizeof(char *) * 1);
-		f_envp[ft_tablen(f_envp) + 1] = NULL;
-	}
-	return (EXIT_SUCCESS);
 }
 
 int	ft_export(t_args *arg, t_struct *main)
@@ -213,5 +177,4 @@ int	ft_export(t_args *arg, t_struct *main)
 		j++;
 	}
 	return (EXIT_SUCCESS);
-
 }

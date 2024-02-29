@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/28 17:17:35 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/29 17:20:42 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,7 @@ void	ft_input(t_pipex *pipex, t_args *arg, t_struct *main, int ired);
 
 void	ft_output(t_pipex *pipex, t_args *arg, t_struct *main, int ored);
 
-void	ft_cmd(t_pipex *pipex, t_args *arg, t_struct *main, int red);
+void	ft_cmd(t_pipex *pipex, t_args *arg, t_struct *main, int i);
 
 // /**
 //  * @brief Identical to base program except for the heredoc case.

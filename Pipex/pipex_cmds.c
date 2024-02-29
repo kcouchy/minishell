@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_cmds.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:28:50 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/27 12:42:32 by lribette         ###   ########.fr       */
+/*   Updated: 2024/02/29 18:31:37 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,21 @@ void	ft_output(t_pipex *pipex, t_args *arg, t_struct *main, int ored)
 		close(out_fd);
 }
 
-void	ft_cmd(t_pipex *pipex, t_args *arg, t_struct *main, int red)
+void	ft_cmd(t_pipex *pipex, t_args *arg, t_struct *main, int i)
 {
+	int	red;
+
+	red = -1;
+	if (main->common.nb_commands == 1 && i == 0)
+		red = 00;
+	else if (main->common.nb_commands > 1 && i == 0)
+		red = 10;
+	else if (i == main->common.nb_commands - 1)
+		red = 01;
+	else if (i > 0 && i < (main->common.nb_commands - 1))
+		red = 11;
+	else
+		return ;
 	if (red >= 10)
 	{
 		ft_input(pipex, arg, main, 1);
@@ -97,14 +110,7 @@ void	ft_forkchild(t_pipex *pipex, int i, t_args *arg, t_struct *main)
 	{
 		if (!arg->command_name)
 			ft_pipex_error(pipex, main, EXIT_SUCCESS);
-		if (main->common.nb_commands == 1 && i == 0)
-			ft_cmd(pipex, arg, main, 00);
-		else if (main->common.nb_commands > 1 && i == 0)
-			ft_cmd(pipex, arg, main, 10);
-		else if (i == main->common.nb_commands - 1)
-			ft_cmd(pipex, arg, main, 01);
-		else if (i > 0 && i < (main->common.nb_commands - 1))
-			ft_cmd(pipex, arg, main, 11);
+		ft_cmd(pipex, arg, main, i);
 		if (!arg->command_table[0])
 			ft_command_fail(pipex, arg, main);
 		ft_execve(pipex, arg, main);
