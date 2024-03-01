@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:41:09 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/27 18:39:13 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 11:19:49 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	fill_strings(t_args *cmd, t_struct *main, int start, int end)
 		cmd->whole_cmd = _remove_space(cmd->whole_cmd);
 	if (number_of_args)
 		cmd->args = _remove_space(cmd->args);
-	if (!ft_strcmp(cmd->args, ""))
+	if (!number_of_args)
 	{
 		free(cmd->args);
 		cmd->args = NULL;

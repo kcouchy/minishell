@@ -6,11 +6,11 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:38:49 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/01 08:11:08 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 14:12:27 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "./../Pipex/pipex.h"
+#include "./../Pipex/pipex.h"
 
 static int	_is_there_an_equal(char *str)
 {
@@ -53,7 +53,7 @@ int	ft_unset(t_args *arg, t_struct *main)
 		{
 			error = 1;
 			ft_write_join(RED, " unset: `", arg->command_table[j],
-				"' not a valid identifier\n");
+				"' not a valid identifier");
 		}
 		else
 		{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 18:51:04 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/01 14:55:22 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/01 17:08:16 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_exit_error(t_pipex *pipex, t_struct *main, int exit_code)
 	ft_structclear(&main->args_list);
 	free_envp(main->common.f_envp);
 	rl_clear_history();
-	if(errno != 0)
+	if (errno == MALLOC_ERROR)
 		exit(errno);
 	exit(exit_code);
 }

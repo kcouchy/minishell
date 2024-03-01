@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/01 09:40:26 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 16:27:50 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ void	sigint_handler(int signal)
 		rl_replace_line("", 1); //empties readline buffer in case there's something before the ^C
 		rl_redisplay(); //effectively forces the prompt to redisplay before you type
 	}
-	//set exitcode to 130 (will need a global variable to stock this)
-	//heredoc !!!!!!!!!!!!!
 }
 
 char	**finishell_env(char **envp)
@@ -74,8 +72,11 @@ int	main(int argc, char **argv, char **envp)
 		signal(SIGQUIT, SIG_IGN);
 		main.exit_code = 0;
 		input = readline(GREEN"finishell 🤯 > "RESET);
-		main.common.f_envp = ch_exit_code(g_signal, main.common.f_envp);
-		g_signal = 0;
+		if (g_signal)
+		{
+			main.common.f_envp = ch_exit_code(g_signal, main.common.f_envp);
+			g_signal = 0;
+		}
 		if (!input)
 		{
 			write(1, "exit\n", 5);
@@ -97,3 +98,5 @@ int	main(int argc, char **argv, char **envp)
 	free_envp(main.common.f_envp);
 	return (main.exit_code); //return 1 in case of catastrophic failure
 }
+
+//_cd_error() write -> securise ?

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 09:59:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/29 11:40:21 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/01 12:34:33 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 static void	_free_it(void *s1, void *s2, int freee)
 {
 	if (freee == 3)
-		return(free(s1), free(s2));
+		return (free(s1), free(s2));
 	if (freee == 2)
-		return(free(s2));
+		return (free(s2));
 	if (freee == 1)
-		return(free(s1));
+		return (free(s1));
 	return ;
 }
 

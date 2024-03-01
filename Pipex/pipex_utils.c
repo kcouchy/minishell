@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:30:14 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/23 16:28:29 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 16:24:49 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,25 +68,30 @@ char	*ft_strjoin3(char const *s1, char const *s2, char const *s3)
 	return (output);
 }
 
-/*void	ft_execve(t_pipex *pipex, t_args *child_arg, t_struct *main)
+void	ft_execve(t_pipex *pipex, t_args *arg, t_struct *main)
 {
 	char	*cmd_path;
 	int		i;
 
 	cmd_path = 0;
 	i = 0;
+	if (arg->is_builtin)
+	{
+		builtins_executing(pipex, arg, main);
+		return ;
+	}
 	while (pipex->paths[i])
 	{
-		if (child_arg->command_name[0] == '.' || child_arg->command_name[0] == '/')
-			execve(child_arg->command_name, child_arg->command_table, main->common.f_envp);
-		cmd_path = ft_strjoin3(pipex->paths[i], "/", child_arg->command_name);
+		if (arg->command_name[0] == '.' || arg->command_name[0] == '/')
+			execve(arg->command_name, arg->command_table, main->common.f_envp);
+		cmd_path = ft_strjoin3(pipex->paths[i], "/", arg->command_name);
 		if (!cmd_path) //replace/move this with something from errors.c -> fatal error
 		{
-			write(STDERR_FILENO, "pipex: malloc failed: cmd_path\n", 31);
+			ft_write_join(SHIT, " malloc failed:", "",  " cmd_path");
 			ft_pipex_error(pipex, main, EXIT_FAILURE);
 		}
-		execve(cmd_path, child_arg->command_table, main->common.f_envp);
+		execve(cmd_path, arg->command_table, main->common.f_envp);
 		i++;
 		free(cmd_path);
 	}
-}*/
+}

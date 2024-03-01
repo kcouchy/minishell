@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:46:56 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 12:22:28 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/01 16:47:57 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "./../Pipex/pipex.h"
 
-int ft_env(t_struct *main)
+int	ft_env(t_struct *main)
 {
 	int		i;
 	size_t	j;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_errors.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 16:29:39 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/01 17:00:39 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,38 +29,20 @@ void	ft_freetable(char **table)
 
 void	ft_command_fail(t_pipex *pipex, t_args *arg, t_struct *main)
 {
-	char	*msg;
-
 	if (!arg->command_name)
-		write(STDERR_FILENO, "finishell: command not found: ''\n", 33);
+		ft_write_join(RED, " command not found:", "",  " ''");
 	else
-	{
-		msg = ft_strjoin3(
-				"\x1b[38;2;255;0;0;1mfinishell 🤬: command not found: ",
-				arg->command_name, "\e[0m\n");
-		if (!msg)//may need to set malloc error here
-			write(STDERR_FILENO, "finishell: command not found\n", 29);
-		else
-		{
-			write(STDERR_FILENO, msg, ft_strlen(msg));
-			free(msg);
-		}
-	}
+		ft_write_join(RED, " command not found: ", arg->command_name,  "");
 	ft_exit_error(pipex, main, FILENOTFOUND);
 }
 
 int	ft_byedoc(t_pipex *pipex, t_args *arg, int exit_code)
 {
-	char	*msg;
-
+	ft_write_join(ORANGE, " warning: here-doc wanted `",
+		arg->input_files[0],  "'");
 	pipex->exit_code = exit_code;
-	msg = ft_strjoin3
-		("\x1b[38;2;255;113;0;1mfinishell ⚠️ : warning: here-doc wanted `",
-			arg->input_files[0], "'\n\e[0m");
 	if (errno == 12)
 		return(errno);
-	write(STDERR_FILENO, msg, ft_strlen(msg));
-	free(msg);
 	return (exit_code);
 }
 
