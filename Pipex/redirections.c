@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 15:59:31 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 08:45:50 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 10:12:52 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	ft_heredoc(t_pipex *pipex, t_args **temp, int i)
 	if (pipex->hd_temp_fd == -1)
 		return (EXIT_FAILURE);
 	hd_read_out = _hd_read(pipex, temp, temp_i, i);
-	(free(char_i), close(pipex->hd_temp_fd), g_signal = 0);
+	(free(char_i), close(pipex->hd_temp_fd));
 	signal(SIGINT, &sigint_handler);
 	return (hd_read_out);
 }
