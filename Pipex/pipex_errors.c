@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/29 18:29:27 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/01 16:29:39 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ int	ft_byedoc(t_pipex *pipex, t_args *arg, int exit_code)
 	msg = ft_strjoin3
 		("\x1b[38;2;255;113;0;1mfinishell ⚠️ : warning: here-doc wanted `",
 			arg->input_files[0], "'\n\e[0m");
-	if (!msg)//may need to set malloc error here
-		return(exit_code); //Need to change to fatal error?
+	if (errno == 12)
+		return(errno);
 	write(STDERR_FILENO, msg, ft_strlen(msg));
 	free(msg);
 	return (exit_code);
@@ -71,10 +71,13 @@ int	ft_pipex_error(t_pipex *pipex, t_struct *main, int exit_code)
 	{
 		ft_structclear(&main->args_list);
 		free_envp(main->common.f_envp);
+		if (errno == 12)
+			exit (errno);
 		exit(exit_code);
 	}
-	if (unlink_hds() == EXIT_FAILURE)
-		write(STDERR_FILENO, RED"here-doc closure error\n"RESET, 57);
+	unlink_hds();
+	if (errno == 12)
+		return (errno);
 	return (exit_code);
 }
 
@@ -92,11 +95,12 @@ int	unlink_hds(void)
 		string_i = ft_itoa(i);
 		if (!string_i)
 			return (EXIT_FAILURE);
-		filename = ft_strjoin("./Pipex/temp_", string_i);
-		free(string_i);
+		filename = ft_strjoinf("./Pipex/temp_", string_i, 2);
+		if (errno == 12)
+			return(errno);
 		unlink(filename);
 		free(filename);
 		i++;
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }

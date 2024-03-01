@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 13:26:27 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/26 15:53:59 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 14:20:16 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,5 @@ int	ft_echo(t_args *arg)
 		ft_putstr_fd(arg->args, STDOUT_FILENO);
 	if (!arg->flags)
 		write(STDOUT_FILENO, "\n", 1);
-	return (0);
+	return (EXIT_SUCCESS);
 }

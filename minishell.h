@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/01 11:51:20 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/01 14:16:06 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "./Pipex/libft/libft.h"
+# include <errno.h>
 
 /******************************************************************************/
 /* Variables                                                                  */

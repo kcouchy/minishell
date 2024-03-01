@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 09:43:53 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 16:30:54 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,9 @@ int	executing(t_struct *main)
 {
 	t_pipex	pipex;
 
+	errno = 0;
 	if (ft_pipex_init(&pipex, main) == EXIT_FAILURE)
-	{
-		write(STDERR_FILENO, "finishell: executing failure : init\n", 36);
-		return (EXIT_FAILURE);
-	}
-	//retrieve exit code of redirec
+		return (errno);
 	if (ft_redirections(&pipex, main) == EXIT_FAILURE)
 	{
 		write(STDERR_FILENO, "finishell: open failure : redirections\n", 39);

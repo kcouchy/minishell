@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 15:59:31 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 10:12:52 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 16:28:11 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static int	_red_inputs(t_pipex *pipex, t_args *temp)
 {
 	int		fd;
 	int		i;
+	int		hd_out;
 
 	fd = -1;
 	i = -1;
@@ -93,8 +94,11 @@ static int	_red_inputs(t_pipex *pipex, t_args *temp)
 				return (EXIT_FAILURE);
 		}
 		else if (ft_strcmp(temp->input_redirs[i], "<<") == 0)
-			if (ft_heredoc(pipex, &temp, i) == 1)
-				return (EXIT_FAILURE);
+		{
+			hd_out = ft_heredoc(pipex, &temp, i);
+			if (hd_out != EXIT_SUCCESS)
+				return (hd_out);
+		}
 	}
 	return (EXIT_SUCCESS);
 }
@@ -148,8 +152,6 @@ int	ft_redirections(t_pipex *pipex, t_struct *main)
 			if (!temp->output)
 				return (EXIT_FAILURE);
 		}
-		printf("temp->input %s\n", temp->input);//REMOVE
-		printf("temp->output %s\n", temp->output);//REMOVE
 		temp = temp->next;
 	}
 	return (EXIT_SUCCESS);

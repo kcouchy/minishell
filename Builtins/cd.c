@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:22 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 11:56:14 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/01 14:20:17 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ int ft_cd(t_args *arg, t_struct *main)
 	{
 		write(STDERR_FILENO, "finishell: cd: No such file or directory\n", 41);
 		// free (OLD_PWD);
-		return (EXIT_FAILURE);
+		return (errno);
 	}
 	NEW_PWD = getcwd(NULL, 0);
 	NEW_PWD = ft_strjoinf("PWD=", NEW_PWD, 2);
 	if (!NEW_PWD)
-		return (EXIT_FAILURE);
+		return (errno);
 	// ft_mod_fevnp(OLD_PWD, main->common.f_envp);
 	ft_mod_fevnp(NEW_PWD, &main->common.f_envp);
 	// free(OLD_PWD);
