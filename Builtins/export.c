@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:10:57 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/29 15:14:07 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/01 08:41:36 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ static void	_print_(char *var)
 	write(STDOUT_FILENO, "declare -x ", 11);
 	write(STDOUT_FILENO, var, j);
 	write(STDOUT_FILENO, "\"", 1);
-	write(STDOUT_FILENO, var + j, ft_strlen(var));
+	write(STDOUT_FILENO, var + j, ft_strlen(var + j));
 	write(STDOUT_FILENO, "\"\n", 2);
 }
 

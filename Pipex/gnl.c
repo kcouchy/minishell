@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gnl.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 10:34:45 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/29 18:27:33 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/01 09:54:08 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,18 +86,18 @@ char	*ft_gnl_read2buff(char *line, char *buffer, int fd)
 	return (line);
 }
 
-void	sigint_handler_gnl(int signal)
-{
-	if (signal == SIGINT)
-	{
-		g_signal = 130;
-		write(STDIN_FILENO, "GNL\n", 4);//take out the GNL
-	}
-	if (signal == SIGQUIT)
-	{
-		return ;
-	}
-}
+// void	sigint_handler_gnl(int signal)
+// {
+// 	if (signal == SIGINT)
+// 	{
+// 		g_signal = 130;
+// 		write(STDIN_FILENO, "GNL\n", 4);//take out the GNL
+// 	}
+// 	if (signal == SIGQUIT)
+// 	{
+// 		return ;
+// 	}
+// }
 
 char	*gnl(int fd)
 {
@@ -106,11 +106,8 @@ char	*gnl(int fd)
 	struct sigaction	act;
 
 	ft_bzero(&act, sizeof(act));
-	act.sa_handler = &sigint_handler_gnl;
+	act.sa_handler = &sigint_handler_fork;
 	sigaction(SIGINT, &act, NULL);
-	// act.sa_handler = SIG_IGN;
-	// sigaction(SIGQUIT, &act, NULL);
-	// // signal(SIGQUIT, SIG_IGN);
 	line = malloc(sizeof(char) * 1);
 	if (!line)
 		return (NULL);

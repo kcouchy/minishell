@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/29 18:35:57 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/02/29 18:42:17 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,5 +335,6 @@ char	*gnl(int fd);
 void	ft_builtin_fail(t_pipex *pipex, t_args *arg, t_struct *main);
 void	ft_exit(t_pipex *pipex, t_struct *main, t_args *arg);
 void	ft_exit_error(t_pipex *pipex, t_struct *main, int exit_code);
+void	sigint_handler_fork(int signal);
 
 #endif

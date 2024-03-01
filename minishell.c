@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/29 18:36:21 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/01 09:40:26 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@ void	sigint_handler(int signal)
 	// write(1, "\n", 1);
 	if (signal == SIGINT)
 	{
+		g_signal = EXIT_SIGINT;
 		write(1, "\n", 1);
 		rl_on_new_line(); //needed to reshow prompt
 		rl_replace_line("", 1); //empties readline buffer in case there's something before the ^C
 		rl_redisplay(); //effectively forces the prompt to redisplay before you type
 	}
 	//set exitcode to 130 (will need a global variable to stock this)
+	//heredoc !!!!!!!!!!!!!
 }
 
 char	**finishell_env(char **envp)
@@ -72,18 +74,18 @@ int	main(int argc, char **argv, char **envp)
 		signal(SIGQUIT, SIG_IGN);
 		main.exit_code = 0;
 		input = readline(GREEN"finishell 🤯 > "RESET);
-		if (!input/* || !ft_strcmp(input, "exit")*/)
+		main.common.f_envp = ch_exit_code(g_signal, main.common.f_envp);
+		g_signal = 0;
+		if (!input)
 		{
 			write(1, "exit\n", 5);
-			if (input)
-				free(input);
 			break ;
 		}
 		if (parsing(&main, input) == EXIT_SUCCESS)
 		{
 			if (!main.parse.error)
 			{
-				test_liste_chainee(&main);
+				// test_liste_chainee(&main);
 				ft_free_parsing(&main.parse);
 				main.exit_code = executing(&main);
 			}

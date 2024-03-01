@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:27:08 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/29 18:35:09 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/01 07:37:22 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ft_find_eq(char *f_envp)
 	return (i);
 }
 
-static int	_find_arg(char *arg, char **f_envp)
+int	find_arg(char *arg, char **f_envp)
 {
 	int	i;
 
@@ -51,7 +51,7 @@ int	ft_mod_fevnp(char *arg, char **f_envp)
 {
 	int	i;
 
-	i = _find_arg(arg, f_envp);
+	i = find_arg(arg, f_envp);
 	if (i != -1)
 	{
 		free(f_envp[i]);
@@ -121,7 +121,7 @@ int	builtins_executing(t_pipex *pipex, t_args *arg, t_struct *main)
 	else if (!ft_strcmp(arg->command_name, "export") && !arg->flags)
 		return (ft_export(arg, main));
 	else if (!ft_strcmp(arg->command_name, "unset") && !arg->flags)
-		return (1);
+		return (ft_unset(arg, main));
 	else if (!ft_strcmp(arg->command_name, "env") && !arg->flags && !arg->args)
 		return (ft_env(main));
 	else

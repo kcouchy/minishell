@@ -3,21 +3,22 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+         #
+#    By: lribette <lribette@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
-#    Updated: 2024/02/27 15:31:39 by kcouchma         ###   ########.fr        #
+#    Updated: 2024/03/01 07:38:09 by lribette         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRCS =											\
+				Builtins/builtins_utils			\
 				Builtins/cd						\
 				Builtins/echo					\
 				Builtins/env					\
 				Builtins/exit					\
 				Builtins/export					\
 				Builtins/pwd					\
-				Builtins/builtins_utils			\
+				Builtins/unset					\
 				Parsing/Lexing/alloc_tables		\
 				Parsing/Lexing/check_commands	\
 				Parsing/Lexing/check_variables	\

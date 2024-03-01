@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 15:59:31 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/29 18:29:35 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/01 08:45:50 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	_hd_read(t_pipex *pipex, t_args **temp, char *temp_i, int i)
 	{
 		write(STDERR_FILENO, "> ", 2);
 		line = gnl(STDIN_FILENO);
-		if (g_signal == 130)
+		if (g_signal == EXIT_SIGINT)
 		{
 			(close(pipex->hd_temp_fd), free (line));
 			pipex->hd_temp_fd = open(temp_i, O_RDWR | O_TRUNC | O_CREAT, 0644);

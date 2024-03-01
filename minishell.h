@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/29 18:36:38 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/01 07:37:36 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,9 +166,12 @@ int		ft_export(t_args *arg, t_struct *main);
 int		ft_env(t_struct *main);
 int		ft_pwd(t_args *arg, t_struct *main);
 int		ft_cd(t_args *arg, t_struct *main);
+int		ft_unset(t_args *arg, t_struct *main);
 int		ft_mod_fevnp(char *arg, char **f_envp);
 int		ft_find_eq(char *f_envp);
+int		find_arg(char *arg, char **f_envp);
 int		builtins_executing(t_pipex *pipex, t_args *arg, t_struct *main);
+void	ft_write_join(char *error_type, char *cmd, char *arg, char *str);
 
 /*ft_free.c*/
 void	ft_free_parsing(t_parsing *parse);

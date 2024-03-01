@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 18:51:04 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/29 13:49:04 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 07:23:50 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,8 @@ char	**ch_exit_code(int exit_code, char **f_envp)
 	i = 0;
 	if (f_envp)
 	{
-		while (f_envp[i] && ft_strncmp(f_envp[i], "?=", 2))
-			i++;
-		if (f_envp[i] && !ft_strncmp(f_envp[i], "?=", 2))
+		i = find_arg("?=", f_envp);
+		if (i)
 			free(f_envp[i]);
 		new_exit_str = ft_itoa(exit_code);
 		f_envp[i] = ft_strjoin("?=", new_exit_str);

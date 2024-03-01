@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/29 18:05:25 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/01 09:43:53 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 
 void	sigint_handler_fork(int signal)
 {
-	if (signal == SIGINT || signal == SIGQUIT)
-	{
-		write(1, "\n", 1);
-	}
+	write(1, "\n", 1);
+	if (signal == SIGINT)
+		g_signal = EXIT_SIGINT;
+	if (signal == SIGQUIT)
+		g_signal = EXIT_SIGQUIT;
 }
 
 void	ft_pipex(t_pipex *pipex, t_struct *main)

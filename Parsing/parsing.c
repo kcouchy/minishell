@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/28 17:14:07 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 09:36:51 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,8 @@ int	parsing(t_struct *main, char *input)
 	if (check_error(&main->parse, input2, 1, main))
 		return (SYNTAX_ERROR);
 	builtins_parsing(&main->parse);
-	printf("argc = %d\n", main->parse.argc);
 	main->common.nb_commands = main->parse.number_of_commands;
-	test_parsing(&main->parse);
+	// test_parsing(&main->parse);
 	free(input2);
 	main->args_list = parsing_to_executing(main);
 	// check_exit(main);
