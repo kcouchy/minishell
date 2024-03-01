@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:27:08 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 07:37:22 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 16:26:40 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,36 +141,8 @@ void	ft_builtin_fail(t_pipex *pipex, t_args *arg, t_struct *main)
 		exit_code = EXIT_SUCCESS;
 	else
 	{
-		write(STDERR_FILENO, RED" misuse of a builtin\n"RESET, 54);
+		write(STDERR_FILENO, RED" misuse of a builtin\n"RESET, 57);
 		exit_code = BUILTIN_ERROR;
 	}
 	ft_exit_error(pipex, main, exit_code);
-}
-
-void	ft_execve(t_pipex *pipex, t_args *arg, t_struct *main)
-{
-	char	*cmd_path;
-	int		i;
-
-	cmd_path = 0;
-	i = 0;
-	if (arg->is_builtin)
-	{
-		builtins_executing(pipex, arg, main);
-		return ;
-	}
-	while (pipex->paths[i])
-	{
-		if (arg->command_name[0] == '.' || arg->command_name[0] == '/')
-			execve(arg->command_name, arg->command_table, main->common.f_envp);
-		cmd_path = ft_strjoin3(pipex->paths[i], "/", arg->command_name);
-		if (!cmd_path) //replace/move this with something from errors.c -> fatal error
-		{
-			write(STDERR_FILENO, "pipex: malloc failed: cmd_path\n", 31);
-			ft_pipex_error(pipex, main, EXIT_FAILURE);
-		}
-		execve(cmd_path, arg->command_table, main->common.f_envp);
-		i++;
-		free(cmd_path);
-	}
 }

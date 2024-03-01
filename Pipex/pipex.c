@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 09:43:53 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 12:52:09 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ int	executing(t_struct *main)
 		&& !(ft_strcmp(main->args_list->command_name, "env") == 0)
 		&& !(ft_strcmp(main->args_list->command_name, "pwd") == 0)
 		&& !((ft_strcmp(main->args_list->command_name, "export") == 0)
-		&& !main->args_list->args))
-			builtins_executing(&pipex, main->args_list, main);
+			&& !main->args_list->args))
+		pipex.exit_code = builtins_executing(&pipex, main->args_list, main);
 	else
 		ft_pipex(&pipex, main);
 	signal(SIGINT, &sigint_handler);

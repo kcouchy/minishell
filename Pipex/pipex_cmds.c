@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_cmds.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:28:50 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/29 18:31:37 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/01 15:44:05 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ void	ft_input(t_pipex *pipex, t_args *arg, t_struct *main, int ired)
 		in_fd = pipex->pipe_fd[0];
 	if (in_fd == -1)
 	{
-		write(STDERR_FILENO, "finishell: open failed: last_cmd\n", 33);
+		ft_write_join(SHIT, " open failed:", "",  " last_cmd");
 		ft_pipex_error(pipex, main, EXIT_FAILURE);
 	}
 	if (dup2(in_fd, STDIN_FILENO) == -1)
 	{
-		write(STDERR_FILENO, "finishell: dup2 failed: last_cmd\n", 33);
+		ft_write_join(SHIT, " dup2 failed:", "",  " last_cmd");
 		ft_pipex_error(pipex, main, EXIT_FAILURE);
 	}
 	if (ired == 1)
@@ -62,12 +62,12 @@ void	ft_output(t_pipex *pipex, t_args *arg, t_struct *main, int ored)
 	else
 		out_fd = pipex->temp_fd_out;
 	if (out_fd == -1)
-		write(STDERR_FILENO, "finishell: open failed: output\n", 31);
+		ft_write_join(SHIT, " open failed:", "",  " output");
 	if (out_fd == -1)
 		ft_pipex_error(pipex, main, EXIT_FAILURE);
 	if (dup2(out_fd, STDOUT_FILENO) == -1)
 	{
-		write(STDERR_FILENO, "finishell: dup2 failed: output\n", 31);
+		ft_write_join(SHIT, " dup2 failed:", "",  " output");
 		ft_pipex_error(pipex, main, EXIT_FAILURE);
 	}
 	if (ored == 1)

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:10:57 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 10:20:58 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 12:37:32 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static int	_sorted(char **ex)
 	while (ex[i] && ex[i + 1])
 	{
 		if (ft_strncmp(ex[i], ex[i + 1], ft_strlen(ex[i])) > 0)
-			return (1) ;
+			return (1);
 		i++;
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/01 07:37:36 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 15:24:20 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <errno.h>
 # include "./Pipex/libft/libft.h"
 
 /******************************************************************************/
@@ -33,7 +34,7 @@
 # define ORANGE "\x1b[38;2;255;113;0;1mfinishell ⚠️ :"
 # define WR_CMD " command not found"
 # define GREEN "\x1b[38;2;0;150;0;1m"
-# define SHIT "\x1b[38;2;114;61;23;1mfinishell 💩:"
+# define SHIT "\x1b[38;2;136;87;66;1mfinishell 💩:"
 # define RESET "\e[0m"
 
 typedef struct s_pipex_list

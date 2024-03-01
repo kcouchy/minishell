@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 18:51:04 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/01 07:23:50 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 16:13:23 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	ft_exit_error(t_pipex *pipex, t_struct *main, int exit_code)
 	ft_structclear(&main->args_list);
 	free_envp(main->common.f_envp);
 	rl_clear_history();
+	if (errno == MALLOC_ERROR)
+		exit(errno);
 	exit(exit_code);
 }
 

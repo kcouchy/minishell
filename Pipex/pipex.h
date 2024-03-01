@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/29 18:42:17 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 16:13:14 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 # define NOTHING -1 //there is no error and no commands
 # define SYNTAX_ERROR 2
+# define MALLOC_ERROR 12 //ENOMEM
 # define BUILTIN_ERROR 42 //the builtin doesn't respect the subject
 # define FILENOTFOUND 127 //command doesn’t exist, or isn’t in $PATH.
 # define EXIT_SIGINT 130 //SIGINT triggered closure

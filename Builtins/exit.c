@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:50:23 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 07:25:39 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 15:16:44 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	exit_parsing(t_parsing *parse, int i)
 	{
 		j = 0;
 		if (parse->types[i] == OPTION)
-				parse->types[i] = ARGUMENT;
+			parse->types[i] = ARGUMENT;
 		i++;
 	}
 	return (i);
@@ -51,17 +51,26 @@ int	exit_parsing(t_parsing *parse, int i)
 
 void	ft_write_join(char *error_type, char *cmd, char *arg, char *str)
 {
-	write(STDOUT_FILENO, error_type, ft_strlen(error_type));
-	write(STDOUT_FILENO, cmd, ft_strlen(cmd));
-	write(STDOUT_FILENO, arg, ft_strlen(arg));
-	write(STDOUT_FILENO, str, ft_strlen(str));
-	write(STDOUT_FILENO, RESET, ft_strlen(RESET));
+	char *join;
+
+	join = ft_strjoinf(error_type, cmd, 0);
+	if (join)
+		join = ft_strjoinf(join, arg, 1);
+	if (join)
+		join = ft_strjoinf(join, str, 1);
+	if (join)
+		join = ft_strjoinf(join, "\n", 1);
+	if (join)
+		join = ft_strjoinf(join, RESET, 1);
+	if (join)
+		write(STDOUT_FILENO, join, ft_strlen(join));
+	if (join)
+		free(join);
 }
 
 static int	_error(char *str)
 {
-	ft_write_join(ORANGE, " exit: ", str,
-		": numeric argument required\n");
+	ft_write_join(ORANGE, " exit: ", str, ": numeric argument required");
 	return (SYNTAX_ERROR);
 }
 
@@ -69,7 +78,7 @@ int	exit_atoi(char *str)
 {
 	int					i;
 	unsigned long long	integer;
-	int	nega;
+	int					nega;
 
 	i = 0;
 	integer = 0;
@@ -85,16 +94,16 @@ int	exit_atoi(char *str)
 		integer = integer * 10 + str[i++] - 48;
 		if (integer > 9223372036854775807
 			&& ft_strcmp(str, "-9223372036854775808"))
-			return(_error(str));
+			return (_error(str));
 	}
 	if (str[i] || !ft_strcmp(str, "-"))
-		return(_error(str));
+		return (_error(str));
 	return ((integer * nega) % 256);
 }
 
 void	ft_exit(t_pipex *pipex, t_struct *main, t_args *arg)
 {
-	int exit_code;
+	int	exit_code;
 
 	exit_code = 0;
 	if (arg->args)

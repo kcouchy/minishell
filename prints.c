@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 18:03:38 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/15 18:28:03 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 11:15:39 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,11 @@ void	test_liste_chainee(t_struct *main)
 				printf(" -   %s\n", temp->command_table[i]);
 				i++;
 			}
-			printf("\x1b[38;2;255;216;0mcommand_name = %s\n", temp->command_name);
 		}
+		if (temp->command_name)
+			printf("\x1b[38;2;255;216;0mcommand_name = %s\n", temp->command_name);
+		else
+			printf("\x1b[38;2;255;216;0mcommand_name = (null)\n");
 		i = 0;
 		printf("\x1b[38;2;0;255;60mflags = \n");
 		if (!temp->flags)
