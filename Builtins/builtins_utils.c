@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:27:08 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 07:37:22 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 12:37:29 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,25 +47,50 @@ int	find_arg(char *arg, char **f_envp)
 	return (-1);
 }
 
-int	ft_mod_fevnp(char *arg, char **f_envp)
+char	**ft_realloc(char **tab)
+{
+	int		i;
+	int		len;
+	char	**output;
+
+	i = 0;
+	len = ft_tablen(tab);
+	output = malloc(sizeof(char *) * (len + 2));
+	if (!output)
+		return(NULL);
+	while (i < len)
+	{
+		output[i] = tab[i];
+		i++;
+	}
+	output[i] = NULL;
+	output[i + 1] = NULL;
+	free(tab);
+	return (output);
+}
+
+int	ft_mod_fevnp(char *arg, char ***f_envp)
 {
 	int	i;
+	int	j;
 
-	i = find_arg(arg, f_envp);
+	i = find_arg(arg, *f_envp);
 	if (i != -1)
 	{
-		free(f_envp[i]);
-		f_envp[i] = ft_strdup(arg);
-		if (!f_envp[i])
+		if (ft_strlen(arg) == (size_t)ft_find_eq(arg))
+			return (EXIT_SUCCESS);
+		free((*f_envp)[i]);
+		(*f_envp)[i] = ft_strdup(arg);
+		if (!(*f_envp)[i])
 			return (EXIT_FAILURE);
 	}
 	else
 	{
-		f_envp[ft_tablen(f_envp)] = ft_strdup(arg);
-		if (!f_envp[ft_tablen(f_envp)])
+		*f_envp = ft_realloc(*f_envp);
+		j = ft_tablen(*f_envp);
+		(*f_envp)[j] = ft_strdup(arg);
+		if (!(*f_envp)[j])
 			return (EXIT_FAILURE);
-		f_envp[ft_tablen(f_envp) + 1] = malloc(sizeof(char *) * 1);
-		f_envp[ft_tablen(f_envp) + 1] = NULL;
 	}
 	return (EXIT_SUCCESS);
 }

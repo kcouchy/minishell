@@ -6,13 +6,11 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:22 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/02/28 16:54:59 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/01 10:37:28 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "./../Pipex/pipex.h"
-
-//print from f_envp except for args that are ""
 
 int ft_pwd(t_args *arg, t_struct *main)
 {

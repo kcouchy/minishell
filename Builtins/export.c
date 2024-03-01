@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:10:57 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 10:20:58 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 12:30:26 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,16 +124,23 @@ static void	_sort_export(char **ex)
 
 static void	_print_(char *var)
 {
-	int	i;
-	int	j;
+	int		i;
+	size_t	j;
 
 	i = 0;
-	j = ft_find_eq(var) + 1;
+	j = ft_find_eq(var);
 	write(STDOUT_FILENO, "declare -x ", 11);
-	write(STDOUT_FILENO, var, j);
-	write(STDOUT_FILENO, "\"", 1);
-	write(STDOUT_FILENO, var + j, ft_strlen(var) - j);
-	write(STDOUT_FILENO, "\"\n", 2);
+	if (j != ft_strlen(var))
+	{
+		j++;
+		write(STDOUT_FILENO, var, j);
+		write(STDOUT_FILENO, "\"", 1);
+		write(STDOUT_FILENO, var + j, ft_strlen(var) - j);
+		write(STDOUT_FILENO, "\"", 1);
+	}
+	else
+		write(STDOUT_FILENO, var, ft_strlen(var));
+	write(STDOUT_FILENO, "\n", 1);
 }
 
 static int	_print_export(char **f_envp)
@@ -172,7 +179,7 @@ int	ft_export(t_args *arg, t_struct *main)
 		return (_print_export(main->common.f_envp));
 	while (arg->command_table[j])
 	{
-		if (ft_mod_fevnp(arg->command_table[j], main->common.f_envp) == 1)
+		if (ft_mod_fevnp(arg->command_table[j], &main->common.f_envp) == 1)
 			return (EXIT_FAILURE);
 		j++;
 	}
