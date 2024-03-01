@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/01 16:27:50 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 20:08:08 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 void	sigint_handler(int signal)
 {
-	// write(1, "\n", 1);
 	if (signal == SIGINT)
 	{
 		g_signal = EXIT_SIGINT;
@@ -65,9 +64,10 @@ int	main(int argc, char **argv, char **envp)
 		exit(EXIT_FAILURE);
 	}
 	main.common.f_envp = finishell_env(envp);
-	//will need to implement pwd_origin = getcwd(NULL, 0);
+	main.common.pwd = getcwd(NULL, 0);
 	while (1)
 	{
+		errno = 0;
 		signal(SIGINT, &sigint_handler);
 		signal(SIGQUIT, SIG_IGN);
 		main.exit_code = 0;
@@ -95,7 +95,8 @@ int	main(int argc, char **argv, char **envp)
 		main.common.f_envp = ch_exit_code(main.exit_code, main.common.f_envp);
 	}
 	rl_clear_history();
-	free_envp(main.common.f_envp);
+	free_table(main.common.f_envp);
+	free(main.common.pwd);
 	return (main.exit_code); //return 1 in case of catastrophic failure
 }
 

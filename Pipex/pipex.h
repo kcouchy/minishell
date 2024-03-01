@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 16:13:14 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 17:53:46 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	ft_execve(t_pipex *pipex, t_args *child_arg, t_struct *main);
  * of the input table of tables, then the table itself.
  * @param table input table of tables to be freed.
  */
-void	ft_freetable(char **table);
+// void	ft_freetable(char **table);
 
 /**
  * @brief Handles the case where the input command (created from 

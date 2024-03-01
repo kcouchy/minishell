@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/01 17:07:13 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 18:27:57 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ typedef struct s_common
 {
 	int		nb_commands;
 	char	**f_envp;
+	char	*pwd;
 }	t_common;
 
 typedef struct s_args
@@ -165,7 +166,7 @@ int		error_export(char **command_table);
 int		ft_echo(t_args *arg);
 int		ft_export(t_args *arg, t_struct *main);
 int		ft_env(t_struct *main);
-int		ft_pwd(t_args *arg, t_struct *main);
+int		ft_pwd(t_struct *main);
 int		ft_cd(t_args *arg, t_struct *main);
 int		ft_unset(t_args *arg, t_struct *main);
 int		ft_mod_fevnp(char *arg, char ***f_envp);
@@ -175,9 +176,10 @@ int		builtins_executing(t_pipex *pipex, t_args *arg, t_struct *main);
 void	ft_write_join(char *error_type, char *cmd, char *arg, char *str);
 
 /*ft_free.c*/
+void	free_table(char **tab);
 void	ft_free_parsing(t_parsing *parse);
 void	ft_structclear(t_args **cmd);
-void	free_envp(char **f_envp);
+// void	free_envp(char **f_envp);
 
 /* ************* Parsing to Executing ************** */
 t_args	*parsing_to_executing(t_struct *main);

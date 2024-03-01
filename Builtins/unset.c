@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 17:38:49 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/01 14:12:27 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 18:32:26 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	_is_there_an_equal(char *str)
 	return (0);
 }
 
-static void	unset_arg(int i, t_struct *main)
+static void	_unset_arg(int i, t_struct *main)
 {
 	if (i == -1)
 		return ;
@@ -45,20 +45,20 @@ int	ft_unset(t_args *arg, t_struct *main)
 	int	j;
 	int	error;
 
-	error = 0;
+	error = EXIT_SUCCESS;
 	j = 1;
 	while (j < ft_tablen(arg->command_table))
 	{
 		if (_is_there_an_equal(arg->command_table[j]))
 		{
-			error = 1;
+			error = EXIT_FAILURE;
 			ft_write_join(RED, " unset: `", arg->command_table[j],
 				"' not a valid identifier");
 		}
 		else
 		{
 			i = find_arg(arg->command_table[j], main->common.f_envp);
-			unset_arg(i, main);
+			_unset_arg(i, main);
 		}
 		j++;
 	}

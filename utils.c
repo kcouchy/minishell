@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 18:51:04 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/01 17:08:16 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 18:25:21 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,10 @@ int	is_builtin(char *command)
 
 void	ft_exit_error(t_pipex *pipex, t_struct *main, int exit_code)
 {
-	ft_freetable(pipex->paths);
+	free_table(pipex->paths);
 	ft_structclear(&main->args_list);
-	free_envp(main->common.f_envp);
+	free_table(main->common.f_envp);
+	free(main->common.pwd);
 	rl_clear_history();
 	if (errno == MALLOC_ERROR)
 		exit(errno);
@@ -61,4 +62,23 @@ char	**ch_exit_code(int exit_code, char **f_envp)
 		free(new_exit_str);
 	}
 	return (f_envp);
+}
+
+void	ft_write_join(char *error_type, char *cmd, char *arg, char *str)
+{
+	char *join;
+
+	join = ft_strjoinf(error_type, cmd, 0);
+	if (join)
+		join = ft_strjoinf(join, arg, 1);
+	if (join)
+		join = ft_strjoinf(join, str, 1);
+	if (join)
+		join = ft_strjoinf(join, "\n", 1);
+	if (join)
+		join = ft_strjoinf(join, RESET, 1);
+	if (join)
+		write(STDERR_FILENO, join, ft_strlen(join));
+	if (join)
+		free(join);
 }

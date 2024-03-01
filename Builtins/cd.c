@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:22 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 16:45:49 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 17:35:05 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,14 @@ int	ft_cd(t_args *arg, t_struct *main)
 	if (!arg->args)
 		arg->args = ex_fenvp("HOME=", main);
 	if (chdir(arg->args) == -1)
-	{
-		write(STDERR_FILENO, "finishell: cd: No such file or directory\n", 41);
-		return (EXIT_FAILURE);
-	}
+		return (_cd_error(arg));
 	NEW_PWD = getcwd(NULL, 0);
 	NEW_PWD = ft_strjoinf("PWD=", NEW_PWD, 2);
 	if (!NEW_PWD)
 		return (errno);
-	ft_mod_fevnp(NEW_PWD, main->common.f_envp);
+	ft_mod_fevnp(NEW_PWD, &main->common.f_envp);
+	if (errno == MALLOC_ERROR)
+		return (errno);
 	free(NEW_PWD);
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:28:50 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 16:37:17 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 17:31:58 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ void	ft_input(t_pipex *pipex, t_args *arg, t_struct *main, int ired)
 		in_fd = pipex->pipe_fd[0];
 	if (in_fd == -1)
 	{
-		ft_write_join(SHIT, " open failed:", "",  " last_cmd");
+		ft_write_join(SHIT, " open failed:", "",  " input");
 		ft_pipex_error(pipex, main, EXIT_FAILURE);
 	}
 	if (dup2(in_fd, STDIN_FILENO) == -1)
 	{
-		ft_write_join(SHIT, " dup2 failed:", "",  " last_cmd");
+		ft_write_join(SHIT, " dup2 failed:", "",  " input");
 		ft_pipex_error(pipex, main, EXIT_FAILURE);
 	}
 	if (ired == 1)

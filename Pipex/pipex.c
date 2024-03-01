@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 17:01:53 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 19:24:10 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	executing(t_struct *main)
 		return (errno);
 	if (ft_redirections(&pipex, main) == EXIT_FAILURE)
 	{
-		write(STDERR_FILENO, "finishell: open failure : redirections\n", 39);
+		ft_write_join(RED, " open failed:", "",  " redirections");
 		return (ft_pipex_error(&pipex, main, EXIT_FAILURE));
 	}
 	if (main->common.nb_commands < 1)

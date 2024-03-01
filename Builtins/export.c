@@ -6,13 +6,11 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:10:57 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 16:48:40 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 19:49:50 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../Pipex/pipex.h"
-
-// regarde avec rien au debut de l'arg
 
 static int	_nb_args(t_parsing *parse, int start, int end)
 {
@@ -53,7 +51,7 @@ char	**export_parsing(t_struct *main, int start, int end)
 			|| (main->parse.types[start] == ARGUMENT
 				&& main->parse.argv[start][0] != '='))
 		{
-			tab[i] = ft_strdup(main->parse.argv[start]);
+			tab[i] = ft_strdup(main->parse.argv[start]);/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			i++;
 		}
 		start++;
@@ -124,10 +122,8 @@ static void	_sort_export(char **ex)
 
 static void	_print_(char *var)
 {
-	int		i;
 	size_t	j;
 
-	i = 0;
 	j = ft_find_eq(var);
 	write(STDOUT_FILENO, "declare -x ", 11);
 	if (j != ft_strlen(var))
@@ -156,7 +152,7 @@ static int	_print_export(char **f_envp)
 	{
 		export[i] = ft_strdup(f_envp[i]);
 		if (!export[i])
-			return (ft_freetable(export), EXIT_FAILURE);
+			return (free_table(export), EXIT_FAILURE);
 	}
 	export[i] = NULL;
 	_sort_export(export);
@@ -167,7 +163,7 @@ static int	_print_export(char **f_envp)
 			&& ft_strncmp(export[i], "?=", 2) != 0)
 			_print_(export[i]);
 	}
-	return (ft_freetable(export), EXIT_SUCCESS);
+	return (free_table(export), EXIT_SUCCESS);
 }
 
 int	ft_export(t_args *arg, t_struct *main)
@@ -176,11 +172,20 @@ int	ft_export(t_args *arg, t_struct *main)
 
 	j = 1;
 	if (!arg->args)
-		return (_print_export(main->common.f_envp));
+	{
+		_print_export(main->common.f_envp);
+		if (errno == MALLOC_ERROR)
+			return (errno);
+	}
 	while (arg->command_table[j])
 	{
 		if (ft_mod_fevnp(arg->command_table[j], &main->common.f_envp) == 1)
-			return (EXIT_FAILURE);
+		{
+			if (errno == MALLOC_ERROR)
+				return (errno);
+			else
+				return (EXIT_FAILURE);
+		}	
 		j++;
 	}
 	return (EXIT_SUCCESS);

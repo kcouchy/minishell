@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:27:08 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 16:37:55 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/01 18:28:11 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ int	builtins_executing(t_pipex *pipex, t_args *arg, t_struct *main)
 	else if (!ft_strcmp(arg->command_name, "cd") && !arg->flags)
 		return (ft_cd(arg, main));
 	else if (!ft_strcmp(arg->command_name, "pwd") && !arg->flags)
-		return (ft_pwd(arg, main));
+		return (ft_pwd(main));
 	else if (!ft_strcmp(arg->command_name, "export") && !arg->flags)
 		return (ft_export(arg, main));
 	else if (!ft_strcmp(arg->command_name, "unset") && !arg->flags)
