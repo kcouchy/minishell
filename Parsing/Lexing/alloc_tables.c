@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:08:23 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/03 12:02:34 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 16:00:09 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,29 +62,6 @@ static int	_count_tokens(t_parsing *parse, char *input)
 	return (counter);
 }
 
-static void	_ft_malloc_failed(t_parsing *parse)
-{
-	int	i;
-
-	i = 0;
-	if (!parse->argv || !parse->types)
-	{
-		printf("%s Malloc failed !\n%s", SHIT, RESET);
-		if (!parse->argv)
-		{
-			while (i < parse->argc)
-			{
-				free(parse->argv[i]);
-				i++;
-			}
-			free(parse->argv);
-		}
-		if (!parse->types)
-			free(parse->types);
-		exit(EXIT_FAILURE);
-	}
-}
-
 void	alloc_tables(t_parsing *parse, char *input)
 {
 	int			i;
@@ -94,8 +71,14 @@ void	alloc_tables(t_parsing *parse, char *input)
 	if (parse->error)
 		return ;
 	parse->argv = ft_calloc((parse->argc + 1), sizeof(char *));
+	if (errno == MALLOC_ERROR)
+		return ;
 	parse->types = ft_calloc((parse->argc + 1), sizeof(int));
-	_ft_malloc_failed(parse);
+	if (errno == MALLOC_ERROR)
+	{
+		free(parse->argv);
+		return ;
+	}
 	i = 0;
 	j = 0;
 	while (j < parse->argc)
@@ -106,6 +89,8 @@ void	alloc_tables(t_parsing *parse, char *input)
 			i = what_type(parse, input, i, 1);
 		else if (input[i] && !is_separator(input[i]))
 			i = what_type(parse, input, i, 0);
+		if (errno == MALLOC_ERROR)
+			return ;
 		j++;
 	}
 }

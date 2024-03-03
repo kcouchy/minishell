@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/03 15:00:30 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 16:03:53 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,14 @@ int	check_nothing(char *input)
 int	check_error(t_parsing *parse, char *input, int should_free, t_struct *main)
 {
 	main->exit_code = parse->error;
-	if (parse->error)
+	if (parse->error || errno == MALLOC_ERROR)
 	{
 		free(input);
 		if (should_free)
 			ft_free_parsing(parse);
-		return (1);
+		if (errno)
+			parse->error = errno;
+		return (errno);
 	}
 	return (0);
 }
@@ -51,6 +53,9 @@ int	parsing(t_struct *main, char *input)
 		return (NOTHING);
 	add_history(input);
 	input2 = check_variables(&main->parse.var, main->common.f_envp, input);
+	free(input);
+	if (errno == MALLOC_ERROR)
+		return(err_str(input2, NULL, NULL, NULL));
 	alloc_tables(&main->parse, input2);
 	if (check_error(&main->parse, input2, 0, main))
 		return (SYNTAX_ERROR);

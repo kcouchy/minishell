@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:39:03 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/03 15:01:37 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 15:18:01 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,6 @@ char	*check_variables(t_variables *var, char **f_envp, char *input)
 		if (errno == MALLOC_ERROR)
 			return (err_str(var->str, var->left, NULL, NULL));
 	}
-	free(input);
 	if (var->str[0] == '\0')
 	{
 		free(var->str);
