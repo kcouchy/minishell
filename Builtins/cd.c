@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:22 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 17:35:05 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 10:10:12 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ static int	_cd_error(t_args *arg)
 		ft_write_join(RED, " cd: ", "", "too many arguments");
 	else
 	{
-		write(STDOUT_FILENO, RED" cd: ", 37);
-		write(STDOUT_FILENO, arg->args, ft_strlen(arg->args));
-		write(STDOUT_FILENO, ": ", 2);
+		write(STDERR_FILENO, RED" cd: ", 37);
+		write(STDERR_FILENO, arg->args, ft_strlen(arg->args));
+		write(STDERR_FILENO, ": ", 2);
 		perror("");
-		write(STDOUT_FILENO, RESET, ft_strlen(RESET));
+		write(STDERR_FILENO, RESET, ft_strlen(RESET));
 	}
 	return (EXIT_FAILURE);
 }

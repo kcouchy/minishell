@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 18:51:04 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/01 18:25:21 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 10:16:05 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,24 @@ char	**ch_exit_code(int exit_code, char **f_envp)
 		if (i)
 			free(f_envp[i]);
 		new_exit_str = ft_itoa(exit_code);
+		if (errno == MALLOC_ERROR)
+			return (NULL);
 		f_envp[i] = ft_strjoin("?=", new_exit_str);
+		if (errno == MALLOC_ERROR)
+			return (NULL);
 		free(new_exit_str);
 	}
 	return (f_envp);
+}
+
+void	ft_write(char *error_type, char *cmd, char *arg, char *str)
+{
+	write(STDERR_FILENO, error_type, ft_strlen(error_type));
+	write(STDERR_FILENO, cmd, ft_strlen(cmd));
+	write(STDERR_FILENO, arg, ft_strlen(arg));
+	write(STDERR_FILENO, str, ft_strlen(str));
+	write(STDERR_FILENO, "\n", 1);
+	write(STDERR_FILENO, RESET, ft_strlen(RESET));
 }
 
 void	ft_write_join(char *error_type, char *cmd, char *arg, char *str)

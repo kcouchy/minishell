@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:41:09 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/01 11:19:49 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 11:27:50 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ static char	*_remove_space(char *str)
 	i = 0;
 	len = ft_strlen(str) - 1;
 	s = ft_calloc(len + 1, sizeof(char));
+	if (!s)
+		return (NULL);
 	while (i < len)
 	{
 		s[i] = str[i];

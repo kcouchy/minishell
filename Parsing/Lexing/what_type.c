@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 10:53:44 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/18 10:57:19 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 11:30:57 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ static char	*_ft_word_dup(char *input, int start, int end, int nb_of_quotes)
 	char	quote;
 
 	i = 0;
-	dup = ft_calloc((end - start - nb_of_quotes + 1), sizeof(char));
 	quote = '\0';
+	dup = ft_calloc((end - start - nb_of_quotes + 1), sizeof(char));
 	if (!dup)
 		return (NULL);
 	while (end > start)

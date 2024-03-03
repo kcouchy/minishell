@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:56:04 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/01 19:43:19 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 11:28:53 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,10 @@ t_args	*ft_structnew(t_struct *main, int start, int end)
 	t_args	*add2list;
 
 	add2list = malloc(sizeof(t_args));
-	if (add2list)
-	{
-		init_arg(add2list, main, start, end);
-		add2list->next = NULL;
-	}
+	if (!add2list)
+		return (NULL);
+	init_arg(add2list, main, start, end);
+	add2list->next = NULL;
 	return (add2list);
 }
 

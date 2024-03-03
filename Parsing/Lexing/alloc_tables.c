@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:08:23 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/28 16:21:32 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 11:29:33 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	_ft_malloc_failed(t_parsing *parse)
 	i = 0;
 	if (!parse->argv || !parse->types)
 	{
-		printf("%s Malloc failed !\n%s", RED, RESET);
+		printf("%s Malloc failed !\n%s", SHIT, RESET);
 		if (!parse->argv)
 		{
 			while (i < parse->argc)
