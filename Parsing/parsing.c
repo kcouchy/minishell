@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/03 16:03:53 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 18:13:03 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,35 +38,37 @@ int	check_error(t_parsing *parse, char *input, int should_free, t_struct *main)
 			ft_free_parsing(parse);
 		if (errno)
 			parse->error = errno;
-		return (errno);
+		return (parse->error);
 	}
 	return (0);
 }
 
 int	parsing(t_struct *main, char *input)
 {
-	char	*input2;
-
 	main->parse.number_of_commands = 1;
 	main->parse.error = 0;
 	if (check_nothing(input))
 		return (NOTHING);
 	add_history(input);
-	input2 = check_variables(&main->parse.var, main->common.f_envp, input);
-	free(input);
+	input = check_variables(&main->parse.var, main->common.f_envp, input);
 	if (errno == MALLOC_ERROR)
-		return(err_str(input2, NULL, NULL, NULL));
-	alloc_tables(&main->parse, input2);
-	if (check_error(&main->parse, input2, 0, main))
-		return (SYNTAX_ERROR);
+		return(err_int(input, NULL, NULL, NULL));
+	alloc_tables(&main->parse, input);
+	if (check_error(&main->parse, input, 0, main))
+		return (main->parse.error);
 	check_commands(&main->parse);
-	if (check_error(&main->parse, input2, 1, main))
-		return (SYNTAX_ERROR);
+	if (check_error(&main->parse, input, 1, main))
+		return (main->parse.error);
 	builtins_parsing(&main->parse);
 	main->common.nb_commands = main->parse.number_of_commands;
 	// test_parsing(&main->parse);
-	free(input2);
+	free(input);
 	main->args_list = parsing_to_executing(main);
+	if (errno == MALLOC_ERROR)
+	{
+		ft_structclear(&main->args_list);
+		return (errno);
+	}
 	return (EXIT_SUCCESS);
 }
 

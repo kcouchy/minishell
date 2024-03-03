@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:10:57 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 19:49:50 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 18:01:44 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ char	**export_parsing(t_struct *main, int start, int end)
 			|| (main->parse.types[start] == ARGUMENT
 				&& main->parse.argv[start][0] != '='))
 		{
-			tab[i] = ft_strdup(main->parse.argv[start]);/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			tab[i] = ft_strdup(main->parse.argv[start]);
+			if (errno == MALLOC_ERROR)
+				return(free_table(tab), NULL);
 			i++;
 		}
 		start++;

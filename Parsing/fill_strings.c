@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:41:09 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/03 11:27:50 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 17:54:34 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*ft_argjoin(char *s1, char *s2)
 	char	*output;
 	int		i;
 
+	if (!s1 || !s2)
+		return (NULL);
 	output = ft_calloc((ft_strlen(s1) + ft_strlen(s2) + 2), sizeof(char));
 	if (!output)
 		return (NULL);
@@ -44,6 +46,8 @@ static char	*_remove_space(char *str)
 	int		len;
 	char	*s;
 
+	if (!str)
+		return (NULL);
 	i = 0;
 	len = ft_strlen(str) - 1;
 	s = ft_calloc(len + 1, sizeof(char));
@@ -76,11 +80,11 @@ void	fill_strings(t_args *cmd, t_struct *main, int start, int end)
 		}
 		start++;
 	}
-	if (cmd->whole_cmd[0])
+	if (cmd->whole_cmd && cmd->whole_cmd[0])
 		cmd->whole_cmd = _remove_space(cmd->whole_cmd);
-	if (number_of_args)
+	if (number_of_args && cmd->args)
 		cmd->args = _remove_space(cmd->args);
-	if (!number_of_args)
+	if (!number_of_args && cmd->args)
 	{
 		free(cmd->args);
 		cmd->args = NULL;

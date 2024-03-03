@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:39:03 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/03 15:18:01 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 18:10:46 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,13 @@ char	*check_variables(t_variables *var, char **f_envp, char *input)
 	int		i;
 
 	i = 0;
-	var->str = ft_strdup("");
+	var->left = ft_strdup(input);
+	free(input);
 	if (errno == MALLOC_ERROR)
 		return (NULL);
-	var->left = ft_strdup(input);
+	var->str = ft_strdup("");
 	if (errno == MALLOC_ERROR)
-		return (err_str(var->str, NULL, NULL, NULL));
+		return (err_str(var->left, NULL, NULL, NULL));
 	var->quote = 0;
 	var->is_there_a_variable = 0;
 	while (var->left[i])

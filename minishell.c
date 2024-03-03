@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/03 14:14:09 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 18:00:22 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ char	**finishell_env(char **envp)
 	while (envp[i])
 	{
 		f_envp[i] = ft_strdup(envp[i]);
+		if (errno == MALLOC_ERROR)
+			return(free_table(f_envp), NULL);
 		i++;
 	}
 	f_envp[i] = ft_strdup("?=0");

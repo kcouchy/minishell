@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:53:33 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/01 20:07:47 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 18:02:28 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ char	**fill_type(int type, t_struct *main, int start, int end)
 		if (main->parse.types[start] == type)
 		{
 			tab[i] = ft_strdup(main->parse.argv[start]);
+			if (errno == MALLOC_ERROR)
+				return(free_table(tab), NULL);
 			i++;
 		}
 		start++;
@@ -90,6 +92,8 @@ char	**fill_table(t_struct *main, int start, int end)
 			&& main->parse.types[start] != OUTPUT_FILE)
 		{
 			tab[i] = ft_strdup(main->parse.argv[start]);
+			if (errno == MALLOC_ERROR)
+				return(free_table(tab), NULL);
 			i++;
 		}
 		start++;
