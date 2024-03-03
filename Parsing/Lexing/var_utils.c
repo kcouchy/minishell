@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:16:21 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/23 12:14:19 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 14:47:55 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_strndup(char *s, int start, int end, char *returned)
 	int		i;
 	int		len;
 
+	if (!s || !returned)
+		return (NULL);
 	i = 0;
 	len = end - start;
 	output = ft_calloc(len + 1, sizeof(char));
@@ -67,6 +69,8 @@ char	*var_strjoin(char *s1, char *s2)
 	size_t	i;
 	size_t	j;
 
+	if (!s1 || !s2)
+		return (NULL);
 	output = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!output)
 		return (NULL);

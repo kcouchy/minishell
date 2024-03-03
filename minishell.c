@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/01 20:08:08 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 14:14:09 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	main(int argc, char **argv, char **envp)
 		signal(SIGINT, &sigint_handler);
 		signal(SIGQUIT, SIG_IGN);
 		main.exit_code = 0;
-		input = readline(GREEN"finishell 🤯 > "RESET);
+		input = readline(GREEN"finishell 🤯 > "RESET); //errno?
 		if (g_signal)
 		{
 			main.common.f_envp = ch_exit_code(g_signal, main.common.f_envp);

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/01 20:08:04 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 15:00:30 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int	parsing(t_struct *main, char *input)
 		return (NOTHING);
 	add_history(input);
 	input2 = check_variables(&main->parse.var, main->common.f_envp, input);
-	free(input);
 	alloc_tables(&main->parse, input2);
 	if (check_error(&main->parse, input2, 0, main))
 		return (SYNTAX_ERROR);
@@ -66,7 +65,6 @@ int	parsing(t_struct *main, char *input)
 	return (EXIT_SUCCESS);
 }
 
-// regarder tous les mallocs
 // ecrire les commentaires de la bibliotheque
 
 // echo -n -nnn bonjour les amis -n > test.txt | cat -e < test.txt >bonjour.txt                 >salut.txt

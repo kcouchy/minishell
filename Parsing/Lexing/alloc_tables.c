@@ -6,13 +6,13 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:08:23 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/03 11:29:33 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 12:02:34 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../../minishell.h"
 
-int	skip_to_quote(t_parsing *parse, char *input, int i)
+int	_skip_to_quote(t_parsing *parse, char *input, int i)
 {
 	char	quote;
 
@@ -34,7 +34,7 @@ int	skip_to_quote(t_parsing *parse, char *input, int i)
 	return (i);
 }
 
-static int	count_tokens(t_parsing *parse, char *input)
+static int	_count_tokens(t_parsing *parse, char *input)
 {
 	int	counter;
 	int	i;
@@ -55,7 +55,7 @@ static int	count_tokens(t_parsing *parse, char *input)
 		if (input[i] && !is_separator(input[i]))
 		{
 			while (input[i] && !is_separator(input[i]))
-				i = skip_to_quote(parse, input, i);
+				i = _skip_to_quote(parse, input, i);
 			counter++;
 		}
 	}
@@ -90,7 +90,7 @@ void	alloc_tables(t_parsing *parse, char *input)
 	int			i;
 	int			j;
 
-	parse->argc = count_tokens(parse, input);
+	parse->argc = _count_tokens(parse, input);
 	if (parse->error)
 		return ;
 	parse->argv = ft_calloc((parse->argc + 1), sizeof(char *));

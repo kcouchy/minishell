@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/01 18:27:57 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 14:59:59 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # define GREEN "\x1b[38;2;0;150;0;1m"
 # define SHIT "\x1b[38;2;136;87;66;1mfinishell 💩:"
 # define RESET "\e[0m"
+# define MALLOC_ERROR 12 //ENOMEM
 
 typedef struct s_pipex_list
 {
@@ -179,7 +180,8 @@ void	ft_write_join(char *error_type, char *cmd, char *arg, char *str);
 void	free_table(char **tab);
 void	ft_free_parsing(t_parsing *parse);
 void	ft_structclear(t_args **cmd);
-// void	free_envp(char **f_envp);
+int		err_int(char *s1, char *s2, char *s3, char *s4);
+char	*err_str(char *s1, char *s2, char *s3, char *s4);
 
 /* ************* Parsing to Executing ************** */
 t_args	*parsing_to_executing(t_struct *main);

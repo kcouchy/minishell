@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:39:03 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/24 09:46:33 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 15:01:37 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*copy_variable(char **f_envp, char *input, int start, int i)
 	int		k;
 	int		s;
 
+	if (!f_envp || !input)
+		return (NULL);
 	j = 0;
 	k = 0;
 	s = start;
@@ -45,7 +47,7 @@ int	search_variable(t_variables *var, char **f_envp, int i)
 
 	var->is_there_a_variable = 1;
 	start = i - 1;
-	buffer = NULL;
+	buffer = ft_strdup("");
 	while (var->left[i] && (isalnum(var->left[i])
 			|| var->left[i] == '_' || var->left[i] == '?'))
 		i++;
@@ -55,7 +57,8 @@ int	search_variable(t_variables *var, char **f_envp, int i)
 		buffer = var_strjoin(buffer, "$");
 	var->str = var_strjoin(var->str, buffer);
 	var->str = var_strjoin(var->str, variable);
-	free(variable);
+	if (variable)
+		free(variable);
 	var->left = ft_strndup(var->left, i, ft_strlen(var->left), var->left);
 	if (buffer)
 		free(buffer);
@@ -97,19 +100,32 @@ char	*check_variables(t_variables *var, char **f_envp, char *input)
 
 	i = 0;
 	var->str = ft_strdup("");
+	if (errno == MALLOC_ERROR)
+		return (NULL);
 	var->left = ft_strdup(input);
+	if (errno == MALLOC_ERROR)
+		return (err_str(var->str, NULL, NULL, NULL));
 	var->quote = 0;
 	var->is_there_a_variable = 0;
 	while (var->left[i])
 	{
 		i = check_quotes(var, i);
 		if (var->left[i] == '$' && !is_heredoc(var->left, i - 1))
+		{
 			i = search_variable(var, f_envp, i + 1);
+			if (errno == MALLOC_ERROR)
+				return (err_str(var->str, var->left, NULL, NULL));
+		}
 		else if (var->left[i])
 			i++;
 	}
 	if (var->is_there_a_variable)
+	{
 		var->str = var_strjoin(var->str, var->left);
+		if (errno == MALLOC_ERROR)
+			return (err_str(var->str, var->left, NULL, NULL));
+	}
+	free(input);
 	if (var->str[0] == '\0')
 	{
 		free(var->str);

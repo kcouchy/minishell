@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:44:46 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/01 18:21:59 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/03 14:59:22 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,18 +77,28 @@ void	ft_structclear(t_args **cmd)
 	}
 }
 
-// void	free_envp(char **f_envp)
-// {
-// 	int	i;
+int	err_int(char *s1, char *s2, char *s3, char *s4)
+{
+	if (s1)
+		free(s1);
+	if (s2)
+		free(s2);
+	if (s3)
+		free(s3);
+	if (s4)
+		free(s4);
+	return (errno);
+}
 
-// 	i = 0;
-// 	if (f_envp)
-// 	{
-// 		while (f_envp[i])
-// 		{
-// 			free(f_envp[i]);
-// 			i++;
-// 		}
-// 		free(f_envp);
-// 	}
-// }
+char *err_str(char *s1, char *s2, char *s3, char *s4)
+{
+	if (s1)
+		free(s1);
+	if (s2)
+		free(s2);
+	if (s3)
+		free(s3);
+	if (s4)
+		free(s4);
+	return (NULL);
+}
