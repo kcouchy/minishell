@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:22 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/04 18:25:16 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/04 18:43:52 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,13 @@ int	ft_cd(t_args *arg, t_struct *main)
 {
 	char	*new_pwd;
 
-	if (!arg->args)
+	if (!arg->args
+		|| (arg->command_table[1] && !strcmp(arg->command_table[1], "~")))
 		arg->args = ex_fenvp("HOME=", main);
+	if (errno == MALLOC_ERROR)
+		return (errno);
+	if (arg->args[0] == '\0')
+		return (EXIT_SUCCESS);
 	if (chdir(arg->args) == -1)
 		return (_cd_error(arg));
 	new_pwd = getcwd(NULL, 0);

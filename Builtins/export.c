@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:10:57 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/04 18:26:48 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/04 18:44:05 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../Pipex/pipex.h"
+
+static int	_is_a_correct_export(t_parsing *parse, int i)
+{
+	int	j;
+
+	j = 0;
+	while (parse->argv[i][j])
+	{
+		if (is_space(parse->argv[i][j]))
+			return (0);
+		j++;
+	}
+	if (parse->types[i] == ARGUMENT
+		&& (parse->argv[i][0] == '='
+		|| !parse->argv[i][0]))
+		return (0);
+	return (1);
+}
 
 static int	_nb_args(t_parsing *parse, int start, int end)
 {
@@ -19,14 +37,11 @@ static int	_nb_args(t_parsing *parse, int start, int end)
 	counter = 0;
 	while (start != end)
 	{
-		if (parse->types[start] == COMMAND
-			|| (parse->types[start] == ARGUMENT
-				&& parse->argv[start][0] != '='))
-			counter++;
-		else if (parse->types[start] == ARGUMENT
-			&& parse->argv[start][0] == '=')
+		if (!_is_a_correct_export(parse, start))
 			printf("%s export: `%s' not a valid indentifier%s\n",
 				ORANGE, parse->argv[start], RESET);
+		else
+			counter++;
 		start++;
 	}
 	return (counter);
@@ -47,9 +62,7 @@ char	**export_parsing(t_struct *main, int start, int end)
 	i = 0;
 	while (start != end)
 	{
-		if (main->parse.types[start] == COMMAND
-			|| (main->parse.types[start] == ARGUMENT
-				&& main->parse.argv[start][0] != '='))
+		if (_is_a_correct_export(&main->parse, start))
 		{
 			tab[i] = ft_strdup(main->parse.argv[start]);
 			if (errno == MALLOC_ERROR)

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:39:03 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/03 18:10:46 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/04 18:30:51 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,17 @@ char	*copy_variable(char **f_envp, char *input, int start, int i)
 	if (!f_envp || !input)
 		return (NULL);
 	j = 0;
-	k = 0;
-	s = start;
 	while (f_envp[j])
 	{
 		k = 0;
 		s = start;
-		while (f_envp[j][k] && s < i && f_envp[j][k] == input[s++])
-			k++;
-		if (f_envp[j][k] && f_envp[j][k] == '=')
+		while (f_envp[j][k] && s < i && f_envp[j][k] == input[s])
 		{
+			s++;
 			k++;
-			return (var_strdup(f_envp[j]));
 		}
+		if (f_envp[j][k] && f_envp[j][k] == '=' && s == i)
+			return (var_strdup(f_envp[j]));
 		j++;
 	}
 	return (var_strdup(""));
