@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_cmds.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:28:50 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 17:31:58 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/04 14:44:49 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	ft_input(t_pipex *pipex, t_args *arg, t_struct *main, int ired)
 		ft_write_join(SHIT, " dup2 failed:", "",  " input");
 		ft_pipex_error(pipex, main, EXIT_FAILURE);
 	}
-	if (ired == 1)
+	close(pipex->pipe_fd[0]);
+	if (arg->input)
 		close(in_fd);
 }
 
@@ -58,6 +59,8 @@ void	ft_output(t_pipex *pipex, t_args *arg, t_struct *main, int ored)
 			out_fd = open(arg->output, O_WRONLY | O_APPEND | O_CREAT, 0644);
 		else if (arg->output_type == 0)
 			out_fd = open(arg->output, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		if (pipex->temp_fd_out != -1)
+			close (pipex->temp_fd_out);
 	}
 	else
 		out_fd = pipex->temp_fd_out;
@@ -70,9 +73,42 @@ void	ft_output(t_pipex *pipex, t_args *arg, t_struct *main, int ored)
 		ft_write_join(SHIT, " dup2 failed:", "",  " output");
 		ft_pipex_error(pipex, main, EXIT_FAILURE);
 	}
-	if (ored == 1)
+	if (out_fd != -1)
 		close(out_fd);
 }
+
+// void	ft_cmd(t_pipex *pipex, t_args *arg, t_struct *main, int i)
+// {
+// 	int	red;
+
+// 	red = -1;
+// 	if (main->common.nb_commands == 1 && i == 0)
+// 	{
+// 		ft_input(pipex, arg, main, 0);
+// 		ft_output(pipex, arg, main, 0);
+// 	}
+// 		// red = 00;
+// 	else if (main->common.nb_commands > 1 && i == 0)
+// 	{
+// 		ft_input(pipex, arg, main, 1);
+// 		ft_output(pipex, arg, main, 0);
+// 	}
+// 		// red = 10;
+// 	else if (i == main->common.nb_commands - 1)
+// 	{
+// 		ft_input(pipex, arg, main, 0);
+// 		ft_output(pipex, arg, main, 1);
+// 	}
+// 		// red = 01;
+// 	else if (i > 0 && i < (main->common.nb_commands - 1))
+// 	{
+// 		ft_input(pipex, arg, main, 1);
+// 		ft_output(pipex, arg, main, 1);
+// 	}
+// 		// red = 11;
+// 	else
+// 		return ;
+// }
 
 void	ft_cmd(t_pipex *pipex, t_args *arg, t_struct *main, int i)
 {

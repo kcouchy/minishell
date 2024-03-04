@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/03 18:00:22 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/04 12:06:19 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			if (!main.parse.error)
 			{
-				// test_liste_chainee(&main);
+				test_liste_chainee(&main);
 				ft_free_parsing(&main.parse);
 				main.exit_code = executing(&main);
 			}

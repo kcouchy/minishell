@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 15:59:31 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 16:28:11 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/04 14:04:01 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,9 +136,9 @@ int	ft_redirections(t_pipex *pipex, t_struct *main)
 	int		i;
 
 	temp = main->args_list;
-	i = -1;
 	while (temp)
 	{
+		i = -1;
 		if (temp->input_files)
 			if (_red_inputs(pipex, temp) == 1)
 				return (EXIT_FAILURE);
