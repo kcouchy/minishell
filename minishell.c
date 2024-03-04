@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/03 18:00:22 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/04 17:47:27 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,11 @@ int	main(int argc, char **argv, char **envp)
 				main.exit_code = executing(&main);
 			}
 			ft_structclear(&main.args_list);
+		}
+		if (errno == MALLOC_ERROR)
+		{
+			main.exit_code = errno;
+			break ;
 		}
 		main.common.f_envp = ch_exit_code(main.exit_code, main.common.f_envp);
 	}

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:27:08 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 18:28:11 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/04 11:12:58 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ char	*ex_fenvp(char *var, t_struct *main)
 	i = 0;
 	j = 0;
 	output = NULL;
+	if (main->args_list->args)
+		free(main->args_list->args);
 	while (main->common.f_envp[i])
 	{
 		j = ft_find_eq(main->common.f_envp[i]) + 1;

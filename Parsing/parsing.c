@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/03 18:13:03 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/04 11:35:40 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,13 @@ int	parsing(t_struct *main, char *input)
 {
 	main->parse.number_of_commands = 1;
 	main->parse.error = 0;
-	if (check_nothing(input))
-		return (NOTHING);
-	add_history(input);
+	if (input[0] != '\0')
+		add_history(input);
 	input = check_variables(&main->parse.var, main->common.f_envp, input);
 	if (errno == MALLOC_ERROR)
 		return(err_int(input, NULL, NULL, NULL));
+	if (check_nothing(input))
+		return (NOTHING);
 	alloc_tables(&main->parse, input);
 	if (check_error(&main->parse, input, 0, main))
 		return (main->parse.error);
