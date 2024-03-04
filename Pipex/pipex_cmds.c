@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:28:50 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/04 14:44:49 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/04 17:53:41 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,39 +76,6 @@ void	ft_output(t_pipex *pipex, t_args *arg, t_struct *main, int ored)
 	if (out_fd != -1)
 		close(out_fd);
 }
-
-// void	ft_cmd(t_pipex *pipex, t_args *arg, t_struct *main, int i)
-// {
-// 	int	red;
-
-// 	red = -1;
-// 	if (main->common.nb_commands == 1 && i == 0)
-// 	{
-// 		ft_input(pipex, arg, main, 0);
-// 		ft_output(pipex, arg, main, 0);
-// 	}
-// 		// red = 00;
-// 	else if (main->common.nb_commands > 1 && i == 0)
-// 	{
-// 		ft_input(pipex, arg, main, 1);
-// 		ft_output(pipex, arg, main, 0);
-// 	}
-// 		// red = 10;
-// 	else if (i == main->common.nb_commands - 1)
-// 	{
-// 		ft_input(pipex, arg, main, 0);
-// 		ft_output(pipex, arg, main, 1);
-// 	}
-// 		// red = 01;
-// 	else if (i > 0 && i < (main->common.nb_commands - 1))
-// 	{
-// 		ft_input(pipex, arg, main, 1);
-// 		ft_output(pipex, arg, main, 1);
-// 	}
-// 		// red = 11;
-// 	else
-// 		return ;
-// }
 
 void	ft_cmd(t_pipex *pipex, t_args *arg, t_struct *main, int i)
 {

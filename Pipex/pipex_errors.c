@@ -3,29 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_errors.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 17:56:24 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/04 17:17:07 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-// void	ft_freetable(char **table)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (!table)
-// 		return ;
-// 	while (table[i])
-// 	{
-// 		free(table[i]);
-// 		i++;
-// 	}
-// 	free(table);
-// }
 
 void	ft_command_fail(t_pipex *pipex, t_args *arg, t_struct *main)
 {
@@ -53,6 +38,7 @@ int	ft_pipex_error(t_pipex *pipex, t_struct *main, int exit_code)
 	{
 		ft_structclear(&main->args_list);
 		free_table(main->common.f_envp);
+		free(main->common.pwd);
 		if (errno == MALLOC_ERROR)
 			exit (errno);
 		exit(exit_code);

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:46:56 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 16:47:57 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/04 18:25:41 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "./../Pipex/pipex.h"
+#include "./../Pipex/pipex.h"
 
 int	ft_env(t_struct *main)
 {
@@ -24,7 +24,7 @@ int	ft_env(t_struct *main)
 	while (f_envp[i])
 	{
 		j = ft_find_eq(f_envp[i]);
-		if(ft_strncmp(f_envp[i], "?=", 2) != 0 && j != ft_strlen(f_envp[i]))
+		if (ft_strncmp(f_envp[i], "?=", 2) != 0 && j != ft_strlen(f_envp[i]))
 		{
 			write(STDOUT_FILENO, f_envp[i], ft_strlen(f_envp[i]));
 			write(STDOUT_FILENO, "\n", 1);

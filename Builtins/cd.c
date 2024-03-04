@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:22 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/03 10:10:12 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/04 18:25:16 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,19 @@ static int	_cd_error(t_args *arg)
 
 int	ft_cd(t_args *arg, t_struct *main)
 {
-	char	*NEW_PWD;
+	char	*new_pwd;
 
 	if (!arg->args)
 		arg->args = ex_fenvp("HOME=", main);
 	if (chdir(arg->args) == -1)
 		return (_cd_error(arg));
-	NEW_PWD = getcwd(NULL, 0);
-	NEW_PWD = ft_strjoinf("PWD=", NEW_PWD, 2);
-	if (!NEW_PWD)
+	new_pwd = getcwd(NULL, 0);
+	new_pwd = ft_strjoinf("PWD=", new_pwd, 2);
+	if (!new_pwd)
 		return (errno);
-	ft_mod_fevnp(NEW_PWD, &main->common.f_envp);
+	ft_mod_fevnp(new_pwd, &main->common.f_envp);
 	if (errno == MALLOC_ERROR)
 		return (errno);
-	free(NEW_PWD);
+	free(new_pwd);
 	return (EXIT_SUCCESS);
 }

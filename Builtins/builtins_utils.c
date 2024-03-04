@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:27:08 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 18:28:11 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/04 18:27:25 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	**ft_realloc(char **tab)
 	len = ft_tablen(tab);
 	output = malloc(sizeof(char *) * (len + 2));
 	if (!output)
-		return(NULL);
+		return (NULL);
 	while (i < len)
 	{
 		output[i] = tab[i];

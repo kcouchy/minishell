@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:10:57 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/03 18:01:44 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/04 18:26:48 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ int	ft_export(t_args *arg, t_struct *main)
 				return (errno);
 			else
 				return (EXIT_FAILURE);
-		}	
+		}
 		j++;
 	}
 	return (EXIT_SUCCESS);
