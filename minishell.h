@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/05 12:33:40 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/05 13:05:54 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ void	is_argument_a_command(t_parsing *parse, int i);
 char	*ft_strndup(char *s, int start, int end, char *returned);
 char	*var_strdup(char *f_envp);
 char	*var_strjoin(char *s1, char *s2);
+void	ft_write_join(char *error_type, char *cmd, char *arg, char *str);
 
 /* ******************** Lexing ******************** */
 int		what_type(t_parsing *parse, char *input, int i, int separator);
@@ -155,44 +156,82 @@ char	**fill_table(t_struct *main, int start, int end);
 int		check_nothing(char *input);
 int		is_heredoc(char *input, int i);
 char	*check_variables(t_variables *variables, char **f_envp, char *input);
-void	builtins_parsing(t_parsing *parse);
 int		parsing(t_struct *main, char *input);
 
-/* builtins */
-int		ft_tablen(char **tab);
+/******************************************************************************/
+/* Builtins                                                                   */
+/******************************************************************************/
+
+/* builtins.utils */
 char	*ex_fenvp(char *var, t_struct *main);
-int		echo_parsing(t_parsing *parse, int i);
-int		exit_parsing(t_parsing *parse, int i);
-char	**export_parsing(t_struct *main, int start, int end);
-int		error_export(char **command_table);
-int		ft_echo(t_args *arg);
-int		ft_export(t_args *arg, t_struct *main);
-int		ft_env(t_struct *main);
-int		ft_pwd(t_struct *main);
-int		ft_cd(t_args *arg, t_struct *main);
-int		ft_unset(t_args *arg, t_struct *main);
-int		ft_mod_fevnp(char *arg, char ***f_envp);
+void	builtins_parsing(t_parsing *parse);
+int		builtins_executing(t_pipex *pipex, t_args *arg, t_struct *main);
+void	ft_builtin_fail(t_pipex *pipex, t_args *arg, t_struct *main);
+
+/* fenvp_utils */
 int		ft_tablen(char **tab);
 int		ft_find_eq(char *f_envp);
 int		find_arg(char *arg, char **f_envp);
-int		builtins_executing(t_pipex *pipex, t_args *arg, t_struct *main);
-void	ft_write_join(char *error_type, char *cmd, char *arg, char *str);
+char	**ft_realloc(char **tab);
+int		ft_mod_fevnp(char *arg, char ***f_envp);
+
+/* cd.c */
+int		ft_cd(t_args *arg, t_struct *main);
+
+/* echo.c */
+int		echo_parsing(t_parsing *parse, int i);
+int		ft_echo(t_args *arg);
+
+/* env.c */
+int		ft_env(t_struct *main);
+
+/* exit.c */
+int		exit_parsing(t_parsing *parse, int i);
+void	ft_exit_error(t_pipex *pipex, t_struct *main, int exit_code);
+void	ft_exit(t_pipex *pipex, t_struct *main, t_args *arg);
+
+/* export_exec.c */
+/**
+ * @brief if export only, print all of envp to the terminal except the 
+ * variable "_" and "?"
+ * copy and sort envp, (and free at the end) 
+ * then in loop add declare -x add "" around the string(after = and at the end)
+ * if export (variable), then add "variable"+"="+"variable value" to env
+ * if export (variable=value), then add "variable=value" to env
+ * in both cases, overwrite variable if present, add if not
+ */
+int		ft_export(t_args *arg, t_struct *main);
+/* export_parse.c */
+char	**export_parsing(t_struct *main, int start, int end);
+
+/* pwd.c */
+int		ft_pwd(t_struct *main);
+
+/* unset.c */
+int		ft_unset(t_args *arg, t_struct *main);
+
+/* ************* Parsing to Executing ************** */
+t_args	*parsing_to_executing(t_struct *main);
+
+int		is_builtin(char *command);
+char	**ch_exit_code(int exit_code, char **f_envp);
+
+/**
+ * @brief 	rl_on_new_line();
+ * 			//needed to reshow prompt
+			rl_replace_line("", 1);
+			//empties readline buffer in case there's something before the ^C
+			rl_redisplay();
+			//effectively forces the prompt to redisplay before you type
+ * 
+ * @param signal 
+ */
+void	sigint_handler(int signal);
 
 /*ft_free.c*/
 void	free_table(char **tab);
 void	ft_free_parsing(t_parsing *parse);
 void	ft_structclear(t_args **cmd);
 char	*err_str(char *s1, char *s2, char *s3, char *s4);
-
-/* ************* Parsing to Executing ************** */
-t_args	*parsing_to_executing(t_struct *main);
-
-/*prints.c*/
-void	test_parsing(t_parsing *parse);
-void	test_liste_chainee(t_struct *main);
-
-int		is_builtin(char *command);
-char	**ch_exit_code(int exit_code, char **f_envp);
-void	sigint_handler(int signal);
 
 #endif

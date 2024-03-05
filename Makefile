@@ -6,7 +6,7 @@
 #    By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
-#    Updated: 2024/03/05 11:51:16 by kcouchma         ###   ########.fr        #
+#    Updated: 2024/03/05 13:03:57 by kcouchma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,9 @@ SRCS =											\
 				Builtins/echo					\
 				Builtins/env					\
 				Builtins/exit					\
-				Builtins/export					\
+				Builtins/export_exec			\
+				Builtins/export_parse			\
+				Builtins/fenvp_utils			\
 				Builtins/pwd					\
 				Builtins/unset					\
 				Parsing/Lexing/alloc_tables		\
@@ -38,7 +40,6 @@ SRCS =											\
 				Pipex/heredocs					\
 				ft_free							\
 				minishell						\
-				prints							\
 				utils							
 
 INC_FILES = -I Pipex/libft

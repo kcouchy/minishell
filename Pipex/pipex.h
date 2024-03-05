@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/05 12:24:36 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/05 12:49:13 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -332,8 +332,8 @@ int		ft_redirections(t_pipex *pipex, t_struct *main);
 //  */
 char	*gnl(int fd);
 
-void	ft_builtin_fail(t_pipex *pipex, t_args *arg, t_struct *main);
-void	ft_exit(t_pipex *pipex, t_struct *main, t_args *arg);
-void	ft_exit_error(t_pipex *pipex, t_struct *main, int exit_code);
+// void	ft_builtin_fail(t_pipex *pipex, t_args *arg, t_struct *main);
+// void	ft_exit(t_pipex *pipex, t_struct *main, t_args *arg);
+// void	ft_exit_error(t_pipex *pipex, t_struct *main, int exit_code);
 
 #endif

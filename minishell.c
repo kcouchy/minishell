@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/05 10:18:30 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 13:02:18 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void	sigint_handler(int signal)
 	{
 		g_signal = EXIT_SIGINT;
 		write(1, "\n", 1);
-		rl_on_new_line(); //needed to reshow prompt
-		rl_replace_line("", 1); //empties readline buffer in case there's something before the ^C
-		rl_redisplay(); //effectively forces the prompt to redisplay before you type
+		rl_on_new_line();
+		rl_replace_line("", 1);
+		rl_redisplay();
 	}
 }
 
@@ -116,5 +116,5 @@ int	main(int argc, char **argv, char **envp)
 	rl_clear_history();
 	free_table(main.common.f_envp);
 	free(main.common.pwd);
-	return (main.exit_code); //return 1 in case of catastrophic failure
+	return (main.exit_code);
 }
