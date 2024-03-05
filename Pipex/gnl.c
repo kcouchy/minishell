@@ -6,13 +6,13 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 10:34:45 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/05 12:20:42 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/05 19:04:08 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*ft_strljoin(char *s1, char *s2, int len)
+static char	*_ft_strljoin(char *s1, char *s2, int len)
 {
 	int		i;
 	int		j;
@@ -40,18 +40,18 @@ char	*ft_strljoin(char *s1, char *s2, int len)
 	return (output);
 }
 
-char	*ft_gnl_buff2line(char *line, char *buffer)
+char	*_ft_buff2line(char *line, char *buffer)
 {
 	if (ft_findnl(buffer) == -1)
 	{
-		line = ft_strljoin(line, buffer, ft_strlen(buffer));
+		line = _ft_strljoin(line, buffer, ft_strlen(buffer));
 		if (!line)
 			return (NULL);
 		buffer[0] = '\0';
 	}
 	else if (ft_findnl(buffer) >= 0)
 	{
-		line = ft_strljoin(line, buffer, ft_findnl(buffer) + 1);
+		line = _ft_strljoin(line, buffer, ft_findnl(buffer) + 1);
 		if (!line)
 			return (NULL);
 		buffer = ft_strcpy(buffer, buffer + ft_findnl(buffer) + 1);
@@ -59,7 +59,7 @@ char	*ft_gnl_buff2line(char *line, char *buffer)
 	return (line);
 }
 
-char	*ft_gnl_read2buff(char *line, char *buffer, int fd)
+static char	*_ft_read2buff(char *line, char *buffer, int fd)
 {
 	int	readlen;
 
@@ -76,7 +76,7 @@ char	*ft_gnl_read2buff(char *line, char *buffer, int fd)
 		else
 		{
 			buffer[readlen] = '\0';
-			line = ft_buff2line(line, buffer);
+			line = _ft_buff2line(line, buffer);
 			if (!line)
 				return (NULL);
 		}
@@ -101,13 +101,13 @@ char	*gnl(int fd)
 	line[0] = '\0';
 	if (ft_strlen(buffer) > 0)
 	{
-		line = ft_buff2line(line, buffer);
+		line = _ft_buff2line(line, buffer);
 		if (line == NULL)
 			return (NULL);
 	}
 	if (ft_findnl(line) < 0)
 	{
-		line = ft_read2buff(line, buffer, fd);
+		line = _ft_read2buff(line, buffer, fd);
 		if (line == NULL)
 			return (NULL);
 	}
