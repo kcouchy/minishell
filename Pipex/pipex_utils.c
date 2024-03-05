@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:30:14 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 17:12:24 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 11:02:34 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,19 @@ void	ft_execve(t_pipex *pipex, t_args *arg, t_struct *main)
 		execve(cmd_path, arg->command_table, main->common.f_envp);
 		i++;
 		free(cmd_path);
+	}
+}
+
+void	ft_wait_parent(t_pipex *pipex, int nb_commands)
+{
+	int	i;
+
+	i = 1;
+	waitpid(pipex->pid_last, &pipex->exit_code, 0);
+	pipex->exit_code = WEXITSTATUS(pipex->exit_code);
+	while (i < nb_commands)
+	{
+		wait(NULL);
+		i++;
 	}
 }

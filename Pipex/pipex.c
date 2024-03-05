@@ -6,14 +6,14 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/04 18:28:24 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/05 11:16:55 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 #include "pipex.h"
 
-void	sigint_handler_fork(int signal)
+void	sig_handler_child(int signal)
 {
 	write(1, "\n", 1);
 	if (signal == SIGINT)
@@ -36,8 +36,8 @@ void	ft_pipex(t_pipex *pipex, t_struct *main)
 			write(STDERR_FILENO, "finishell: pipe failed\n", 23);
 			ft_pipex_error(pipex, main, EXIT_FAILURE);
 		}
-		signal(SIGINT, &sigint_handler_fork);
-		signal(SIGQUIT, &sigint_handler_fork);
+		signal(SIGINT, &sig_handler_child);
+		signal(SIGQUIT, &sig_handler_child);
 		ft_forkchild(pipex, i, arg, main);
 		if (i == 0)
 			pipex->pid_last = pipex->pid;

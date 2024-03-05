@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 17:53:46 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 12:24:36 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,7 @@
 # include "./../minishell.h"	/*minishell (parsing, t_struct, t_args)*/
 
 /******************************************************************************/
-/* Structures                                                                 */
-/******************************************************************************/
-
-// typedef struct s_pipex_list
-// {
-// 	int				pipe_fd[2];		//holds pipe fds: [0] = read, [1] = write
-// 	int				temp_fd_out;	//holds write fd between forks (forkchild)
-// 	int				pid;			//current fork id
-// 	int				pid_last;		//pid of last (1st made) command to return
-// 	int				exit_code;		//of last command to return in parent
-// 	char			**paths;		//paths separated from envp PATH variable
-// 	int				hd_temp_fd;		//temp to pass between heredoc functions
-// }					t_pipex;
-
-/******************************************************************************/
-/* utils.c                                                                    */
+/* pipex.utils.c                                                              */
 /******************************************************************************/
 
 /**
@@ -82,7 +67,8 @@ char	**ft_extract_paths(char **envp);
 char	*ft_strjoin3(char const *s1, char const *s2, char const *s3);
 
 /**
- * @brief Calls execve to replace the current process if found in 'paths'. Takes
+ * @brief Execve with a shunt for builtin commands.
+ * Calls execve to replace the current process if found in 'paths'. Takes
  * each path from the 'paths' table of tables (from ft_extract_paths), appends 
  * the name of the command (from pipex.arg) to the end (with ft_strjoin3)
  * to create the full command path 'cmd_path'.
@@ -98,48 +84,49 @@ char	*ft_strjoin3(char const *s1, char const *s2, char const *s3);
  */
 void	ft_execve(t_pipex *pipex, t_args *child_arg, t_struct *main);
 
-/******************************************************************************/
-/* errors.c                                                                   */
-/******************************************************************************/
-
-// void	ft_free_pipex(t_pipex *pipex);
-
 /**
- * @brief If the pointer to the table of tables is not NULL, frees each member 
- * of the input table of tables, then the table itself.
- * @param table input table of tables to be freed.
+ * @brief Creates a wait(NULL) for each of the child processes 
+ * (n = pipex->commands), to ensure that the parent waits for each process to 
+ * return before terminating.
+ * @param pipex structure containing the number of commands (pipex->commands)
  */
-// void	ft_freetable(char **table);
+void	ft_wait_parent(t_pipex *pipex, int nb_commands);
+
+/******************************************************************************/
+/* pipex_exits.c                                                              */
+/******************************************************************************/
 
 /**
  * @brief Handles the case where the input command (created from 
- * pipex->paths + pipex->arg) is not found. Recreates the bash message
- * zsh : command not found: cmd. 
- * First the output is redirected to the terminal using the unmodified stderr 
- * output (fd = 2). The write function is used because it buffers to print to 
- * output. This prevents the output being scrambled if more than one command is 
- * not found (as the processes are running in parallel). ft_printf is then used 
- * o print the (invalid) command name only.
- * Relevant tables of tables are freed, and the program exited with a FAILURE.
- * @param pipex structure containing the (invalid) input command 
- * (pipex->arg[0]), and the tables to be freed:
- * (pipex->paths + pipex->arg)
+ * pipex->paths + pipex->arg) is not found.
+ * Calls the ft_write_join function to create the error message. The write 
+ * function is used because it buffers to print to output. This prevents the 
+ * output being scrambled if more than one command is not found (as the 
+ * processes are running in parallel).
+ * Relevant tables of tables are freed in ft_exit_error, and the program 
+ * exited with a FILENOTFOUND (127) exit code.
+ * @param pipex structure containing the (invalid) input command
+ * @param arg current node in the linked list containing current command info
+ * @param main pointer to the overall finishell structure
  */
 void	ft_command_fail(t_pipex *pipex, t_args *arg, t_struct *main);
 
 /**
- * @brief Here because norminette. Called during the ft_heredoc function to 
+ * @brief Called during the ft_heredoc function to 
  * handle the error when there is no input given to the terminal (ctrlD, 
  * buffer == NULL).
- * ft_printf used to replicate bash error message for the same case.
+ * Calls the ft_write_join function to create the error message.
  * @param pipex structure containing the pipex->paths table to be freed.
+ * @param arg current node in the linked list containing current command info
+ * @param exit_code exit code to pass
+ * @return int the designated exit code to pass
  */
 int		ft_byedoc(t_pipex *pipex, t_args *arg, int exit_code);
 
 /**
- * @brief Handles all other failures (fatal and otherwise) within executing.
- * Open, malloc, dup2 etc.
- * 
+ * @brief Handles all other exits and failures (fatal and otherwise) within 
+ * executing. Open, malloc, dup2 etc.
+ * Calls unlink_hds to clean up heredoc temp files.
  * @param pipex pipex structure containing the pipex->paths table to be freed.
  * @param main main structure to be freed in child processes.
  * @param exit_code exit code to be passed
@@ -150,8 +137,7 @@ int		ft_pipex_error(t_pipex *pipex, t_struct *main, int exit_code);
 /**
  * @brief Unlinks temp heredoc files "temp_n" (stored in ./Pipex for the 
  * duration of the function). Removes "temp_0" up to "temp_1024".
- * 
- * @return int 
+ * @return int to pass SUCCESS/ENOMEM exit codes.
  */
 int		unlink_hds(void);
 
@@ -159,110 +145,95 @@ int		unlink_hds(void);
 /* pipex_cmds.c                                                               */
 /******************************************************************************/
 
+/**
+ * @brief Creates the relevant redirections for child process inputs.
+ * If present, the unused end of the pipe is closed. If there is a redirection
+ * present in main->args_list->input, it is prioritised over the pipe (as bash).
+ * @param pipex pipex structure
+ * @param arg current node from args_list
+ * @param main main structure
+ * @param ired boolean :
+ * 0 = first command position = 
+ * no redirection if there is no redirection in the command structure
+ * 1 = last/mid command position = 
+ * redirection to/from pipe if there is no redirection in the command structure
+ */
 void	ft_input(t_pipex *pipex, t_args *arg, t_struct *main, int ired);
 
+/**
+ * @brief Creates the relevant redirections for child process outputs.
+ * If present, the unused end of the pipe is closed. If there is a redirection
+ * present in main->args_list->input, it is prioritised over the pipe (as bash).
+ * @param pipex pipex structure
+ * @param arg current node from args_list
+ * @param main main structure
+ * @param ired boolean :
+ * 0 = first command position = 
+ * no redirection if there is no redirection in the command structure
+ * 1 = last/mid command position = 
+ * redirection to/from pipe if there is no redirection in the command structure
+ */
 void	ft_output(t_pipex *pipex, t_args *arg, t_struct *main, int ored);
 
+/**
+ * @brief Not super-optimised fusion of two functions. Sets the 
+ * input/output redirection (red) patterns for ft_input and ft_output.
+ * Handles : single command (00), and final (10), first (01) and middle (11) 
+ * commands in a pipeline.
+ * @param pipex pipex structure
+ * @param arg current node from args_list
+ * @param main main structure
+ * @param i current command position : i = 0 single / final command, 
+ * i == main->common.nb_commands - 1 last command, otherwise middle.
+ */
 void	ft_cmd(t_pipex *pipex, t_args *arg, t_struct *main, int i);
-
-// /**
-//  * @brief Identical to base program except for the heredoc case.
-//  * Creates the relevant redirections in the child that will run the last
-//  * command in the series (this is the first to be created).
-//  * The unused write end of the pipe is closed.
-//  * The read end of the pipe is duplicated to replace the standard input, and 
-//  * the original closed.
-//  * In the heredoc case, the output file is opened with the following flags 
-//  * (fd stocked in out_fd):
-//  * O_WRONLY, 0644 : write-only (permissions 644)
-//  * O_APPEND : append (new info will be appended to contents if the file exists)
-//  * O_CREAT : file will be created if it does not already exist.
-//  * In the normal bonus case, the output file is opened similarly except:
-//  * O_TRUNC : truncated (will overwrite all contents if the file exists)
-//  * The fd of the output file is then duped to replace the standard output.
-//  * @param pipex structure containing the tables to be freed in case of error
-//  * (pipex->paths + pipex->arg)
-//  */
-// void	ft_last_cmd(t_pipex *pipex, t_args *arg, t_struct *main);
-
-// /**
-//  * @brief Identical to base program except for the heredoc case.
-//  * Creates the relevant redirections in the child that will run the first
-//  * command in the series (this is the last to be created).
-//  * The unused read end of the pipe is closed.
-//  * The write end of the pipe is duplicated to replace the standard output, and 
-//  * the original closed.
-//  * The input file is opened with the following flags (fd stocked in in_fd):
-//  * O_RDONLY : read-only
-//  * In the heredoc case, the temp file is used, otherwise the name of the input
-//  * file given in the command is used. Thft_pipe_fail(t_pipex *pipex)
-//  */
-// void	ft_first_cmd(t_pipex *pipex, t_args *arg, t_struct *main);
-
-// /**
-//  * @brief Not present in base program.
-//  * Handles all commands that come between the first and last commands in the 
-//  * chain (they all read and write from/to pipes and are thus identical).
-//  * Closes the unused write end of the pipe.
-//  * The write end of the pipe is retrieved from temp file containing the write 
-//  * end of the pipe created in the previous command's fork (because the pipe_fd 
-//  * in the structure is overwritten with the new pipe, and this process needs to 
-//  * write to the previous fork's input). This is then duped to replace the 
-//  * standard output, and the original closed.
-//  * The read end of the new pipe is duplicated to replace the standard input, 
-//  * and the original closed.
-//  * @param pipex 
-//  */
-// void	ft_mid_cmd(t_pipex *pipex, t_args *arg, t_struct *main);
 
 /**
  * @brief Function launched in a while loop (where i is the number of input
  * arguments). The parent process is forked in the child process 
- * (pipex->pid == 0), the table of tables containing the arguments for each 
- * child function is created using ft_split. The arguments are fed into the 
- * child processes in reverse order (last command first), the heredoc boolean
- * is used to correct for the change in argv number in the here_doc bonus case.
- * Depending on the number of the commands, the relevant ft_n_cmd is called to 
- * handle the file descriptor redirections.
+ * (pipex->pid == 0). Commands from the arg node are fed into the 
+ * child processes (last pipeline command first). If there is no command present
+ * then the process is exited with a success (see bash).
  * The ft_execve function is then called to iterate through the paths, find the
- * function and replace the child process with the called function.
+ * function and replace the child process with the called function (or builtin).
  * If this fails, the ft_command_fail function is called, and the child process
- * is exited with the error 'pipex: command not found: cmd' and EXIT_FAILURE.
+ * is exited via builtin or command fail.
  * In the parent process, current fd for the write end of the pipe created
  * in this fork is saved to pass to the next forked process so that it can 
  * provide input to this process (commands are created in reverse order).
  * If there is already a previously saved fd (ie this is not the first fork),
  * then it is closed before being replaced to prevent fd leaks.
- * @param pipex structure containing the number of input commands 
- * (pipex->commands), pipex->pid to stock the current fork pid, and the tables 
- * to be freed in case of error (pipex->paths + pipex->arg).
- * @param i input argument counter
+ * @param pipex pipex structure
+ * @param i command number (counting baskwards from end of pipeline)
+ * @param arg current node from args_list
+ * @param main main structure
  */
 void	ft_forkchild(t_pipex *pipex, int i, t_args *arg, t_struct *main);
-
-/**
- * @brief Creates a wait(NULL) for each of the child processes 
- * (n = pipex->commands), to ensure that the parent waits for each process to 
- * return before terminating.
- * @param pipex structure containing the number of commands (pipex->commands)
- */
-void	ft_wait_parent(t_pipex *pipex, int nb_commands);
 
 /******************************************************************************/
 /* pipex.c                                                              */
 /******************************************************************************/
 
 /**
+ * @brief Handles SIGINT and SIGQUIT whilst in a child process. Sets the global
+ * variable to 130/131 to serve as an exit code.
+ * Newline triggers a redisplay of the finishell prompt.
+ * @param signal input signal
+ */
+void	sig_handler_child(int signal);
+
+/**
  * @brief Runs a loop to create a pipe, then fork the child process 
- * (ft_bonus_forkchild) for i = the number of commands (pipex->commands).
- * In the parent, the unused read end of the pipe created in each loop is 
- * closed. The write end is needed to reset pipex.temp_fd_out for use in each
- * child process, and is closed in (ft_bonus_forkchild).
+ * (ft_bonus_forkchild) for the length of the linked list main->args_list.
+ * In the parent, the pid of the first child (final pipeline command) is 
+ * stocked for the executing exit code (see bash) The unused read end of the 
+ * pipe created in each loop is closed.
+ * The write end is needed to reset pipex.temp_fd_out for use in each
+ * child process, and is closed in ft_bonus_forkchild.
  * The parent then waits for the correct number of processes to terminate 
  * (ft_wait_parent).
- * @param pipex structure containing the number of input commands 
- * (pipex->commands), and the tables to be freed in case of error (pipex->paths 
- * + pipex->arg).
+ * @param pipex pipex structure
+ * @param main main structure
  */
 void	ft_pipex(t_pipex *pipex, t_struct *main);
 
@@ -270,6 +241,7 @@ void	ft_pipex(t_pipex *pipex, t_struct *main);
  * @brief Initialises a number of variables in the pipex structure. 
  * The command paths are extracted from envp (ft_extract_paths).
  * @param pipex Structure to initialise.
+ * @return int EXIT_SUCCESS/FAILURE
  */
 int		ft_pipex_init(t_pipex *pipex, t_struct *main);
 
@@ -292,13 +264,42 @@ int		ft_pipex_init(t_pipex *pipex, t_struct *main);
  */
 // int		executing(int argc, char **argv, char **envp, int num_args);
 //int		executing(t_args *args, char **envp, int num_args);
+
+/**
+ * @brief Runs ft_pipex_init to initialises a number of variables in the pipex 
+ * structure.
+ * Runs ft_redirections to run through the input/output redirections.
+ * Checks for the correct number of input arguments - quits with an 
+ * EXIT_SUCCESS (see bash) if there are no commands.
+ * Filters the cases where a builtin needs to run in the parent process 
+ * (eg cd, export with arguments to add to f_envp...)
+ * @param main main finishell structure
+ * @return int returns exit code - either SUCCESS/FAILURE/ENOMEM or if a 
+ * pipeline is launched, then the exit code of the final command (see bash)
+ */
 int		executing(t_struct *main);
 
 /******************************************************************************/
-/* Builtins.utils                                                             */
+/* heredocs.c                                                                 */
 /******************************************************************************/
 
-int		ft_tablen(char **tab);
+//CONTINUE DOC FROM HERE
+
+/**
+ * @brief Handles the generation of heredoc temp files. One is created for each
+ * present in the args_list list input files cases. 
+ * Within _hd_read, gnl is called to read the line into the heredoc temp file.
+ * ctrl C = EXIT_SIGINT (130).
+ * ctrl D = EXIT_SUCCESS (0).
+ * 
+ * @param pipex pipex structure
+ * @param temp current redirection filename (EOF limiter for the heredoc) 
+ * within input_files of the current args_list node.
+ * @param i current redirection number within input_files of the current 
+ * args_list node.
+ * @return int exit code of _hd_read()
+ */
+int		ft_heredoc(t_pipex *pipex, t_args **temp, int i);
 
 /******************************************************************************/
 /* redirections.c                                                             */
@@ -316,26 +317,23 @@ int		ft_tablen(char **tab);
  * ft_bonus_first_cmd).
  * @param pipex 
  */
-int		ft_heredoc(t_pipex *pipex, t_args **args_list, int i);
-
 int		ft_redirections(t_pipex *pipex, t_struct *main);
 
 /******************************************************************************/
 /* gnl.c                                                                      */
 /******************************************************************************/
 
-/**
- * @brief Simple version of get_next_line, returns a line read from a file 
- * descriptor. Can only handle one fd at a time.
- * @param fd The file descriptor to read from.
- * @return char * The line that was read or NULL if there is nothing else 
- * to read, or an error occurred, or ctrl+C (SIGINT) was intercepted.
- */
+// /**
+//  * @brief Simple version of get_next_line, returns a line read from a file 
+//  * descriptor. Can only handle one fd at a time.
+//  * @param fd The file descriptor to read from.
+//  * @return char * The line that was read or NULL if there is nothing else 
+//  * to read, or an error occurred, or ctrl+C (SIGINT) was intercepted.
+//  */
 char	*gnl(int fd);
 
 void	ft_builtin_fail(t_pipex *pipex, t_args *arg, t_struct *main);
 void	ft_exit(t_pipex *pipex, t_struct *main, t_args *arg);
 void	ft_exit_error(t_pipex *pipex, t_struct *main, int exit_code);
-void	sigint_handler_fork(int signal);
 
 #endif

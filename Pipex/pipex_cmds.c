@@ -6,14 +6,17 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:28:50 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/04 17:53:41 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/05 12:26:34 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-// 0 = first command position = no redirection if there is no redirection in the command structure
-// 1 = last/mid command position = redirection to/from pipe if there is no redirection in the command structure
+static void	_open_fail(t_pipex *pipex, t_struct *main)
+{
+	ft_write_join(SHIT, " open failed:", "", " input/output");
+	ft_pipex_error(pipex, main, EXIT_FAILURE);
+}
 
 void	ft_input(t_pipex *pipex, t_args *arg, t_struct *main, int ired)
 {
@@ -29,22 +32,16 @@ void	ft_input(t_pipex *pipex, t_args *arg, t_struct *main, int ired)
 	else
 		in_fd = pipex->pipe_fd[0];
 	if (in_fd == -1)
-	{
-		ft_write_join(SHIT, " open failed:", "",  " input");
-		ft_pipex_error(pipex, main, EXIT_FAILURE);
-	}
+		_open_fail(pipex, main);
 	if (dup2(in_fd, STDIN_FILENO) == -1)
 	{
-		ft_write_join(SHIT, " dup2 failed:", "",  " input");
+		ft_write_join(SHIT, " dup2 failed:", "", " input");
 		ft_pipex_error(pipex, main, EXIT_FAILURE);
 	}
 	close(pipex->pipe_fd[0]);
 	if (arg->input)
 		close(in_fd);
 }
-
-// 0 = last command position = no redirection if there is no redirection in the command structure
-// 1 = first/mid command position = redirection to/from pipe if there is no redirection in the command structure
 
 void	ft_output(t_pipex *pipex, t_args *arg, t_struct *main, int ored)
 {
@@ -65,14 +62,11 @@ void	ft_output(t_pipex *pipex, t_args *arg, t_struct *main, int ored)
 	else
 		out_fd = pipex->temp_fd_out;
 	if (out_fd == -1)
-		ft_write_join(SHIT, " open failed:", "",  " output");
-	if (out_fd == -1)
-		ft_pipex_error(pipex, main, EXIT_FAILURE);
+		_open_fail(pipex, main);
 	if (dup2(out_fd, STDOUT_FILENO) == -1)
-	{
-		ft_write_join(SHIT, " dup2 failed:", "",  " output");
+		ft_write_join(SHIT, " dup2 failed:", "", " output");
+	if (dup2(out_fd, STDOUT_FILENO) == -1)
 		ft_pipex_error(pipex, main, EXIT_FAILURE);
-	}
 	if (out_fd != -1)
 		close(out_fd);
 }
@@ -127,18 +121,4 @@ void	ft_forkchild(t_pipex *pipex, int i, t_args *arg, t_struct *main)
 			close(pipex->temp_fd_out);
 	if (pipex->pid != 0)
 		pipex->temp_fd_out = pipex->pipe_fd[1];
-}
-
-void	ft_wait_parent(t_pipex *pipex, int nb_commands)
-{
-	int	i;
-
-	i = 1;
-	waitpid(pipex->pid_last, &pipex->exit_code, 0);
-	pipex->exit_code = WEXITSTATUS(pipex->exit_code);
-	while (i < nb_commands)
-	{
-		wait(NULL);
-		i++;
-	}
 }

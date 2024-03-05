@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_errors.c                                     :+:      :+:    :+:   */
+/*   pipex_exits.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/04 17:17:07 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/05 12:23:19 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@
 void	ft_command_fail(t_pipex *pipex, t_args *arg, t_struct *main)
 {
 	if (!arg->command_name)
-		ft_write_join(RED, " command not found:", "",  " ''");
+		ft_write_join(RED, " command not found:", "", " ''");
 	else
-		ft_write_join(RED, " command not found: ", arg->command_name,  "");
+		ft_write_join(RED, " command not found: ", arg->command_name, "");
 	ft_exit_error(pipex, main, FILENOTFOUND);
 }
 
 int	ft_byedoc(t_pipex *pipex, t_args *arg, int exit_code)
 {
 	ft_write_join(ORANGE, " warning: here-doc wanted `",
-		arg->input_files[0],  "'");
+		arg->input_files[0], "'");
 	pipex->exit_code = exit_code;
 	if (errno == MALLOC_ERROR)
-		return(errno);
+		return (errno);
 	return (exit_code);
 }
 
@@ -65,7 +65,7 @@ int	unlink_hds(void)
 			return (EXIT_FAILURE);
 		filename = ft_strjoinf("./Pipex/temp_", string_i, 2);
 		if (errno == MALLOC_ERROR)
-			return(errno);
+			return (errno);
 		unlink(filename);
 		free(filename);
 		i++;

@@ -6,7 +6,7 @@
 #    By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
-#    Updated: 2024/03/04 15:39:50 by kcouchma         ###   ########.fr        #
+#    Updated: 2024/03/05 11:51:16 by kcouchma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,9 +32,10 @@ SRCS =											\
 				Pipex/pipex						\
 				Pipex/pipex_cmds				\
 				Pipex/pipex_utils				\
-				Pipex/pipex_errors				\
+				Pipex/pipex_exits				\
 				Pipex/gnl						\
 				Pipex/redirections				\
+				Pipex/heredocs					\
 				ft_free							\
 				minishell						\
 				prints							\
