@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/04 18:44:23 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 10:18:30 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	**finishell_env(char **envp)
 	{
 		f_envp[i] = ft_strdup(envp[i]);
 		if (errno == MALLOC_ERROR)
-			return(free_table(f_envp), NULL);
+			return (free_table(f_envp), NULL);
 		i++;
 	}
 	f_envp[i] = ft_strdup("?=0");
@@ -53,9 +53,47 @@ char	**finishell_env(char **envp)
 
 volatile int			g_signal;
 
-int	main(int argc, char **argv, char **envp)
+static void	_finishell_core(t_struct *main, char *input)
+{
+	if (parsing(main, input) == EXIT_SUCCESS)
+	{
+		if (!main->parse.error)
+		{
+			ft_free_parsing(&main->parse);
+			main->exit_code = executing(main);
+		}
+		ft_structclear(&main->args_list);
+	}
+}
+
+static int	_ft_loop(t_struct *main)
 {
 	char		*input;
+
+	main->exit_code = 0;
+	input = readline(GREEN"finishell 🤯 > "RESET);
+	if (g_signal)
+	{
+		main->common.f_envp = ch_exit_code(g_signal, main->common.f_envp);
+		g_signal = 0;
+	}
+	if (!input)
+	{
+		write(1, "exit\n", 5);
+		return (0);
+	}
+	_finishell_core(main, input);
+	if (errno == MALLOC_ERROR)
+	{
+		main->exit_code = errno;
+		return (0);
+	}
+	main->common.f_envp = ch_exit_code(main->exit_code, main->common.f_envp);
+	return (1);
+}
+
+int	main(int argc, char **argv, char **envp)
+{
 	t_struct	main;
 
 	g_signal = 0;
@@ -72,39 +110,11 @@ int	main(int argc, char **argv, char **envp)
 		errno = 0;
 		signal(SIGINT, &sigint_handler);
 		signal(SIGQUIT, SIG_IGN);
-		main.exit_code = 0;
-		input = readline(GREEN"finishell 🤯 > "RESET); //errno?
-		if (g_signal)
-		{
-			main.common.f_envp = ch_exit_code(g_signal, main.common.f_envp);
-			g_signal = 0;
-		}
-		if (!input)
-		{
-			write(1, "exit\n", 5);
+		if (!_ft_loop(&main))
 			break ;
-		}
-		if (parsing(&main, input) == EXIT_SUCCESS)
-		{
-			if (!main.parse.error)
-			{
-				// test_liste_chainee(&main);
-				ft_free_parsing(&main.parse);
-				main.exit_code = executing(&main);
-			}
-			ft_structclear(&main.args_list);
-		}
-		if (errno == MALLOC_ERROR)
-		{
-			main.exit_code = errno;
-			break ;
-		}
-		main.common.f_envp = ch_exit_code(main.exit_code, main.common.f_envp);
 	}
 	rl_clear_history();
 	free_table(main.common.f_envp);
 	free(main.common.pwd);
 	return (main.exit_code); //return 1 in case of catastrophic failure
 }
-
-//_cd_error() write -> securise ?

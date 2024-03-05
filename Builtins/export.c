@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:10:57 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/04 18:44:05 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 10:21:58 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	**export_parsing(t_struct *main, int start, int end)
 		{
 			tab[i] = ft_strdup(main->parse.argv[start]);
 			if (errno == MALLOC_ERROR)
-				return(free_table(tab), NULL);
+				return (free_table(tab), NULL);
 			i++;
 		}
 		start++;

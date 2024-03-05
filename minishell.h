@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/03 14:59:59 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 09:24:50 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ void	fill_strings(t_args *cmd, t_struct *main, int start, int end);
 char	**fill_type(int type, t_struct *main, int start, int end);
 char	**fill_table(t_struct *main, int start, int end);
 int		check_nothing(char *input);
+int		is_heredoc(char *input, int i);
 char	*check_variables(t_variables *variables, char **f_envp, char *input);
 void	builtins_parsing(t_parsing *parse);
 int		parsing(t_struct *main, char *input);
@@ -180,7 +181,6 @@ void	ft_write_join(char *error_type, char *cmd, char *arg, char *str);
 void	free_table(char **tab);
 void	ft_free_parsing(t_parsing *parse);
 void	ft_structclear(t_args **cmd);
-int		err_int(char *s1, char *s2, char *s3, char *s4);
 char	*err_str(char *s1, char *s2, char *s3, char *s4);
 
 /* ************* Parsing to Executing ************** */

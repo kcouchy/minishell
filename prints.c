@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 18:03:38 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/01 19:08:01 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 10:20:25 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,15 @@ void	test_parsing(t_parsing *parse)
 
 void	test_liste_chainee(t_struct *main)
 {
-	t_args *temp;
-	
+	t_args	*temp;
+	int		i;
+
 	temp = main->args_list;
 	while (temp)
 	{
 		printf("\x1b[38;2;255;255;255m-----\n");
 		printf("\x1b[38;2;255;0;0mwhole_cmd = %s\n", temp->whole_cmd);
-		int	i = 0;
+		i = 0;
 		printf("\x1b[38;2;255;132;0mcommand_table = \n");
 		if (!temp->command_table)
 			printf(" -   (null)\n");
@@ -73,7 +74,8 @@ void	test_liste_chainee(t_struct *main)
 			}
 		}
 		if (temp->command_name)
-			printf("\x1b[38;2;255;216;0mcommand_name = %s\n", temp->command_name);
+			printf("\x1b[38;2;255;216;0mcommand_name = %s\n",
+				temp->command_name);
 		else
 			printf("\x1b[38;2;255;216;0mcommand_name = (null)\n");
 		i = 0;
@@ -137,7 +139,8 @@ void	test_liste_chainee(t_struct *main)
 			}
 		}
 		printf("\x1b[38;2;255;216;0marguments = %s\n", temp->args);
-		printf("\x1b[38;2;0;255;60mis_builtin = %d%s\n", temp->is_builtin, RESET);
+		printf("\x1b[38;2;0;255;60mis_builtin = %d%s\n",
+			temp->is_builtin, RESET);
 		temp = temp->next;
 	}
 }

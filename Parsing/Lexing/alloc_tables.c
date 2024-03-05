@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 12:08:23 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/03 16:00:09 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 09:06:03 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,17 @@ static int	_count_tokens(t_parsing *parse, char *input)
 	return (counter);
 }
 
+static int	_create_lexer(t_parsing *parse, char *input, int i)
+{
+	while (input[i] && is_space(input[i]))
+		i++;
+	if (input[i] && is_separator(input[i]))
+		i = what_type(parse, input, i, 1);
+	else if (input[i] && !is_separator(input[i]))
+		i = what_type(parse, input, i, 0);
+	return (i);
+}
+
 void	alloc_tables(t_parsing *parse, char *input)
 {
 	int			i;
@@ -83,12 +94,7 @@ void	alloc_tables(t_parsing *parse, char *input)
 	j = 0;
 	while (j < parse->argc)
 	{
-		while (input[i] && is_space(input[i]))
-			i++;
-		if (input[i] && is_separator(input[i]))
-			i = what_type(parse, input, i, 1);
-		else if (input[i] && !is_separator(input[i]))
-			i = what_type(parse, input, i, 0);
+		i = _create_lexer(parse, input, i);
 		if (errno == MALLOC_ERROR)
 			return ;
 		j++;

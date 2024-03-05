@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/04 11:35:40 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 09:23:48 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	check_nothing(char *input)
 	int	i;
 
 	i = 0;
+	if (errno == MALLOC_ERROR)
+		return (free(input), 1);
 	while (input[i])
 	{
 		if (!is_space(input[i]))
@@ -50,8 +52,6 @@ int	parsing(t_struct *main, char *input)
 	if (input[0] != '\0')
 		add_history(input);
 	input = check_variables(&main->parse.var, main->common.f_envp, input);
-	if (errno == MALLOC_ERROR)
-		return(err_int(input, NULL, NULL, NULL));
 	if (check_nothing(input))
 		return (NOTHING);
 	alloc_tables(&main->parse, input);
@@ -62,7 +62,6 @@ int	parsing(t_struct *main, char *input)
 		return (main->parse.error);
 	builtins_parsing(&main->parse);
 	main->common.nb_commands = main->parse.number_of_commands;
-	// test_parsing(&main->parse);
 	free(input);
 	main->args_list = parsing_to_executing(main);
 	if (errno == MALLOC_ERROR)

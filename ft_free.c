@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 21:44:46 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/03 14:59:22 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 09:25:36 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,20 +77,7 @@ void	ft_structclear(t_args **cmd)
 	}
 }
 
-int	err_int(char *s1, char *s2, char *s3, char *s4)
-{
-	if (s1)
-		free(s1);
-	if (s2)
-		free(s2);
-	if (s3)
-		free(s3);
-	if (s4)
-		free(s4);
-	return (errno);
-}
-
-char *err_str(char *s1, char *s2, char *s3, char *s4)
+char	*err_str(char *s1, char *s2, char *s3, char *s4)
 {
 	if (s1)
 		free(s1);
