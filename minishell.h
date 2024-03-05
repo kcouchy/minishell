@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/05 18:26:52 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 18:38:46 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -431,6 +431,5 @@ char	*err_str(char *s1, char *s2, char *s3, char *s4);
  * @param signal 
  */
 void	sigint_handler(int signal);
-
 
 #endif
