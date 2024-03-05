@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:16:21 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/05 08:21:34 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 18:01:23 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,11 @@ char	*var_strjoin(char *s1, char *s2)
 
 int	is_heredoc(char *input, int i)
 {
-	while (i > -1 && is_quote(input[i]))
+	while (i > 0 && is_quote(input[i]))
 		i--;
-	while (i > -1 && is_space(input[i]))
+	while (i > 0 && is_space(input[i]))
 		i--;
-	if (i > -1 && input[i] == '<' && input[i - 1] == '<')
+	if (i > 0 && input[i] == '<' && input[i - 1] == '<')
 		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:50:23 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/01 19:47:33 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 16:16:48 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	ft_exit(t_pipex *pipex, t_struct *main, t_args *arg)
 	int	exit_code;
 
 	exit_code = 0;
-	if (pipex->pid)
+	if (pipex->pid != 0)
 		ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (arg->args)
 		exit_code = exit_atoi(arg->command_table[1]);

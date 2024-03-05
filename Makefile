@@ -6,7 +6,7 @@
 #    By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
-#    Updated: 2024/03/05 13:03:57 by kcouchma         ###   ########.fr        #
+#    Updated: 2024/03/05 17:41:32 by lribette         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ SRC = $(addsuffix .c,$(SRCS))
 OBJ = $(addsuffix .o,$(SRCS))
 
 CC = cc
-CCFLAGS = -Wall -Wextra -Werror -D BUFFER_SIZE=20 -g
+CCFLAGS = -Wall -Wextra -Werror -D BUFFER_SIZE=20 -g -O0
 
 NAME = minishell
 
