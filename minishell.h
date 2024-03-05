@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/05 13:05:54 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/05 18:26:52 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 # define MINISHELL_H
 
 /******************************************************************************/
-/* Headers                                                                    */
+/******************************************************************************/
+/********************************** Headers ***********************************/
+/******************************************************************************/
 /******************************************************************************/
 
 # include <stdio.h>
@@ -27,7 +29,9 @@
 # include "./Pipex/libft/libft.h"
 
 /******************************************************************************/
-/* Variables                                                                  */
+/******************************************************************************/
+/********************************* Variables **********************************/
+/******************************************************************************/
 /******************************************************************************/
 
 # define RED "\x1b[38;2;255;0;0;1mfinishell 🤬:"
@@ -67,13 +71,17 @@ typedef enum e_type
 }	t_type;
 
 /******************************************************************************/
-/* Globals                                                                    */
+/******************************************************************************/
+/********************************** Globals ***********************************/
+/******************************************************************************/
 /******************************************************************************/
 
 extern volatile int	g_signal;
 
 /******************************************************************************/
-/* Structures                                                                 */
+/******************************************************************************/
+/********************************* Structures *********************************/
+/******************************************************************************/
 /******************************************************************************/
 
 typedef struct s_variables
@@ -129,10 +137,244 @@ typedef struct s_struct
 }	t_struct;
 
 /******************************************************************************/
-/* Parsing                                                                    */
+/******************************************************************************/
+/********************************** Builtins **********************************/
+/******************************************************************************/
 /******************************************************************************/
 
-/* ******************** utils.c ******************** */
+/* ************************************************************************** */
+/* builtins_utils.c															  */
+/* ************************************************************************** */
+
+/**
+ * @brief 
+ * 
+ * @param var 
+ * @param main 
+ * @return char* 
+ */
+char	*ex_fenvp(char *var, t_struct *main);
+
+/**
+ * @brief Checks in the whole parsing table if there is a builtin. 
+ * If so, and the builtins found are either echo or exit, this will execute the
+ * appropriate parsing function.
+ * 
+ * @param parse Structure indicating each token associated with its type.
+ */
+void	builtins_parsing(t_parsing *parse);
+
+/**
+ * @brief Checks which builtin the command_name is and executes the associated
+ * function. If it doesn't match any of the conditions (respecting the
+ * subject), arg->is_builtin is set to 2 and an error message is raised in
+ * another function.
+ * 
+ * @param pipex Structure allowing execution of the execve command.
+ * @param arg Current node in the linked list containing current command info.
+ * @param main Pointer to the overall finishell structure.
+ * @return int 
+ */
+int		builtins_executing(t_pipex *pipex, t_args *arg, t_struct *main);
+
+/**
+ * @brief If the builtin matches the subject, it sets the exit code to
+ * EXIT_SUCCESS. Otherwise, it prints an error message and sets the exit code
+ * to BUILTIN_ERROR. The program then exits with the correct exit code.
+ * 
+ * @param pipex Structure allowing execution of the execve command.
+ * @param arg Current node in the linked list containing current command info.
+ * @param main Pointer to the overall finishell structure.
+ */
+void	ft_builtin_fail(t_pipex *pipex, t_args *arg, t_struct *main);
+
+/* ************************************************************************** */
+/* cd.c																		  */
+/* ************************************************************************** */
+
+/**
+ * @brief 
+ * 
+ * @param arg 
+ * @param main 
+ * @return int 
+ */
+int		ft_cd(t_args *arg, t_struct *main);
+
+/* ************************************************************************** */
+/* echo.c																	  */
+/* ************************************************************************** */
+
+/**
+ * @brief Checks the flags according to the subject. If a flag contains a
+ * character other than 'n', all the next flags and this one become arguments.
+ * 
+ * @param parse Structure indicating each token associated with its type.
+ * @param i Index to the beginning of the command.
+ * @return int 
+ */
+int		echo_parsing(t_parsing *parse, int i);
+
+/**
+ * @brief Prints all arguments of the echo command, and a '\n' if there is no
+ * flag.
+ * 
+ * @param arg Current node in the linked list containing current command info.
+ * @return int 
+ */
+int		ft_echo(t_args *arg);
+
+/* ************************************************************************** */
+/* env.c																	  */
+/* ************************************************************************** */
+
+/**
+ * @brief 
+ * 
+ * @param main 
+ * @return int 
+ */
+int		ft_env(t_struct *main);
+
+/* ************************************************************************** */
+/* exit.c																	  */
+/* ************************************************************************** */
+
+/**
+ * @brief Changes all flags to arguments to handle negative numbers.
+ * 
+ * @param parse Structure indicating each token associated with its type.
+ * @param i Index to the beginning of the command.
+ * @return int 
+ */
+int		exit_parsing(t_parsing *parse, int i);
+
+/**
+ * @brief If we're in a parent process, it prints "exit". If exit has
+ * arguments, the exit code is the first argument modulo 256. If the argument
+ * contains a character or isn't between LLONG_MIN and LLONG_MAX, the exit code
+ * is 2 (SYNTAX_ERROR). The process is then terminated cleanly.
+ * 
+ * @param pipex Structure allowing execution of the execve command.
+ * @param main Pointer to the overall finishell structure.
+ * @param arg Current node in the linked list containing current command info.
+ */
+void	ft_exit(t_pipex *pipex, t_struct *main, t_args *arg);
+
+/* ************************************************************************** */
+/* export_exec.c															  */
+/* ************************************************************************** */
+
+/**
+ * @brief if export only, print all of envp to the terminal except the 
+ * variable "_" and "?"
+ * copy and sort envp, (and free at the end) 
+ * then in loop add declare -x add "" around the string(after = and at the end)
+ * if export (variable), then add "variable"+"="+"variable value" to env
+ * if export (variable=value), then add "variable=value" to env
+ * in both cases, overwrite variable if present, add if not
+ */
+int		ft_export(t_args *arg, t_struct *main);
+
+/* ************************************************************************** */
+/* export_parse.c															  */
+/* ************************************************************************** */
+
+/**
+ * @brief Returns a double table containing only the command and arguments with
+ * at least one equal symbol, one character and no whitespace. It prints an
+ * error for each bad argument.
+ * 
+ * @param main Pointer to the overall finishell structure.
+ * @param start Index to the beginning of the command.
+ * @param end Index to the end of the command.
+ * @return char** 
+ */
+char	**export_parsing(t_struct *main, int start, int end);
+
+/* ************************************************************************** */
+/* fenvp_utils.c															  */
+/* ************************************************************************** */
+
+/**
+ * @brief 
+ * 
+ * @param tab 
+ * @return int 
+ */
+int		ft_tablen(char **tab);
+
+/**
+ * @brief 
+ * 
+ * @param f_envp 
+ * @return int 
+ */
+int		ft_find_eq(char *f_envp);
+
+/**
+ * @brief 
+ * 
+ * @param arg 
+ * @param f_envp 
+ * @return int 
+ */
+int		find_arg(char *arg, char **f_envp);
+
+/**
+ * @brief 
+ * 
+ * @param tab 
+ * @return char** 
+ */
+char	**ft_realloc(char **tab);
+
+/**
+ * @brief 
+ * 
+ * @param arg 
+ * @param f_envp 
+ * @return int 
+ */
+int		ft_mod_fevnp(char *arg, char ***f_envp);
+
+/* ************************************************************************** */
+/* pwd.c																	  */
+/* ************************************************************************** */
+
+/**
+ * @brief 
+ * 
+ * @param main 
+ * @return int 
+ */
+int		ft_pwd(t_struct *main);
+
+/* ************************************************************************** */
+/* unset.c																	  */
+/* ************************************************************************** */
+
+/**
+ * @brief For all arguments in arg->command_table, if there is an equal symbol,
+ * it prints an error message. Otherwise, if it finds the environment variable
+ * in f_envp that corresponds to the actual argument, it frees it. All the
+ * following environment variables in f_envp are moved to the left.
+ * 
+ * @param arg Current node in the linked list containing current command info.
+ * @param main Pointer to the overall finishell structure.
+ * @return int 
+ */
+int		ft_unset(t_args *arg, t_struct *main);
+
+/******************************************************************************/
+/******************************************************************************/
+/********************************** Parsing ***********************************/
+/******************************************************************************/
+/******************************************************************************/
+
+/* ************************************************************************** */
+/* utils.c																	  */
+/* ************************************************************************** */
 int		is_separator(char c);
 int		is_space(char c);
 int		is_quote(char c);
@@ -142,6 +384,7 @@ char	*ft_strndup(char *s, int start, int end, char *returned);
 char	*var_strdup(char *f_envp);
 char	*var_strjoin(char *s1, char *s2);
 void	ft_write_join(char *error_type, char *cmd, char *arg, char *str);
+void	ft_exit_error(t_pipex *pipex, t_struct *main, int exit_code);
 
 /* ******************** Lexing ******************** */
 int		what_type(t_parsing *parse, char *input, int i, int separator);
@@ -158,64 +401,25 @@ int		is_heredoc(char *input, int i);
 char	*check_variables(t_variables *variables, char **f_envp, char *input);
 int		parsing(t_struct *main, char *input);
 
-/******************************************************************************/
-/* Builtins                                                                   */
-/******************************************************************************/
-
-/* builtins.utils */
-char	*ex_fenvp(char *var, t_struct *main);
-void	builtins_parsing(t_parsing *parse);
-int		builtins_executing(t_pipex *pipex, t_args *arg, t_struct *main);
-void	ft_builtin_fail(t_pipex *pipex, t_args *arg, t_struct *main);
-
-/* fenvp_utils */
-int		ft_tablen(char **tab);
-int		ft_find_eq(char *f_envp);
-int		find_arg(char *arg, char **f_envp);
-char	**ft_realloc(char **tab);
-int		ft_mod_fevnp(char *arg, char ***f_envp);
-
-/* cd.c */
-int		ft_cd(t_args *arg, t_struct *main);
-
-/* echo.c */
-int		echo_parsing(t_parsing *parse, int i);
-int		ft_echo(t_args *arg);
-
-/* env.c */
-int		ft_env(t_struct *main);
-
-/* exit.c */
-int		exit_parsing(t_parsing *parse, int i);
-void	ft_exit_error(t_pipex *pipex, t_struct *main, int exit_code);
-void	ft_exit(t_pipex *pipex, t_struct *main, t_args *arg);
-
-/* export_exec.c */
-/**
- * @brief if export only, print all of envp to the terminal except the 
- * variable "_" and "?"
- * copy and sort envp, (and free at the end) 
- * then in loop add declare -x add "" around the string(after = and at the end)
- * if export (variable), then add "variable"+"="+"variable value" to env
- * if export (variable=value), then add "variable=value" to env
- * in both cases, overwrite variable if present, add if not
- */
-int		ft_export(t_args *arg, t_struct *main);
-/* export_parse.c */
-char	**export_parsing(t_struct *main, int start, int end);
-
-/* pwd.c */
-int		ft_pwd(t_struct *main);
-
-/* unset.c */
-int		ft_unset(t_args *arg, t_struct *main);
-
 /* ************* Parsing to Executing ************** */
 t_args	*parsing_to_executing(t_struct *main);
 
 int		is_builtin(char *command);
 char	**ch_exit_code(int exit_code, char **f_envp);
 
+/******************************************************************************/
+/******************************************************************************/
+/********************************* Common Part ********************************/
+/******************************************************************************/
+/******************************************************************************/
+
+/*ft_free.c*/
+void	free_table(char **tab);
+void	ft_free_parsing(t_parsing *parse);
+void	ft_structclear(t_args **cmd);
+char	*err_str(char *s1, char *s2, char *s3, char *s4);
+
+/*minishell.c*/
 /**
  * @brief 	rl_on_new_line();
  * 			//needed to reshow prompt
@@ -228,10 +432,5 @@ char	**ch_exit_code(int exit_code, char **f_envp);
  */
 void	sigint_handler(int signal);
 
-/*ft_free.c*/
-void	free_table(char **tab);
-void	ft_free_parsing(t_parsing *parse);
-void	ft_structclear(t_args **cmd);
-char	*err_str(char *s1, char *s2, char *s3, char *s4);
 
 #endif
