@@ -6,13 +6,13 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:39:03 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/05 08:58:59 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 19:59:19 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	*copy_variable(char **f_envp, char *input, int start, int i)
+char	*_copy_variable(char **f_envp, char *input, int start, int i)
 {
 	int		j;
 	int		k;
@@ -37,7 +37,7 @@ char	*copy_variable(char **f_envp, char *input, int start, int i)
 	return (var_strdup(""));
 }
 
-int	search_variable(t_variables *var, char **f_envp, int i)
+int	_search_variable(t_variables *var, char **f_envp, int i)
 {
 	int		start;
 	char	*buffer;
@@ -49,7 +49,7 @@ int	search_variable(t_variables *var, char **f_envp, int i)
 	while (var->left[i] && (isalnum(var->left[i])
 			|| var->left[i] == '_' || var->left[i] == '?'))
 		i++;
-	variable = copy_variable(f_envp, var->left, start + 1, i);
+	variable = _copy_variable(f_envp, var->left, start + 1, i);
 	buffer = ft_strndup(var->left, 0, start, buffer);
 	if (i == start + 1)
 		buffer = var_strjoin(buffer, "$");
@@ -63,7 +63,7 @@ int	search_variable(t_variables *var, char **f_envp, int i)
 	return (0);
 }
 
-int	check_quotes(t_variables *var, int i)
+int	_check_quotes(t_variables *var, int i)
 {
 	if (var->left[i] && var->left[i] == '"')
 	{
@@ -88,10 +88,10 @@ static void	_replace_input(t_variables *var, char **f_envp)
 	i = 0;
 	while (var->left[i])
 	{
-		i = check_quotes(var, i);
+		i = _check_quotes(var, i);
 		if (var->left[i] == '$' && !is_heredoc(var->left, i - 1))
 		{
-			i = search_variable(var, f_envp, i + 1);
+			i = _search_variable(var, f_envp, i + 1);
 			if (errno == MALLOC_ERROR)
 				return ;
 		}

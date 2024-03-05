@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/05 18:38:46 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 19:57:54 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,6 @@ char	*ex_fenvp(char *var, t_struct *main);
  * @brief Checks in the whole parsing table if there is a builtin. 
  * If so, and the builtins found are either echo or exit, this will execute the
  * appropriate parsing function.
- * 
  * @param parse Structure indicating each token associated with its type.
  */
 void	builtins_parsing(t_parsing *parse);
@@ -169,7 +168,6 @@ void	builtins_parsing(t_parsing *parse);
  * function. If it doesn't match any of the conditions (respecting the
  * subject), arg->is_builtin is set to 2 and an error message is raised in
  * another function.
- * 
  * @param pipex Structure allowing execution of the execve command.
  * @param arg Current node in the linked list containing current command info.
  * @param main Pointer to the overall finishell structure.
@@ -181,7 +179,6 @@ int		builtins_executing(t_pipex *pipex, t_args *arg, t_struct *main);
  * @brief If the builtin matches the subject, it sets the exit code to
  * EXIT_SUCCESS. Otherwise, it prints an error message and sets the exit code
  * to BUILTIN_ERROR. The program then exits with the correct exit code.
- * 
  * @param pipex Structure allowing execution of the execve command.
  * @param arg Current node in the linked list containing current command info.
  * @param main Pointer to the overall finishell structure.
@@ -208,7 +205,6 @@ int		ft_cd(t_args *arg, t_struct *main);
 /**
  * @brief Checks the flags according to the subject. If a flag contains a
  * character other than 'n', all the next flags and this one become arguments.
- * 
  * @param parse Structure indicating each token associated with its type.
  * @param i Index to the beginning of the command.
  * @return int 
@@ -218,7 +214,6 @@ int		echo_parsing(t_parsing *parse, int i);
 /**
  * @brief Prints all arguments of the echo command, and a '\n' if there is no
  * flag.
- * 
  * @param arg Current node in the linked list containing current command info.
  * @return int 
  */
@@ -254,7 +249,6 @@ int		exit_parsing(t_parsing *parse, int i);
  * arguments, the exit code is the first argument modulo 256. If the argument
  * contains a character or isn't between LLONG_MIN and LLONG_MAX, the exit code
  * is 2 (SYNTAX_ERROR). The process is then terminated cleanly.
- * 
  * @param pipex Structure allowing execution of the execve command.
  * @param main Pointer to the overall finishell structure.
  * @param arg Current node in the linked list containing current command info.
@@ -284,7 +278,6 @@ int		ft_export(t_args *arg, t_struct *main);
  * @brief Returns a double table containing only the command and arguments with
  * at least one equal symbol, one character and no whitespace. It prints an
  * error for each bad argument.
- * 
  * @param main Pointer to the overall finishell structure.
  * @param start Index to the beginning of the command.
  * @param end Index to the end of the command.
@@ -359,7 +352,6 @@ int		ft_pwd(t_struct *main);
  * it prints an error message. Otherwise, if it finds the environment variable
  * in f_envp that corresponds to the actual argument, it frees it. All the
  * following environment variables in f_envp are moved to the left.
- * 
  * @param arg Current node in the linked list containing current command info.
  * @param main Pointer to the overall finishell structure.
  * @return int 
@@ -370,6 +362,60 @@ int		ft_unset(t_args *arg, t_struct *main);
 /******************************************************************************/
 /********************************** Parsing ***********************************/
 /******************************************************************************/
+/******************************************************************************/
+
+/******************************************************************************/
+/*********************************** Lexing ***********************************/
+/******************************************************************************/
+
+/**
+ * @brief Allocates two tables.
+ * The first one is a char ** and stocks each word/separator.
+ * The second is an int table and stocks enums associated with the words in the
+ * other table on the same index.
+ * _skip_to_quote(): If there is a quote, iterates i until there is a closing
+ * quote and returns i. If there isn't, it prints an error and returns the end
+ * of the string.
+ * _count_tokens(): Counter is iterated every time there is a type change
+ * (separator or word) or a space. The function will return the counter.
+ * _create_lexer(): Skips the whitespaces, checks the type of what we want to
+ * duplicate and duplicates it in what_type().
+ * @param parse Structure indicating each token associated with its type.
+ * @param input The string created by readline and then by check_variables().
+ */
+void	alloc_tables(t_parsing *parse, char *input);
+
+/**
+ * @brief Prints error messages to reproduce bash behaviour and changes the
+ * type of each token to be more precise for further parsing.
+ * which_redirection(): If the current token is an input, returns the input
+ * enum. Otherwise, if it is an output, returns the output enum. Else,
+ * returns 0 -> it's an error.
+ * _file(): If the previous token was a redirection, checks which one
+ * thanks to _which_redirection() and the current token must be a file with
+ * the same input/output type as the redirection.
+ * _not_separator(): If the current token is the first token of the command,
+ * it becomes a command. Otherwise, if the first character of the token is
+ * '-', it becomes an option. Else, it becomes an argument. The functions then
+ * call _file() to change the token if the previous token was a redirection.
+ * _separator(): Compares the current token with several types of separators
+ * and prints an error if two separators are side by side.
+ * @param parse Structure indicating each token associated with its type.
+ */
+void	check_commands(t_parsing *parse);
+
+/**
+ * @brief 
+ * 
+ * @param variables 
+ * @param f_envp 
+ * @param input 
+ * @return char* 
+ */
+char	*check_variables(t_variables *variables, char **f_envp, char *input);
+
+/******************************************************************************/
+/*********************************** Autre ************************************/
 /******************************************************************************/
 
 /* ************************************************************************** */
@@ -388,8 +434,6 @@ void	ft_exit_error(t_pipex *pipex, t_struct *main, int exit_code);
 
 /* ******************** Lexing ******************** */
 int		what_type(t_parsing *parse, char *input, int i, int separator);
-void	alloc_tables(t_parsing *parse, char *input);
-void	check_commands(t_parsing *parse);
 
 /* ******************** Parsing ******************** */
 char	*ft_argjoin(char *s1, char *s2);
@@ -398,7 +442,6 @@ char	**fill_type(int type, t_struct *main, int start, int end);
 char	**fill_table(t_struct *main, int start, int end);
 int		check_nothing(char *input);
 int		is_heredoc(char *input, int i);
-char	*check_variables(t_variables *variables, char **f_envp, char *input);
 int		parsing(t_struct *main, char *input);
 
 /* ************* Parsing to Executing ************** */
