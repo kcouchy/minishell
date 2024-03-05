@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/05 19:57:54 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 23:07:43 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -405,27 +405,76 @@ void	alloc_tables(t_parsing *parse, char *input);
 void	check_commands(t_parsing *parse);
 
 /**
- * @brief 
- * 
- * @param variables 
- * @param f_envp 
- * @param input 
+ * @brief Reads the whole input, and if it finds a '$', looks in f_envp to
+ * see if the word is an environment variable, and replaces the word with it.
+ * _copy_variable(): Duplicates the string after the equal symbol of the
+ * correct environment variable if it finds it.
+ * _search_variable(): Copies the beginning of the input and concatenates it
+ * with the environment variable if it finds it, or with a '$' if not.
+ * _check_quotes(): Checks if a quote is closed or not, and if the last quote
+ * is an unclosed single quote, it ignores the '$' until the closed single
+ * quote or the end.
+ * _replace_input(): If there is a '$' and it's not in a single quote string
+ * and it's not right after a heredoc, replaces the dollar word with the
+ * appropriate environment variable if it finds it.
+ * @param variables Structure that helps to replace variables.
+ * @param f_envp Copy of the real envp table.
+ * @param input The string created by readline and then by check_variables().
  * @return char* 
  */
 char	*check_variables(t_variables *variables, char **f_envp, char *input);
 
+/* ************************************************************************** */
+/* lexing_utils.c															  */
+/* ************************************************************************** */
+
+/**
+ * @brief Returns 1 if it is a redirection, a pipe or a whitespace. Else 0.
+ * @param c A char.
+ * @return int 
+ */
+int		is_separator(char c);
+
+/**
+ * @brief Returns 1 if it is a whitespace. Otherwise 0.
+ * @param c A char.
+ * @return int 
+ */
+int		is_space(char c);
+
+/**
+ * @brief Returns 1 if it is a quote. Otherwise 0.
+ * @param c A char.
+ * @return int 
+ */
+int		is_quote(char c);
+
+/**
+ * @brief Compares the two strings s1 and s2. Returns an integer less than,
+ * equal to, or greater  than  zero if s1 is found, respectively, to be less
+ * than, to match, or be greater than s2.
+ * @param s1 The first string
+ * @param s2 The second string
+ * @return int 
+ */
+int		ft_strcmp(char *s1, char *s2);
+
+/**
+ * @brief If there is no command in the types table, the type of the first
+ * non-separator token is command.
+ * @param parse Structure indicating each token associated with its type.
+ * @param i The index of the currently tested token.
+ */
+void	is_argument_a_command(t_parsing *parse, int i);
+
+
 /******************************************************************************/
-/*********************************** Autre ************************************/
+/**************************** Parsing to Executing ****************************/
 /******************************************************************************/
 
 /* ************************************************************************** */
 /* utils.c																	  */
 /* ************************************************************************** */
-int		is_separator(char c);
-int		is_space(char c);
-int		is_quote(char c);
-int		ft_strcmp(char *s1, char *s2);
-void	is_argument_a_command(t_parsing *parse, int i);
 char	*ft_strndup(char *s, int start, int end, char *returned);
 char	*var_strdup(char *f_envp);
 char	*var_strjoin(char *s1, char *s2);

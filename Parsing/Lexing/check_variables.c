@@ -6,13 +6,13 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:39:03 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/05 19:59:19 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 20:54:07 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	*_copy_variable(char **f_envp, char *input, int start, int i)
+static char	*_copy_variable(char **f_envp, char *input, int start, int i)
 {
 	int		j;
 	int		k;
@@ -37,7 +37,7 @@ char	*_copy_variable(char **f_envp, char *input, int start, int i)
 	return (var_strdup(""));
 }
 
-int	_search_variable(t_variables *var, char **f_envp, int i)
+static int	_search_variable(t_variables *var, char **f_envp, int i)
 {
 	int		start;
 	char	*buffer;
@@ -63,7 +63,7 @@ int	_search_variable(t_variables *var, char **f_envp, int i)
 	return (0);
 }
 
-int	_check_quotes(t_variables *var, int i)
+static int	_check_quotes(t_variables *var, int i)
 {
 	if (var->left[i] && var->left[i] == '"')
 	{
