@@ -6,36 +6,42 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 15:59:31 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/05 11:52:16 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/05 15:18:38 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static int	_red_inputs(t_pipex *pipex, t_args *temp)
+static int	_red_inputs_open(t_args *temp, int i)
 {
 	int		fd;
+
+	fd = open(temp->input_files[i], O_RDONLY);
+	if (fd == -1)
+		return (EXIT_FAILURE);
+	close(fd);
+	if (temp->input)
+	{
+		free(temp->input);
+		temp->input = NULL;
+	}
+	temp->input = ft_strdup(temp->input_files[i]);
+	if (!temp->input)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
+static int	_red_inputs(t_pipex *pipex, t_args *temp)
+{
 	int		i;
 	int		hd_out;
 
-	fd = -1;
 	i = -1;
 	while (temp->input_files[++i])
 	{
-		fd = -1;
 		if (ft_strcmp(temp->input_redirs[i], "<") == 0)
 		{
-			fd = open(temp->input_files[i], O_RDONLY);
-			if (fd == -1)
-				return (EXIT_FAILURE);
-			close(fd);
-			if (temp->input)
-			{
-				free(temp->input);
-				temp->input = NULL;
-			}
-			temp->input = ft_strdup(temp->input_files[i]);
-			if (!temp->input)
+			if (_red_inputs_open(temp, i) == EXIT_FAILURE)
 				return (EXIT_FAILURE);
 		}
 		else if (ft_strcmp(temp->input_redirs[i], "<<") == 0)

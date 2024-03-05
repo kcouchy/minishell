@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 08:58:42 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/05 13:28:24 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/05 15:19:01 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,3 @@ int	parsing(t_struct *main, char *input)
 	}
 	return (EXIT_SUCCESS);
 }
-
-// ecrire les commentaires de la bibliotheque
-
-// echo -n -nnn bonjour les amis -n > test.txt | cat -e >bonjour.txt                 >salut.txt
-// echo -n bonjour -n -nn | cat -e Makefile minishell.c Parsing/parsing.c > test.txt
-// echo "$USER" '$USER' "'$USER'" '"$USER"' $? salut
-// echo "'$USER'" |>bonjour.txt

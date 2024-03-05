@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:27:08 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/05 12:44:54 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/05 14:55:10 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,11 @@ void	builtins_parsing(t_parsing *parse)
 
 int	builtins_executing(t_pipex *pipex, t_args *arg, t_struct *main)
 {
+	struct sigaction	act;
+
+	ft_bzero(&act, sizeof(act));
+	act.sa_handler = SIG_IGN;
+	sigaction(SIGPIPE, &act, NULL);
 	if (!ft_strcmp(arg->command_name, "echo"))
 		return (ft_echo(arg));
 	else if (!ft_strcmp(arg->command_name, "cd") && !arg->flags)
