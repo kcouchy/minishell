@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/05 18:38:46 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 23:00:30 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,11 +147,12 @@ typedef struct s_struct
 /* ************************************************************************** */
 
 /**
- * @brief 
- * 
- * @param var 
- * @param main 
- * @return char* 
+ * @brief Extract a variable from f_envp. Called in ft_cd -> _ft_home to 
+ * extract the home variable and stock it in arg_args in case the input is 
+ * cd ~*
+ * @param var Variable to extract (HOME=)
+ * @param main structure containing main->common.fenvp
+ * @return char* malloced string containing the contents of the variable $HOME
  */
 char	*ex_fenvp(char *var, t_struct *main);
 
@@ -193,11 +194,13 @@ void	ft_builtin_fail(t_pipex *pipex, t_args *arg, t_struct *main);
 /* ************************************************************************** */
 
 /**
- * @brief 
- * 
- * @param arg 
- * @param main 
- * @return int 
+ * @brief Builtin for cd. Most cases are handled by chdir.
+ * except for command cases "cd ~*" and "cd" which are prepared in _ft_home and
+ * stocked in arg->args.
+ * The variable $PWD is also updated in main->common.fenvp.
+ * @param arg Current node in the linked list containing current command info.
+ * @param main Pointer to the overall finishell structure.
+ * @return int return value : EXIT_SUCCESS/FAILURE/ENOMEM
  */
 int		ft_cd(t_args *arg, t_struct *main);
 
@@ -220,7 +223,7 @@ int		echo_parsing(t_parsing *parse, int i);
  * flag.
  * 
  * @param arg Current node in the linked list containing current command info.
- * @return int 
+ * @return int EXIT_SUCCESS
  */
 int		ft_echo(t_args *arg);
 
@@ -229,10 +232,11 @@ int		ft_echo(t_args *arg);
 /* ************************************************************************** */
 
 /**
- * @brief 
- * 
- * @param main 
- * @return int 
+ * @brief Prints the contents of main->common.fenvp, except for the variable "?"
+ * and any other variables that are not defined (they do not contain an "=") to
+ * replicate bash behaviour.
+ * @param main Pointer to the overall finishell structure.
+ * @return int EXIT_SUCCESS
  */
 int		ft_env(t_struct *main);
 
@@ -297,32 +301,39 @@ char	**export_parsing(t_struct *main, int start, int end);
 /* ************************************************************************** */
 
 /**
- * @brief 
+ * @brief Utility to calculate the length of a string array.
  * 
- * @param tab 
- * @return int 
+ * @param tab input string array
+ * @return int number of strings in the array; 0 if !tab
  */
 int		ft_tablen(char **tab);
 
 /**
- * @brief 
+ * @brief Utility to return the index of an equals sign '=' in a string.
+ * Used to find '=' in f_envp variables
  * 
- * @param f_envp 
- * @return int 
+ * @param f_envp input string
+ * @return int index of '=' if found, 
+ * will return strlen(f_envp) if no '=' is present
  */
 int		ft_find_eq(char *f_envp);
 
 /**
- * @brief 
+ * @brief Utility to return the index of a string in the f_envp array matching
+ * a variable input *arg
  * 
- * @param arg 
- * @param f_envp 
- * @return int 
+ * @param arg string to search for
+ * @param f_envp string array
+ * @return int returns the index of the matching string in the array,
+ * will return -1 if no match is found
  */
 int		find_arg(char *arg, char **f_envp);
 
 /**
- * @brief 
+ * @brief Utility to realloc a string array to add one extra string pointer, 
+ * initialised to NULL.
+ * All of the contents of the initial string array tab are copied to the new 
+ * output string array, and tab is freed.
  * 
  * @param tab 
  * @return char** 
@@ -330,11 +341,13 @@ int		find_arg(char *arg, char **f_envp);
 char	**ft_realloc(char **tab);
 
 /**
- * @brief 
+ * @brief Function to modify f_envp. Called in the ft_export function.
+ * If the argument arg is present, then it is modified, otherwise it is added 
+ * to the end of f_envp (after a realloc).
  * 
- * @param arg 
- * @param f_envp 
- * @return int 
+ * @param arg variable to modify/add
+ * @param f_envp f_evnp string array
+ * @return int EXIT_SUCCESS/FAILURE
  */
 int		ft_mod_fevnp(char *arg, char ***f_envp);
 
@@ -343,10 +356,11 @@ int		ft_mod_fevnp(char *arg, char ***f_envp);
 /* ************************************************************************** */
 
 /**
- * @brief 
+ * @brief Function to print the current folder. Will use the function getcwd,
+ * if this fails, will print the path stored at main->common.pwd.
  * 
- * @param main 
- * @return int 
+ * @param main Pointer to the overall finishell structure.
+ * @return int EXIT_SUCCESS/ENOMEM
  */
 int		ft_pwd(t_struct *main);
 
@@ -423,10 +437,10 @@ char	*err_str(char *s1, char *s2, char *s3, char *s4);
 /**
  * @brief 	rl_on_new_line();
  * 			//needed to reshow prompt
-			rl_replace_line("", 1);
-			//empties readline buffer in case there's something before the ^C
-			rl_redisplay();
-			//effectively forces the prompt to redisplay before you type
+ * 			rl_replace_line("", 1);
+ * 			//empties readline buffer in case there's something before the ^C
+ * 			rl_redisplay();
+ * 			//effectively forces the prompt to redisplay before you type
  * 
  * @param signal 
  */

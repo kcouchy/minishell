@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/05 20:00:14 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:30:45 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,13 +308,13 @@ int		executing(t_struct *main);
  * @brief Handles the open/close of input files. Sets (and if present, 
  * overwrites) the final input file in args_list->input.
 */
-static int	_red_inputs_open(t_args *temp, int i);
+// static int	_red_inputs_open(t_args *temp, int i);
 
 /**
  * @brief Handles the inputs, looping through the args_list->input_redirs table.
  * Launches _red_inputs_open in the case of <, and ft_heredoc in the case of <<
  */
-static int	_red_inputs(t_pipex *pipex, t_args *temp);
+// static int	_red_inputs(t_pipex *pipex, t_args *temp);
 
 /**
  * @brief Handles the outputs, looping through the args_list->output_redirs 
@@ -325,7 +325,7 @@ static int	_red_inputs(t_pipex *pipex, t_args *temp);
  * The flag temp->output_type is set to 0/1 to send to pipex so the final 
  * redirections are correct
  */
-static int	_red_outputs(t_args *temp, int *i);
+// static int	_red_outputs(t_args *temp, int *i);
 
 /**
  * @brief Handles inputs and outputs, looping through the args_list list.

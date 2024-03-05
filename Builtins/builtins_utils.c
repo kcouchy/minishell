@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 17:27:08 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/05 14:55:10 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:52:06 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ char	*ex_fenvp(char *var, t_struct *main)
 	i = 0;
 	j = 0;
 	output = NULL;
-	if (main->args_list->args)
-		free(main->args_list->args);
 	while (main->common.f_envp[i])
 	{
 		j = ft_find_eq(main->common.f_envp[i]) + 1;

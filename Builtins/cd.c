@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:33:22 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/04 18:43:52 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 23:00:40 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,25 @@ static int	_cd_error(t_args *arg)
 	return (EXIT_FAILURE);
 }
 
+static void	_ft_home(t_args *arg, t_struct *main)
+{
+	char	*temp;
+
+	if (!arg->args)
+		arg->args = ex_fenvp("HOME=", main);
+	else if (arg->args[0] == '~')
+	{
+		temp = ft_strjoinf(ex_fenvp("HOME=", main), arg->args + 1, 1);
+		free(arg->args);
+		arg->args = temp;
+	}
+}
+
 int	ft_cd(t_args *arg, t_struct *main)
 {
 	char	*new_pwd;
 
-	if (!arg->args
-		|| (arg->command_table[1] && !strcmp(arg->command_table[1], "~")))
-		arg->args = ex_fenvp("HOME=", main);
+	_ft_home(arg, main);
 	if (errno == MALLOC_ERROR)
 		return (errno);
 	if (arg->args[0] == '\0')
