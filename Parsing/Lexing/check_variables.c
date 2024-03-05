@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:39:03 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/04 18:30:51 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 08:58:59 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,22 +81,29 @@ int	check_quotes(t_variables *var, int i)
 	return (i);
 }
 
-int	is_heredoc(char *input, int i)
-{
-	while (i > -1 && is_quote(input[i]))
-		i--;
-	while (i > -1 && is_space(input[i]))
-		i--;
-	if (i > -1 && input[i] == '<' && input[i - 1] == '<')
-		return (1);
-	return (0);
-}
-
-char	*check_variables(t_variables *var, char **f_envp, char *input)
+static void	_replace_input(t_variables *var, char **f_envp)
 {
 	int		i;
 
 	i = 0;
+	while (var->left[i])
+	{
+		i = check_quotes(var, i);
+		if (var->left[i] == '$' && !is_heredoc(var->left, i - 1))
+		{
+			i = search_variable(var, f_envp, i + 1);
+			if (errno == MALLOC_ERROR)
+				return ;
+		}
+		else if (var->left[i])
+			i++;
+	}
+	if (var->is_there_a_variable)
+		var->str = var_strjoin(var->str, var->left);
+}
+
+char	*check_variables(t_variables *var, char **f_envp, char *input)
+{
 	var->left = ft_strdup(input);
 	free(input);
 	if (errno == MALLOC_ERROR)
@@ -106,24 +113,9 @@ char	*check_variables(t_variables *var, char **f_envp, char *input)
 		return (err_str(var->left, NULL, NULL, NULL));
 	var->quote = 0;
 	var->is_there_a_variable = 0;
-	while (var->left[i])
-	{
-		i = check_quotes(var, i);
-		if (var->left[i] == '$' && !is_heredoc(var->left, i - 1))
-		{
-			i = search_variable(var, f_envp, i + 1);
-			if (errno == MALLOC_ERROR)
-				return (err_str(var->str, var->left, NULL, NULL));
-		}
-		else if (var->left[i])
-			i++;
-	}
-	if (var->is_there_a_variable)
-	{
-		var->str = var_strjoin(var->str, var->left);
-		if (errno == MALLOC_ERROR)
-			return (err_str(var->str, var->left, NULL, NULL));
-	}
+	_replace_input(var, f_envp);
+	if (errno == MALLOC_ERROR)
+		return (err_str(var->str, var->left, NULL, NULL));
 	if (var->str[0] == '\0')
 	{
 		free(var->str);

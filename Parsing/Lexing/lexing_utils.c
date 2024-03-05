@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 11:57:46 by lribette          #+#    #+#             */
-/*   Updated: 2024/02/26 15:53:12 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/05 12:08:00 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	is_separator(char c)
 
 int	is_space(char c)
 {
-	if ((c > 9 && c < 13) || c == ' ')
+	if ((c >= 9 && c <= 13) || c == ' ')
 		return (1);
 	return (0);
 }
