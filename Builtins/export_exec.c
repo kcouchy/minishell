@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:10:57 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/05 13:06:02 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/06 09:47:11 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ static int	_print_export(char **f_envp)
 	char	**export;
 
 	i = -1;
+	if (!f_envp)
+		return (EXIT_SUCCESS);
 	export = malloc(sizeof(char *) * (ft_tablen(f_envp) + 1));
 	if (!export)
 		return (EXIT_FAILURE);

@@ -6,7 +6,7 @@
 #    By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
-#    Updated: 2024/03/05 17:41:32 by lribette         ###   ########.fr        #
+#    Updated: 2024/03/06 10:00:32 by kcouchma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,7 +60,7 @@ all: $(NAME)
 
 $(NAME) : $(OBJ) $(H_FILES)
 	$(MAKE) -C ./Pipex/libft/ bonus
-	$(CC) -o $@ $(OBJ) ./Pipex/libft/libft.a -lreadline
+	$(CC) -o $@ $(OBJ) $(CCFLAGS) ./Pipex/libft/libft.a -lreadline
 
 %.o: %.c
 	$(CC) -c -o $@ $< $(CCFLAGS) $(INC_FILES)

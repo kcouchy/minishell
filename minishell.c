@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:13:20 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/05 13:02:18 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/06 09:02:45 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ char	**finishell_env(char **envp)
 
 	f_envp = NULL;
 	i = 0;
+	if (!envp)
+		return (NULL);
 	while (envp[i])
 		i++;
 	if (!i)
@@ -80,16 +82,17 @@ static int	_ft_loop(t_struct *main)
 	if (!input)
 	{
 		write(1, "exit\n", 5);
-		return (0);
+		return (1);
 	}
 	_finishell_core(main, input);
 	if (errno == MALLOC_ERROR)
 	{
 		main->exit_code = errno;
-		return (0);
+		printf ("\x1b[38;2;136;87;66;1mfinishell 💩: malloc failure\n");
+		return (errno);
 	}
 	main->common.f_envp = ch_exit_code(main->exit_code, main->common.f_envp);
-	return (1);
+	return (EXIT_SUCCESS);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -110,7 +113,7 @@ int	main(int argc, char **argv, char **envp)
 		errno = 0;
 		signal(SIGINT, &sigint_handler);
 		signal(SIGQUIT, SIG_IGN);
-		if (!_ft_loop(&main))
+		if (_ft_loop(&main))
 			break ;
 	}
 	rl_clear_history();

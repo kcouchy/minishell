@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 17:46:56 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/04 18:25:41 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/06 09:29:27 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	ft_env(t_struct *main)
 	i = 0;
 	j = 0;
 	f_envp = main->common.f_envp;
+	if (!f_envp)
+		return (EXIT_SUCCESS);
 	while (f_envp[i])
 	{
 		j = ft_find_eq(f_envp[i]);

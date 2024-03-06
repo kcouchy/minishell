@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 12:43:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/05 12:55:36 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/06 09:17:33 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	find_arg(char *arg, char **f_envp)
 	int	i;
 
 	i = 0;
+	if (!f_envp)
+		return (-1);
 	while (f_envp[i])
 	{
 		if (strncmp(arg, f_envp[i], ft_find_eq(arg)) == 0)
@@ -65,7 +67,8 @@ char	**ft_realloc(char **tab)
 	}
 	output[i] = NULL;
 	output[i + 1] = NULL;
-	free(tab);
+	if (tab)
+		free(tab);
 	return (output);
 }
 

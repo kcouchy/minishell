@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_variables.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:39:03 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/05 20:54:07 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/06 09:29:32 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ static char	*_copy_variable(char **f_envp, char *input, int start, int i)
 	int		k;
 	int		s;
 
-	if (!f_envp || !input)
+	if (!input)
 		return (NULL);
+	if (!f_envp)
+		return (var_strdup(""));
 	j = 0;
 	while (f_envp[j])
 	{
