@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/05 23:15:46 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/06 08:26:00 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,7 +295,6 @@ char	**export_parsing(t_struct *main, int start, int end);
 
 /**
  * @brief Utility to calculate the length of a string array.
- * 
  * @param tab input string array
  * @return int number of strings in the array; 0 if !tab
  */
@@ -304,7 +303,6 @@ int		ft_tablen(char **tab);
 /**
  * @brief Utility to return the index of an equals sign '=' in a string.
  * Used to find '=' in f_envp variables
- * 
  * @param f_envp input string
  * @return int index of '=' if found, 
  * will return strlen(f_envp) if no '=' is present
@@ -314,7 +312,6 @@ int		ft_find_eq(char *f_envp);
 /**
  * @brief Utility to return the index of a string in the f_envp array matching
  * a variable input *arg
- * 
  * @param arg string to search for
  * @param f_envp string array
  * @return int returns the index of the matching string in the array,
@@ -327,7 +324,6 @@ int		find_arg(char *arg, char **f_envp);
  * initialised to NULL.
  * All of the contents of the initial string array tab are copied to the new 
  * output string array, and tab is freed.
- * 
  * @param tab 
  * @return char** 
  */
@@ -337,7 +333,6 @@ char	**ft_realloc(char **tab);
  * @brief Function to modify f_envp. Called in the ft_export function.
  * If the argument arg is present, then it is modified, otherwise it is added 
  * to the end of f_envp (after a realloc).
- * 
  * @param arg variable to modify/add
  * @param f_envp f_evnp string array
  * @return int EXIT_SUCCESS/FAILURE
@@ -351,7 +346,6 @@ int		ft_mod_fevnp(char *arg, char ***f_envp);
 /**
  * @brief Function to print the current folder. Will use the function getcwd,
  * if this fails, will print the path stored at main->common.pwd.
- * 
  * @param main Pointer to the overall finishell structure.
  * @return int EXIT_SUCCESS/ENOMEM
  */
@@ -382,6 +376,10 @@ int		ft_unset(t_args *arg, t_struct *main);
 /*********************************** Lexing ***********************************/
 /******************************************************************************/
 
+/* ************************************************************************** */
+/* alloc_tables.c															  */
+/* ************************************************************************** */
+
 /**
  * @brief Allocates two tables.
  * The first one is a char ** and stocks each word/separator.
@@ -398,6 +396,10 @@ int		ft_unset(t_args *arg, t_struct *main);
  * @param input The string created by readline and then by check_variables().
  */
 void	alloc_tables(t_parsing *parse, char *input);
+
+/* ************************************************************************** */
+/* check_commands.c															  */
+/* ************************************************************************** */
 
 /**
  * @brief Prints error messages to reproduce bash behaviour and changes the
@@ -417,6 +419,10 @@ void	alloc_tables(t_parsing *parse, char *input);
  * @param parse Structure indicating each token associated with its type.
  */
 void	check_commands(t_parsing *parse);
+
+/* ************************************************************************** */
+/* check_variables.c														  */
+/* ************************************************************************** */
 
 /**
  * @brief Reads the whole input, and if it finds a '$', looks in f_envp to
@@ -481,22 +487,77 @@ int		ft_strcmp(char *s1, char *s2);
  */
 void	is_argument_a_command(t_parsing *parse, int i);
 
+/* ************************************************************************** */
+/* var_utils.c																  */
+/* ************************************************************************** */
+
+/**
+ * @brief Duplicates a string from start to end.
+ * @param s The string we want to duplicate.
+ * @param start The starting index.
+ * @param end The ending index.
+ * @param returned The string equal to the string returned by the function.
+ * @return char* 
+ */
+char	*ft_strndup(char *s, int start, int end, char *returned);
+
+/**
+ * @brief Duplicates an environment variable after the equal symbol.
+ * @param f_envp The environment variable concerned.
+ * @return char* 
+ */
+char	*var_strdup(char *f_envp);
+
+/**
+ * @brief Classic ft_strjoin, but it frees s1.
+ * @param s1 The first string.
+ * @param s2 The second string.
+ * @return char* 
+ */
+char	*var_strjoin(char *s1, char *s2);
+
+/**
+ * @brief If the last token was a heredoc, returns 1. Otherwise returns 0.
+ * @param input The string created by readline and then by check_variables().
+ * @param i The current index in the input.
+ * @return int 
+ */
+int		is_heredoc(char *input, int i);
+
+/* ************************************************************************** */
+/* what_type.c																  */
+/* ************************************************************************** */
+
+/**
+ * @brief Duplicates a token from the input and parses it into a separator
+ * type or a word type.
+ * _calculating_gap(): Iterates i while the current character is not a
+ * whitespace and is of the same type as the starting character. If there is a
+ * quotation mark, it iterates i until it finds the closing quotation mark.
+ * _ft_word_dup(): Duplicates the whole string except the quotes.
+ * @param parse Structure indicating each token associated with its type.
+ * @param input The string created by readline and then by check_variables().
+ * @param i The current index in the input.
+ * @param separator 1 if it must be a separator. 0 if not.
+ * @return int 
+ */
+int		what_type(t_parsing *parse, char *input, int i, int separator);
 
 /******************************************************************************/
 /**************************** Parsing to Executing ****************************/
 /******************************************************************************/
 
 /* ************************************************************************** */
-/* utils.c																	  */
+/* fill_strings.c															  */
 /* ************************************************************************** */
-char	*ft_strndup(char *s, int start, int end, char *returned);
-char	*var_strdup(char *f_envp);
-char	*var_strjoin(char *s1, char *s2);
+
+
+
+
 void	ft_write_join(char *error_type, char *cmd, char *arg, char *str);
 void	ft_exit_error(t_pipex *pipex, t_struct *main, int exit_code);
 
 /* ******************** Lexing ******************** */
-int		what_type(t_parsing *parse, char *input, int i, int separator);
 
 /* ******************** Parsing ******************** */
 char	*ft_argjoin(char *s1, char *s2);
@@ -504,7 +565,6 @@ void	fill_strings(t_args *cmd, t_struct *main, int start, int end);
 char	**fill_type(int type, t_struct *main, int start, int end);
 char	**fill_table(t_struct *main, int start, int end);
 int		check_nothing(char *input);
-int		is_heredoc(char *input, int i);
 int		parsing(t_struct *main, char *input);
 
 /* ************* Parsing to Executing ************** */
