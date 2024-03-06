@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   fill_strings.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:41:09 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/05 21:52:07 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/06 10:22:22 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 
-char	*ft_argjoin(char *s1, char *s2)
+char	*_ft_argjoin(char *s1, char *s2)
 {
 	char	*output;
 	int		i;
@@ -72,10 +72,10 @@ void	fill_strings(t_args *cmd, t_struct *main, int start, int end)
 	cmd->args = ft_strdup("");
 	while (start != end)
 	{
-		cmd->whole_cmd = ft_argjoin(cmd->whole_cmd, main->parse.argv[start]);
+		cmd->whole_cmd = _ft_argjoin(cmd->whole_cmd, main->parse.argv[start]);
 		if (main->parse.types[start] == ARGUMENT)
 		{
-			cmd->args = ft_argjoin(cmd->args, main->parse.argv[start]);
+			cmd->args = _ft_argjoin(cmd->args, main->parse.argv[start]);
 			number_of_args++;
 		}
 		start++;

@@ -6,13 +6,13 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 10:56:04 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/03 18:08:02 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/06 09:12:24 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./../minishell.h"
 
-void	init_arg(t_args *cmd, t_struct *main, int start, int end)
+static void	_init_arg(t_args *cmd, t_struct *main, int start, int end)
 {
 	int	s;
 
@@ -38,14 +38,14 @@ void	init_arg(t_args *cmd, t_struct *main, int start, int end)
 	cmd->output_type = 0;
 }
 
-t_args	*ft_structnew(t_struct *main, int start, int end)
+static t_args	*_ft_structnew(t_struct *main, int start, int end)
 {
 	t_args	*add2list;
 
 	add2list = malloc(sizeof(t_args));
 	if (!add2list)
 		return (NULL);
-	init_arg(add2list, main, start, end);
+	_init_arg(add2list, main, start, end);
 	if (errno == MALLOC_ERROR)
 	{
 		main->parse.error = errno;
@@ -73,7 +73,7 @@ t_args	*parsing_to_executing(t_struct *main)
 		start = end;
 		while (end < main->parse.argc && main->parse.types[end] != PIPE)
 			end++;
-		temp = ft_structnew(main, start, end);
+		temp = _ft_structnew(main, start, end);
 		if (!temp)
 			return (NULL);
 		if (i != 0)

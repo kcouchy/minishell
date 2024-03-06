@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 09:11:50 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/06 08:26:00 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/06 10:23:17 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -551,27 +551,89 @@ int		what_type(t_parsing *parse, char *input, int i, int separator);
 /* fill_strings.c															  */
 /* ************************************************************************** */
 
-
-
-
-void	ft_write_join(char *error_type, char *cmd, char *arg, char *str);
-void	ft_exit_error(t_pipex *pipex, t_struct *main, int exit_code);
-
-/* ******************** Lexing ******************** */
-
-/* ******************** Parsing ******************** */
-char	*ft_argjoin(char *s1, char *s2);
+/**
+ * @brief Duplicates the whole command (all tokens of the command), and all
+ * tokens with an argument type for the args string.
+ * _ft_argjoin(): Classic ft_strjoin, but with a space at the end, and s1 is
+ * freed.
+ * _remove_space(): Reallocates str, removing the space at the end of the
+ * string.
+ * @param cmd Current node in the linked list containing current command info.
+ * @param main Pointer to the overall finishell structure.
+ * @param start Index at the beginning of the command.
+ * @param end Index at the end of the command.
+ */
 void	fill_strings(t_args *cmd, t_struct *main, int start, int end);
-char	**fill_type(int type, t_struct *main, int start, int end);
-char	**fill_table(t_struct *main, int start, int end);
-int		check_nothing(char *input);
-int		parsing(t_struct *main, char *input);
 
-/* ************* Parsing to Executing ************** */
+/* ************************************************************************** */
+/* fill_type.c																  */
+/* ************************************************************************** */
+
+/**
+ * @brief Returns a double table containing only tokens of the type given in
+ * parameter.
+ * _count_type(): Returns the number of times a token is of the same type as
+ * the type given in the parameter.
+ * @param type The type we want.
+ * @param main Pointer to the overall finishell structure.
+ * @param start Index at the beginning of the command.
+ * @param end Index at the end of the command.
+ * @return char** 
+ */
+char	**fill_type(int type, t_struct *main, int start, int end);
+
+/**
+ * @brief Returns a double table containing tokens of all types except
+ * redirection types.
+ * _not_redirections(): Returns the number of times a token is not a
+ * redirection.
+ * _dup_table(): Duplicates all tokens that are not redirections.
+ * @param main Pointer to the overall finishell structure.
+ * @param start Index at the beginning of the command.
+ * @param end Index at the end of the command.
+ * @return char** 
+ */
+char	**fill_table(t_struct *main, int start, int end);
+
+/* ************************************************************************** */
+/* parsing_to_executing.c													  */
+/* ************************************************************************** */
+
+/**
+ * @brief Duplicates each command in a linked list to be as clean as possible
+ * for the executing part. Each command is placed at the end of the linked list
+ * for pipex.
+ * _init_arg(): List of all strings and double tables initialised in the new
+ * node of the linked list: The whole command string, the command table
+ * containing all tokens except redirections, the command name string, the
+ * flags table (options), the arguments string, four input/output
+ * redirection/file tables, a boolean to check if the command name is a
+ * builtin, the final input and output redirection strings, and a boolean to
+ * check if an output is of type trunc or append.
+ * _ft_structnew(): initialises a node in the linked list and fills the
+ * structure.
+ * @param main Pointer to the overall finishell structure.
+ * @return t_args* 
+ */
 t_args	*parsing_to_executing(t_struct *main);
 
-int		is_builtin(char *command);
-char	**ch_exit_code(int exit_code, char **f_envp);
+/* ************************************************************************** */
+/* parsing.c																  */
+/* ************************************************************************** */
+
+/**
+ * @brief Replaces dollar words with environment variables, allocates double
+ * tables to lex the input and after, initialises a linked list to pass all
+ * information to the executing part.
+ * _check_nothing(): Returns 1 if there is nothing or only whitespaces. Returns
+ * 0 in the other case.
+ * _check_error(): If there is a parsing error (e.g. syntax error) or a malloc
+ * error detected by errno, returns the error number.
+ * @param main Pointer to the overall finishell structure.
+ * @param input The string created by readline and then by check_variables().
+ * @return int 
+ */
+int		parsing(t_struct *main, char *input);
 
 /******************************************************************************/
 /******************************************************************************/
@@ -579,13 +641,42 @@ char	**ch_exit_code(int exit_code, char **f_envp);
 /******************************************************************************/
 /******************************************************************************/
 
-/*ft_free.c*/
-void	free_table(char **tab);
+/* ************************************************************************** */
+/* ft_free.c																  */
+/* ************************************************************************** */
+
+/**
+ * @brief Frees the argv double table and the types int table.
+ * @param parse Structure indicating each token associated with its type.
+ */
 void	ft_free_parsing(t_parsing *parse);
+
+/**
+ * @brief Frees the double table.
+ * @param tab A double table.
+ */
+void	free_table(char **tab);
+
+/**
+ * @brief Deletes all nodes in the linked list and all their contents.
+ * @param cmd Current node in the linked list containing current command info.
+ */
 void	ft_structclear(t_args **cmd);
+
+/**
+ * @brief Frees all the strings that are not NULL.
+ * @param s1 The first string.
+ * @param s2 The second string.
+ * @param s3 The third string.
+ * @param s4 The fourth string.
+ * @return char* 
+ */
 char	*err_str(char *s1, char *s2, char *s3, char *s4);
 
-/*minishell.c*/
+/* ************************************************************************** */
+/* minishell.c																  */
+/* ************************************************************************** */
+
 /**
  * @brief 	rl_on_new_line();
  * 			//needed to reshow prompt
@@ -597,5 +688,50 @@ char	*err_str(char *s1, char *s2, char *s3, char *s4);
  * @param signal 
  */
 void	sigint_handler(int signal);
+
+/**
+ * @brief Duplicates the real envp double table and initialises a last string
+ * with the exit code.
+ * @param envp The real envp table.
+ * @return char** 
+ */
+char	**finishell_env(char **envp);
+
+/* ************************************************************************** */
+/* minishell.c																  */
+/* ************************************************************************** */
+
+/**
+ * @brief Returns 1 if the command is a built-in, otherwise 0.
+ * @param command The string supposed to be a command.
+ * @return int 
+ */
+int		is_builtin(char *command);
+
+/**
+ * @brief Frees everything that has been allocated and exits cleanly with the
+ * correct exit code.
+ * @param pipex Structure allowing execution of the execve command.
+ * @param main Pointer to the overall finishell structure.
+ * @param exit_code The exit_code.
+ */
+void	ft_exit_error(t_pipex *pipex, t_struct *main, int exit_code);
+
+/**
+ * @brief Replaces the value of "?=" in f_envp with the current exit_code.
+ * @param exit_code The exit_code.
+ * @param f_envp Copy of the real envp table.
+ * @return char** 
+ */
+char	**ch_exit_code(int exit_code, char **f_envp);
+
+/**
+ * @brief Writes an amazingly beautiful error message 🤩
+ * @param error_type The define at the top of minishell.h.
+ * @param cmd The command name.
+ * @param arg The argument.
+ * @param str The error message associated to the command.
+ */
+void	ft_write_join(char *error_type, char *cmd, char *arg, char *str);
 
 #endif
