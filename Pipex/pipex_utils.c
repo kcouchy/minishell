@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:30:14 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/05 11:02:34 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/06 14:50:27 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,5 +101,14 @@ void	ft_wait_parent(t_pipex *pipex, int nb_commands)
 	{
 		wait(NULL);
 		i++;
+	}
+}
+
+void	ft_closepipe(t_pipex *pipex)
+{
+	if (pipex->pipe_fd[0] != -1)
+	{
+		close(pipex->pipe_fd[0]);
+		close(pipex->pipe_fd[1]);
 	}
 }

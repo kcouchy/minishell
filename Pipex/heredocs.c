@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:51:20 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/05 12:18:56 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/06 14:53:24 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,34 @@
 
 static int	_exit_sigint(t_pipex *pipex, char **line, char *temp_i)
 {
-	close(pipex->hd_temp_fd);
+	if (pipex->hd_temp_fd != -1)
+		close(pipex->hd_temp_fd);
 	free (*line);
 	*line = NULL;
 	pipex->hd_temp_fd = open(temp_i, O_RDWR | O_TRUNC | O_CREAT, 0644);
 	return (EXIT_SIGINT);
 }
 
+static int	_hd_break(char *linecpy, t_args *temp, int i)
+{
+	int	cpy_len;
+
+	cpy_len = ft_strlen(linecpy);
+	if (linecpy[cpy_len - 1] == '\n')
+		linecpy[cpy_len - 1] = '\0';
+	if (ft_strcmp(linecpy, temp->input_files[i]) == 0)
+	{
+		free(linecpy);
+		return (1);
+	}
+	free(linecpy);
+	return (0);
+}
+
 static int	_hd_read(t_pipex *pipex, t_args **temp, char *temp_i, int i)
 {
 	char	*line;
+	char	*line_cpy;
 
 	line = NULL;
 	while (1)
@@ -34,13 +52,10 @@ static int	_hd_read(t_pipex *pipex, t_args **temp, char *temp_i, int i)
 			return (_exit_sigint(pipex, &line, temp_i));
 		if (!line)
 			return (ft_byedoc(pipex, *temp, EXIT_SUCCESS));
-		else if (ft_strncmp(line, "\n", 1) != 0)
-			if (ft_strncmp(line, (*temp)->input_files[i],
-					(ft_strlen(line) - 1)) == 0)
-				break ;
-		write(pipex->hd_temp_fd, line, ft_strlen(line));
-		if (!(*temp)->input_files[i][0] && ft_strncmp(line, "\n", 1) == 0)
+		line_cpy = strdup(line);
+		if (_hd_break(line_cpy, *temp, i) == 1)
 			break ;
+		write(pipex->hd_temp_fd, line, ft_strlen(line));
 		free(line);
 	}
 	free(line);
@@ -87,7 +102,8 @@ int	ft_heredoc(t_pipex *pipex, t_args **temp, int i)
 		return (_exit_fail(&char_i, &temp_i));
 	hd_read_out = _hd_read(pipex, temp, temp_i, i);
 	free(char_i);
-	close(pipex->hd_temp_fd);
+	if (pipex->hd_temp_fd != -1)
+		close(pipex->hd_temp_fd);
 	signal(SIGINT, &sigint_handler);
 	return (hd_read_out);
 }

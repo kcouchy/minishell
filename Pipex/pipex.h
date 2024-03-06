@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/06 09:29:26 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/06 14:52:39 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,6 +249,14 @@ void	ft_execve(t_pipex *pipex, t_args *child_arg, t_struct *main);
  * and the int to store the exit code (pipex->exit_code)
  */
 void	ft_wait_parent(t_pipex *pipex, int nb_commands);
+
+/**
+ * @brief Tiny utility for the norm to close the pipe in ft_forkchild if it's 
+ * not needed (in the case of no command).
+ * 
+ * @param pipex pipex structure containing pipe_fds
+*/
+void	ft_closepipe(t_pipex *pipex);
 
 /******************************************************************************/
 /* pipex.c                                                                    */
