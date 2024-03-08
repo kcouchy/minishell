@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/06 14:52:39 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/08 14:55:09 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*gnl(int fd);
  * args_list node.
  * @return int exit code of _hd_read()
  */
-int		ft_heredoc(t_pipex *pipex, t_args **temp, int i);
+int		ft_heredoc(t_pipex *pipex, t_args **temp, int i, int arg_num);
 
 /******************************************************************************/
 /* pipex_cmds.c                                                               */
@@ -189,10 +189,11 @@ int		ft_pipex_error(t_pipex *pipex, t_struct *main, int exit_code);
 
 /**
  * @brief Unlinks temp heredoc files "temp_n" (stored in ./Pipex for the 
- * duration of the function). Removes "temp_0" up to "temp_1024".
+ * duration of the function). Removes "temp_0" up to "temp_n" where n = the 
+ * number of commands (main->common.nb_commands = max number of heredocs).
  * @return int to pass SUCCESS/ENOMEM exit codes.
  */
-int		unlink_hds(void);
+int		unlink_hds(t_struct *main);
 
 /******************************************************************************/
 /* pipex.utils.c                                                              */

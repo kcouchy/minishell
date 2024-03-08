@@ -6,7 +6,7 @@
 #    By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
-#    Updated: 2024/03/06 10:00:32 by kcouchma         ###   ########.fr        #
+#    Updated: 2024/03/08 17:21:22 by kcouchma         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ SRC = $(addsuffix .c,$(SRCS))
 OBJ = $(addsuffix .o,$(SRCS))
 
 CC = cc
-CCFLAGS = -Wall -Wextra -Werror -D BUFFER_SIZE=20 -g -O0
+CFLAGS = -Wall -Wextra -Werror -D BUFFER_SIZE=20 -g -O0
 
 NAME = minishell
 
@@ -60,10 +60,10 @@ all: $(NAME)
 
 $(NAME) : $(OBJ) $(H_FILES)
 	$(MAKE) -C ./Pipex/libft/ bonus
-	$(CC) -o $@ $(OBJ) $(CCFLAGS) ./Pipex/libft/libft.a -lreadline
+	$(CC) -o $@ $(OBJ) $(CFLAGS) ./Pipex/libft/libft.a -lreadline
 
 %.o: %.c
-	$(CC) -c -o $@ $< $(CCFLAGS) $(INC_FILES)
+	$(CC) -c -o $@ $< $(CFLAGS) $(INC_FILES)
 
 clean :
 	$(MAKE) -C ./Pipex/libft/ clean

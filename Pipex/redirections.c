@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 15:59:31 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/05 15:18:38 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/08 15:34:44 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ static int	_red_inputs_open(t_args *temp, int i)
 	return (EXIT_SUCCESS);
 }
 
-static int	_red_inputs(t_pipex *pipex, t_args *temp)
+static int	_red_inputs(t_pipex *pipex, t_args *temp, int arg_num)
 {
 	int		i;
-	int		hd_out;
+	int		hd_in;
 
 	i = -1;
 	while (temp->input_files[++i])
@@ -46,31 +46,33 @@ static int	_red_inputs(t_pipex *pipex, t_args *temp)
 		}
 		else if (ft_strcmp(temp->input_redirs[i], "<<") == 0)
 		{
-			hd_out = ft_heredoc(pipex, &temp, i);
-			if (hd_out != EXIT_SUCCESS)
-				return (hd_out);
+			hd_in = ft_heredoc(pipex, &temp, i, arg_num);
+			if (hd_in != EXIT_SUCCESS)
+				return (hd_in);
 		}
 	}
 	return (EXIT_SUCCESS);
 }
 
-static int	_red_outputs(t_args *temp, int *i)
+static int	_red_outputs(t_args *temp)
 {
 	int		fd;
+	int		i;
 
 	fd = -1;
-	while (temp->output_files[++*i])
+	i = -1;
+	while (temp->output_files[++i])
 	{
 		fd = -1;
-		if (ft_strcmp(temp->output_redirs[*i], ">") == 0)
+		if (ft_strcmp(temp->output_redirs[i], ">") == 0)
 		{
-			fd = open(temp->output_files[*i],
+			fd = open(temp->output_files[i],
 					O_WRONLY | O_TRUNC | O_CREAT, 0644);
 			temp->output_type = 0;
 		}
-		else if (ft_strcmp(temp->output_redirs[*i], ">>") == 0)
+		else if (ft_strcmp(temp->output_redirs[i], ">>") == 0)
 		{
-			fd = open(temp->output_files[*i],
+			fd = open(temp->output_files[i],
 					O_WRONLY | O_APPEND | O_CREAT, 0644);
 			temp->output_type = 1;
 		}
@@ -84,28 +86,33 @@ static int	_red_outputs(t_args *temp, int *i)
 int	ft_redirections(t_pipex *pipex, t_struct *main)
 {
 	t_args	*temp;
-	int		i;
+	int		arg_num;
 
 	temp = main->args_list;
+	arg_num = 0;
 	while (temp)
 	{
-		i = -1;
 		if (temp->input_files)
-			if (_red_inputs(pipex, temp) == 1)
+		{
+			if (_red_inputs(pipex, temp, arg_num) == 1)
 				return (EXIT_FAILURE);
+			printf("input %d: %s\n", arg_num, temp->input);
+		}
 		if (temp->output_files)
 		{
-			if (_red_outputs(temp, &i) == 1)
+			if (_red_outputs(temp) == 1)
 				return (EXIT_FAILURE);
 			if (temp->output)
 				free(temp->output);
 			if (temp->output)
 				temp->output = NULL;
-			temp->output = ft_strdup(temp->output_files[i - 1]);
+			temp->output = ft_strdup(temp->output_files[ft_tablen(temp->output_files) - 1]);
 			if (!temp->output)
 				return (EXIT_FAILURE);
+			printf("output %d: %s\n", arg_num, temp->output);
 		}
 		temp = temp->next;
+		arg_num++;
 	}
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:51:20 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/07 11:26:36 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/08 17:25:55 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,29 +79,29 @@ static int	_exit_fail(char **char_i, char **temp_i)
 	return (EXIT_FAILURE);
 }
 
-int	ft_heredoc(t_pipex *pipex, t_args **temp, int i)
+int	ft_heredoc(t_pipex *pipex, t_args **temp, int i, int arg_num)
 {
-	char	*char_i;
-	char	*temp_i;
+	char	*char_argnum;
+	char	*temp_name;
 	int		hd_read_out;
 
 	hd_read_out = 0;
-	char_i = ft_itoa(i);
-	if (!char_i)
+	char_argnum = ft_itoa(arg_num);
+	if (!char_argnum)
 		return (EXIT_FAILURE);
-	temp_i = ft_strjoin("./Pipex/temp_", char_i);
-	if (!temp_i)
-		return (_exit_fail(&char_i, &temp_i));
+	temp_name = ft_strjoin("./Pipex/temp_", char_argnum);
+	if (!temp_name)
+		return (_exit_fail(&char_argnum, &temp_name));
 	if ((*temp)->input)
 		free((*temp)->input);
 	if ((*temp)->input)
 		(*temp)->input = NULL;
-	(*temp)->input = temp_i;
-	pipex->hd_temp_fd = open(temp_i, O_RDWR | O_TRUNC | O_CREAT, 0644);
+	(*temp)->input = temp_name;
+	pipex->hd_temp_fd = open(temp_name, O_RDWR | O_TRUNC | O_CREAT, 0644);
 	if (pipex->hd_temp_fd == -1)
-		return (_exit_fail(&char_i, &temp_i));
-	hd_read_out = _hd_read(pipex, temp, temp_i, i);
-	free(char_i);
+		return (_exit_fail(&char_argnum, &temp_name));
+	hd_read_out = _hd_read(pipex, temp, temp_name, i);
+	free(char_argnum);
 	if (pipex->hd_temp_fd != -1)
 		close(pipex->hd_temp_fd);
 	signal(SIGINT, &sigint_handler);

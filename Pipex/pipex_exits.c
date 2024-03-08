@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 17:37:25 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/06 14:25:44 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/08 14:50:07 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ int	ft_pipex_error(t_pipex *pipex, t_struct *main, int exit_code)
 			exit (errno);
 		exit(exit_code);
 	}
-	unlink_hds();
+	unlink_hds(main);
 	if (errno == MALLOC_ERROR)
 		return (errno);
 	return (exit_code);
 }
 
-int	unlink_hds(void)
+int	unlink_hds(t_struct *main)
 {
 	int		i;
 	char	*filename;
@@ -58,7 +58,7 @@ int	unlink_hds(void)
 	i = 0;
 	filename = NULL;
 	string_i = NULL;
-	while (i < 1024)
+	while (i < main->common.nb_commands)
 	{
 		string_i = ft_itoa(i);
 		if (!string_i)
