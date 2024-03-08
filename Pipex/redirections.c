@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 15:59:31 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/08 15:34:44 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/08 18:55:51 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,36 +83,35 @@ static int	_red_outputs(t_args *temp)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_redirections(t_pipex *pipex, t_struct *main)
+static int	_ft_redirs_recursive(t_pipex *pipex, t_struct *main,
+								t_args *temp, int num)
 {
-	t_args	*temp;
-	int		arg_num;
-
-	temp = main->args_list;
-	arg_num = 0;
-	while (temp)
+	if (temp == NULL)
+		return (EXIT_SUCCESS);
+	if (_ft_redirs_recursive(pipex, main, temp->next, num + 1) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (temp->input_files)
 	{
-		if (temp->input_files)
-		{
-			if (_red_inputs(pipex, temp, arg_num) == 1)
-				return (EXIT_FAILURE);
-			printf("input %d: %s\n", arg_num, temp->input);
-		}
-		if (temp->output_files)
-		{
-			if (_red_outputs(temp) == 1)
-				return (EXIT_FAILURE);
-			if (temp->output)
-				free(temp->output);
-			if (temp->output)
-				temp->output = NULL;
-			temp->output = ft_strdup(temp->output_files[ft_tablen(temp->output_files) - 1]);
-			if (!temp->output)
-				return (EXIT_FAILURE);
-			printf("output %d: %s\n", arg_num, temp->output);
-		}
-		temp = temp->next;
-		arg_num++;
+		if (_red_inputs(pipex, temp, num) == 1)
+			return (EXIT_FAILURE);
+	}
+	if (temp->output_files)
+	{
+		if (_red_outputs(temp) == 1)
+			return (EXIT_FAILURE);
+		if (temp->output)
+			free(temp->output);
+		if (temp->output)
+			temp->output = NULL;
+		temp->output = ft_strdup(temp->output_files[ft_tablen(
+					temp->output_files) - 1]);
+		if (!temp->output)
+			return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
+}
+
+int	ft_redirections(t_pipex *pipex, t_struct *main)
+{
+	return (_ft_redirs_recursive(pipex, main, main->args_list, 0));
 }
