@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 11:51:20 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/06 14:53:24 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/07 11:26:36 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	_hd_read(t_pipex *pipex, t_args **temp, char *temp_i, int i)
 			return (_exit_sigint(pipex, &line, temp_i));
 		if (!line)
 			return (ft_byedoc(pipex, *temp, EXIT_SUCCESS));
-		line_cpy = strdup(line);
+		line_cpy = ft_strdup(line);
 		if (_hd_break(line_cpy, *temp, i) == 1)
 			break ;
 		write(pipex->hd_temp_fd, line, ft_strlen(line));
