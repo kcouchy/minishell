@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 14:17:48 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/08 14:55:09 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/11 17:10:19 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,23 @@ char	*gnl(int fd);
 
 /**
  * @brief Handles the generation of heredoc temp files. One is created for each
- * present in the args_list list input files cases. 
+ * node in the args_list list. Multiple heredocs in the same argument are 
+ * over-written once completed. 
  * Within _hd_read, gnl is called to read the line into the heredoc temp file.
+ * _exit_signint handles the exit frees if SIGINT
+ * _hd_break checks the read line (linecpy) against the limiter to break the 
+ * heredoc read loop
+ * _hd_read calls gnl to get the next line in a loop until the limiter is found
+ * (or Ctrl + C)
+ * _exit_fail handles malloc fail frees and return error codes
  * ctrl C = EXIT_SIGINT (130).
  * ctrl D = EXIT_SUCCESS (0).
- * 
  * @param pipex pipex structure
  * @param temp current redirection filename (EOF limiter for the heredoc) 
  * within input_files of the current args_list node.
  * @param i current redirection number within input_files of the current 
  * args_list node.
- * @return int exit code of _hd_read()
+ * @return int exit code of _hd_read() EXIT_SUCCESS/FAIL ENOMEM
  */
 int		ft_heredoc(t_pipex *pipex, t_args **temp, int i, int arg_num);
 
@@ -332,15 +338,27 @@ int		executing(t_struct *main);
  * In the case of >> : opens, creates if absent, appends if present
  * Files are then closed as only the last in the list will be used in pipex
  * The flag temp->output_type is set to 0/1 to send to pipex so the final 
- * redirections are correct
+ * redirections opens are correct
  */
 // static int	_red_outputs(t_args *temp, int *i);
 
 /**
- * @brief Handles inputs and outputs, looping through the args_list list.
- * The final output file for each argument is updated here (if present).
- * Creates a temp file 'temp' to hold user input, and stocks the fd in 
+ * @brief Recursive to handle inputs and outputs, looping through the args_list 
+ * list.
+ * The final output file for each argument is updated (if present).
+ * Creates temp files 'temp_n' to hold heredoc input, and stocks the fd in 
  * pipex->infile_fd.
+ * @param pipex pipex structure
+ * @param main main structure
+ * @return int exit code (EXIT_SUCCESS/FAILURE)
+ */
+// static int	_ft_redirs_recursive(t_pipex *pipex, t_struct *main,
+// 								t_args *temp, int num);
+
+/**
+ * @brief Calls the recursive _ft_redirs_recursive to run through the args_list
+ * list from end -> beginning, therefore reading the commands in their input 
+ * order.
  * @param pipex pipex structure
  * @param main main structure
  * @return int exit code (EXIT_SUCCESS/FAILURE)
