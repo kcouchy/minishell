@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_variables.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 15:39:03 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/06 09:29:32 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/12 16:19:29 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	*_copy_variable(char **f_envp, char *input, int start, int i)
 			k++;
 		}
 		if (f_envp[j][k] && f_envp[j][k] == '=' && s == i)
-			return (var_strdup(f_envp[j]));
+			return (dup_variable_with_quotes(var_strdup(f_envp[j])));
 		j++;
 	}
 	return (var_strdup(""));
