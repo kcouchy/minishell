@@ -6,47 +6,47 @@
 #    By: lribette <lribette@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/17 10:04:34 by kcouchma          #+#    #+#              #
-#    Updated: 2024/03/12 17:17:58 by lribette         ###   ########.fr        #
+#    Updated: 2024/03/12 17:31:40 by lribette         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS =												\
-		Builtins/builtins_utils						\
-		Builtins/cd									\
-		Builtins/echo								\
-		Builtins/env								\
-		Builtins/exit								\
-		Builtins/export_exec						\
-		Builtins/export_parse						\
-		Builtins/fenvp_utils						\
-		Builtins/pwd								\
-		Builtins/unset								\
-		Parsing/Lexing/alloc_tables					\
-		Parsing/Lexing/check_commands				\
-		Parsing/Lexing/check_variables				\
-		Parsing/Lexing/dup_variable_with_quotes		\
-		Parsing/Lexing/lexing_utils					\
-		Parsing/Lexing/var_utils					\
-		Parsing/Lexing/what_type					\
-		Parsing/fill_strings						\
-		Parsing/fill_type							\
-		Parsing/parsing_to_executing				\
-		Parsing/parsing								\
-		Pipex/pipex									\
-		Pipex/pipex_cmds							\
-		Pipex/pipex_utils							\
-		Pipex/pipex_exits							\
-		Pipex/gnl									\
-		Pipex/redirections							\
-		Pipex/heredocs								\
-		ft_free										\
-		minishell									\
-		utils							
+SRCS =													\
+			Builtins/builtins_utils						\
+			Builtins/cd									\
+			Builtins/echo								\
+			Builtins/env								\
+			Builtins/exit								\
+			Builtins/export_exec						\
+			Builtins/export_parse						\
+			Builtins/fenvp_utils						\
+			Builtins/pwd								\
+			Builtins/unset								\
+			Parsing/Lexing/alloc_tables					\
+			Parsing/Lexing/check_commands				\
+			Parsing/Lexing/check_variables				\
+			Parsing/Lexing/dup_variable_with_quotes		\
+			Parsing/Lexing/lexing_utils					\
+			Parsing/Lexing/var_utils					\
+			Parsing/Lexing/what_type					\
+			Parsing/fill_strings						\
+			Parsing/fill_type							\
+			Parsing/parsing_to_executing				\
+			Parsing/parsing								\
+			Pipex/pipex									\
+			Pipex/pipex_cmds							\
+			Pipex/pipex_utils							\
+			Pipex/pipex_exits							\
+			Pipex/gnl									\
+			Pipex/redirections							\
+			Pipex/heredocs								\
+			ft_free										\
+			minishell									\
+			utils							
 
 INC_FILES = -I Pipex/libft
 
-H_FILES =	./Pipex/libft/libft.h				\
-			./Pipex/pipex.h						\
+H_FILES =	./Pipex/libft/libft.h						\
+			./Pipex/pipex.h								\
 			minishell.h
 
 SRC = $(addsuffix .c,$(SRCS))

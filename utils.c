@@ -6,7 +6,7 @@
 /*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 18:51:04 by lribette          #+#    #+#             */
-/*   Updated: 2024/03/05 09:27:31 by lribette         ###   ########.fr       */
+/*   Updated: 2024/03/12 18:58:29 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,13 @@ char	**ch_exit_code(int exit_code, char **f_envp)
 	i = 0;
 	if (f_envp)
 	{
-		i = find_arg("?=", f_envp);
-		if (i)
-			free(f_envp[i]);
-		new_exit_str = ft_itoa(exit_code);
+		new_exit_str = ft_strjoinf("?=", ft_itoa(exit_code), 2);
 		if (errno == MALLOC_ERROR)
 			return (NULL);
-		f_envp[i] = ft_strjoin("?=", new_exit_str);
+		ft_mod_fevnp(new_exit_str, &f_envp);
+		free(new_exit_str);
 		if (errno == MALLOC_ERROR)
 			return (free_table(f_envp), NULL);
-		free(new_exit_str);
 	}
 	return (f_envp);
 }

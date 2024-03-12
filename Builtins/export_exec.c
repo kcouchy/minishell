@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_exec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:10:57 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/06 09:47:11 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/12 19:19:15 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ static void	_sort_export(char **ex)
 	{
 		while (ex[i] && ex[i + 1])
 		{
-			ft_strncmp(ex[i], ex[i + 1], 5);
-			if (ft_strncmp(ex[i], ex[i + 1], ft_strlen(ex[i])) > 0)
+			if (ft_strcmp(ex[i], ex[i + 1]) > 0)
 			{
 				temp = ex[i];
 				ex[i] = ex[i + 1];
