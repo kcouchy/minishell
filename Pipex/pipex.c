@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 11:06:41 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/05 15:16:03 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/12 15:09:43 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	ft_pipex(t_pipex *pipex, t_struct *main)
 	int		i;
 	t_args	*arg;
 
-	i = 0;
+	i = -1;
 	arg = main->args_list;
-	while (arg)
+	while (arg && ++i > -1)
 	{
 		if (i < (main->common.nb_commands - 1) && (pipe(pipex->pipe_fd) == -1))
 		{
@@ -38,12 +38,13 @@ void	ft_pipex(t_pipex *pipex, t_struct *main)
 		}
 		signal(SIGINT, &sig_handler_child);
 		signal(SIGQUIT, &sig_handler_child);
+		if (g_signal == 130)
+			return ;
 		ft_forkchild(pipex, i, arg, main);
 		if (i == 0)
 			pipex->pid_last = pipex->pid;
 		if (i < (main->common.nb_commands - 1))
 			close(pipex->pipe_fd[0]);
-		i++;
 		arg = arg->next;
 	}
 	if (pipex->pid != 0)
