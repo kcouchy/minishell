@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_parse.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lribette <lribette@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 12:10:57 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/05 12:54:12 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/12 11:30:54 by lribette         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,15 @@
 static int	_is_a_correct_export(t_parsing *parse, int i)
 {
 	int	j;
+	int	equal;
 
 	j = 0;
+	equal = 0;
 	while (parse->argv[i][j])
 	{
-		if (is_space(parse->argv[i][j]))
+		if (parse->argv[i][j] == '=')
+			equal++;
+		if (is_space(parse->argv[i][j]) && !equal)
 			return (0);
 		j++;
 	}
