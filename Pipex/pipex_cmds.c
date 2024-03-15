@@ -6,7 +6,7 @@
 /*   By: kcouchma <kcouchma@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:28:50 by kcouchma          #+#    #+#             */
-/*   Updated: 2024/03/06 14:50:56 by kcouchma         ###   ########.fr       */
+/*   Updated: 2024/03/15 11:04:20 by kcouchma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ft_input(t_pipex *pipex, t_args *arg, t_struct *main, int ired)
 		ft_pipex_error(pipex, main, EXIT_FAILURE);
 	}
 	close(pipex->pipe_fd[0]);
-	if (arg->input)
+	if (arg->input && in_fd != -1)
 		close(in_fd);
 }
 
